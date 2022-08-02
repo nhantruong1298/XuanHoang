@@ -7,6 +7,7 @@ import 'package:example_nav2/app/modules/warning/views/warning_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/resources/app_constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:example_nav2/widgets/typography/heading_text.dart';
 import 'package:flutter/material.dart';
@@ -126,41 +127,46 @@ class _FeatureItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(50),
-      child: Material(
-        elevation: 5,
-        shadowColor: Colors.black,
-        color: AppColors.primaryLightColor,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
-            child: Row(children: [
-              SvgPicture.asset(
-                icon!,
-                fit: BoxFit.scaleDown,
-                height: 70.h,
-              ),
-              SizedBox(width: 23.w),
-              Text(title ?? '',
-                  style: TextStyle(color: Color(0xFF585858), fontSize: 20.sp)),
-              const Spacer(),
-              (amount != null)
-                  ? Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-                      decoration: BoxDecoration(
-                          color: Color(0xFFCB0000),
-                          borderRadius: BorderRadius.circular(50)),
-                      child: Text('+${amount ?? ''}',
-                          style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white)),
-                    )
-                  : const SizedBox.shrink()
-            ]),
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          boxShadow: [AppConstants.defaultBoxShadow]),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(50),
+        child: Material(
+          color: AppColors.primaryLightColor,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12),
+              child: Row(children: [
+                SvgPicture.asset(
+                  icon!,
+                  fit: BoxFit.scaleDown,
+                  height: 70.h,
+                ),
+                SizedBox(width: 23.w),
+                Text(title ?? '',
+                    style:
+                        TextStyle(color: Color(0xFF585858), fontSize: 20.sp)),
+                const Spacer(),
+                (amount != null)
+                    ? Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.w, vertical: 3.h),
+                        decoration: BoxDecoration(
+                            color: Color(0xFFCB0000),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Text('+${amount ?? ''}',
+                            style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.white)),
+                      )
+                    : const SizedBox.shrink()
+              ]),
+            ),
           ),
         ),
       ),

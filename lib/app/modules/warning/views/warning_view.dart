@@ -26,7 +26,7 @@ class WarningView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -53,7 +53,9 @@ class WarningView extends StatelessWidget {
                           shadowColor: AppColors.primaryDarkColor,
                           borderRadius: BorderRadius.circular(15),
                           child: AppListTile(
-                            contentPadding: EdgeInsets.all(16),
+                            onTap: () {},
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 20),
                             borderRadius: BorderRadius.circular(
                                 AppDimensions.defaultRadius),
                             title: Text(

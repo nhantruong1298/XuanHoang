@@ -6,6 +6,8 @@ import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_p
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/resources/app_constants.dart';
+import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +31,7 @@ class ChooseCategoryView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -53,11 +55,6 @@ class ChooseCategoryView extends StatelessWidget {
                         SearchInputField(
                           borderRadius: 25,
                           contentPadding: 20,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Color(0xFFC0C0C0),
-                            size: 25,
-                          ),
                         ),
                         SizedBox(height: 20.h),
                         _StaffCategory(),
@@ -77,14 +74,35 @@ class _StaffCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppListTile(
-      title: Text('Vệ sinh tủ điện',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
-      trailing: Assets.images.infoIcon
-          .svg(color: Color(0xFF0081C9), height: 27, fit: BoxFit.scaleDown),
-      onTap: () {},
-      contentPadding: EdgeInsets.all(16),
-      borderRadius: BorderRadius.circular(15),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [AppConstants.defaultBoxShadow],
+        borderRadius: BorderRadius.circular(AppDimensions.defaultPadding),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppDimensions.defaultPadding),
+        child: Material(
+          color: Colors.white,
+          child: InkWell(
+            onTap: () {},
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Vệ sinh tủ điện',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                  Assets.images.infoIcon.svg(
+                      color: Color(0xFF0081C9),
+                      height: 27,
+                      fit: BoxFit.scaleDown)
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -96,132 +114,86 @@ class _CustomerCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: Material(
-        color: AppColors.primaryLightColor,
-        child: InkWell(
-          onTap: () {
-            Get.toNamed(ChooseJobView.routeName);
-          },
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Row(children: [
-              Text('Kiểm tra đầu báo khói',
-                  style:
-                      TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
-              Expanded(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-                    decoration: BoxDecoration(
-                        color: AppColors.green700,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Text('${65}%',
-                        style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: 150,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 3.h),
-                          decoration: BoxDecoration(
-                              color: AppColors.green400,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text('${65}%',
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
-                        ),
-                        const SizedBox(width: 5),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 10.w, vertical: 3.h),
-                          decoration: BoxDecoration(
-                              color: AppColors.errorColor,
-                              borderRadius: BorderRadius.circular(50)),
-                          child: Text('${35}%',
-                              style: TextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white)),
-                        ),
-                      ],
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [AppConstants.defaultBoxShadow],
+        borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
+        child: Material(
+          color: AppColors.primaryLightColor,
+          child: InkWell(
+            onTap: () {
+              Get.toNamed(ChooseJobView.routeName);
+            },
+            child: Container(
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Row(children: [
+                Text('Kiểm tra đầu báo khói',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                      decoration: BoxDecoration(
+                          color: AppColors.green700,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Text('${65}%',
+                          style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white)),
                     ),
-                  )
-                ],
-              ))
-            ]),
+                    const SizedBox(height: 10),
+                    Container(
+                      width: 150,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                                color: AppColors.green400,
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Text('${65}%',
+                                style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white)),
+                          ),
+                          const SizedBox(width: 5),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.w, vertical: 3.h),
+                            decoration: BoxDecoration(
+                                color: AppColors.errorColor,
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Text('${35}%',
+                                style: TextStyle(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white)),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ))
+              ]),
+            ),
           ),
         ),
       ),
-    );
-    return AppListTile(
-      title: Text('Vệ sinh tủ điện',
-          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
-      trailing: Column(children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-          decoration: BoxDecoration(
-              color: Color(0xFFCB0000),
-              borderRadius: BorderRadius.circular(50)),
-          child: Text('+${99}',
-              style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white)),
-        ),
-        Container(
-          width: 150,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-                decoration: BoxDecoration(
-                    color: Color(0xFFCB0000),
-                    borderRadius: BorderRadius.circular(50)),
-                child: Text('+${99}',
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
-                decoration: BoxDecoration(
-                    color: Color(0xFFCB0000),
-                    borderRadius: BorderRadius.circular(50)),
-                child: Text('+${99}',
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white)),
-              ),
-            ],
-          ),
-        )
-      ]),
-      onTap: () {},
-      contentPadding: EdgeInsets.all(16),
-      borderRadius: BorderRadius.circular(15),
     );
   }
 }

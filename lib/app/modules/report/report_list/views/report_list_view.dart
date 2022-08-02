@@ -30,7 +30,7 @@ class ReportListView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -93,7 +93,7 @@ class _ReportItem extends StatelessWidget {
               Text('Trạng thái hoàn thành'),
             ],
           ),
-          contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           borderRadius: BorderRadius.circular(15),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:example_nav2/resources/app_constants.dart';
 import 'package:flutter/material.dart';
 
 class AppListTile extends StatelessWidget {
@@ -8,6 +9,7 @@ class AppListTile extends StatelessWidget {
   final Color? color;
   final VoidCallback? onTap;
   final BorderRadius? borderRadius;
+  final List<BoxShadow>? boxShadow;
 
   const AppListTile({
     Key? key,
@@ -18,21 +20,40 @@ class AppListTile extends StatelessWidget {
     this.onTap,
     this.borderRadius,
     this.subTitle,
+    this.boxShadow,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: borderRadius,
-      child: Material(
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: boxShadow ?? [AppConstants.defaultBoxShadow],
         borderRadius: borderRadius,
-        color: color ?? Colors.white,
-        child: ListTile(
-          onTap: onTap,
-          contentPadding: contentPadding,
-          title: title,
-          subtitle: subTitle,
-          trailing: trailing,
+      ),
+      child: ClipRRect(
+        borderRadius: borderRadius,
+        child: Material(
+          color: color ?? Colors.white,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: contentPadding ?? EdgeInsets.zero,
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          title ?? const SizedBox.shrink(),
+                          subTitle ?? const SizedBox.shrink()
+                        ],
+                      ),
+                    ),
+                    trailing ?? const SizedBox.shrink()
+                  ]),
+            ),
+          ),
         ),
       ),
     );

@@ -11,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CheckDocumentView extends StatelessWidget {
-     static const String routeName = '${HomeView.path}$path';
-      static const String path = '/document';
+  static const String routeName = '${HomeView.path}$path';
+  static const String path = '/document';
 
   const CheckDocumentView({Key? key}) : super(key: key);
 
@@ -27,7 +27,7 @@ class CheckDocumentView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -48,29 +48,24 @@ class CheckDocumentView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 30.h),
-                        PhysicalModel(
-                          color: AppColors.primaryLightColor,
-                          elevation: 3,
-                          shadowColor: AppColors.primaryDarkColor,
-                          borderRadius: BorderRadius.circular(15),
-                          child: AppListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 8),
-                            borderRadius: BorderRadius.circular(
-                                AppDimensions.defaultRadius),
-                            title: Text(
-                              'Hợp đồng Kingston01',
-                              style: TextStyle(
-                                  fontSize: 17.sp, fontWeight: FontWeight.w700),
-                            ),
-                            subTitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const SizedBox(height: 20),
-                                Text('Kỳ hạn: 1/7/2022 - 1/7/2023'),
-                              ],
-                            ),
+                        AppListTile(
+                          onTap: () {},
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 16),
+                          borderRadius: BorderRadius.circular(
+                              AppDimensions.defaultRadius),
+                          title: Text(
+                            'Hợp đồng Kingston01',
+                            style: TextStyle(
+                                fontSize: 17.sp, fontWeight: FontWeight.w700),
+                          ),
+                          subTitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const SizedBox(height: 20),
+                              Text('Kỳ hạn: 1/7/2022 - 1/7/2023'),
+                            ],
                           ),
                         )
                       ])),

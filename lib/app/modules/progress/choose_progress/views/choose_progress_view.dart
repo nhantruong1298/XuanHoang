@@ -5,6 +5,7 @@ import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
+import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
@@ -51,11 +52,8 @@ class ChooseProgressView extends StatelessWidget {
                         TextInputField(
                           borderRadius: 25,
                           contentPadding: 20,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Color(0xFFC0C0C0),
-                            size: 22,
-                          ),
+                          suffixIcon: Assets.images.searchIcon.svg(
+                              height: 22, width: 22, fit: BoxFit.scaleDown),
                         ),
                         SizedBox(height: 20.h),
                         _ProgressItem(
@@ -85,29 +83,36 @@ class _ProgressItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
-      child: Material(
-        color: Colors.white,
-        child: InkWell(
-          onTap: onTap,
-          child: Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(AppDimensions.defaultPadding),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(title ?? '',
-                  style:
-                      TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
-              SizedBox(height: 16.h),
-              Row(
-                children: [
-                  Text(date ?? '',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400, fontSize: 16.sp)),
-                ],
-              )
-            ]),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [AppConstants.defaultBoxShadow],
+        borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
+        child: Material(
+          color: Colors.white,
+          child: InkWell(
+            onTap: onTap,
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(AppDimensions.defaultPadding),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title ?? '',
+                        style: TextStyle(
+                            fontSize: 17.sp, fontWeight: FontWeight.w700)),
+                    SizedBox(height: 16.h),
+                    Row(
+                      children: [
+                        Text(date ?? '',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                      ],
+                    )
+                  ]),
+            ),
           ),
         ),
       ),

@@ -76,6 +76,10 @@ class $AssetsImagesGen {
   SvgGenImage get rightIcon =>
       const SvgGenImage('assets/images/right-icon.svg');
 
+  /// File path: assets/images/search-icon.svg
+  SvgGenImage get searchIcon =>
+      const SvgGenImage('assets/images/search-icon.svg');
+
   /// File path: assets/images/warn-icon.svg
   SvgGenImage get warnIcon => const SvgGenImage('assets/images/warn-icon.svg');
 }

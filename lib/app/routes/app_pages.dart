@@ -3,7 +3,6 @@ import 'package:example_nav2/app/modules/choose_category/views/choose_category_v
 import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
-import 'package:example_nav2/app/modules/create_signature/views/create_signature_view.dart';
 import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
@@ -104,18 +103,18 @@ class AppPages {
                               ]),
                         ]),
                   ]),
-              GetPage(  
+              GetPage(
                   preventDuplicates: true,
                   name: ReportListView.path,
                   page: () => ReportListView(),
                   bindings: [],
                   children: [
                     GetPage(
-                            preventDuplicates: true,
-                            name: CreateReportView.path,
-                            page: () => CreateReportView(),
-                            bindings: [],
-                          ),
+                      preventDuplicates: true,
+                      name: CreateReportView.path,
+                      page: () => CreateReportView(),
+                      bindings: [],
+                    ),
                     GetPage(
                         preventDuplicates: true,
                         name: ReportDetailView.path,

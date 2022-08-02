@@ -35,7 +35,7 @@ class TextInputField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(borderRadius),
-      elevation: elevation ?? 0.0,
+      elevation: 5,
       child: FormBuilderTextField(
         name: name,
         minLines: minLines,
@@ -60,3 +60,4 @@ class TextInputField extends StatelessWidget {
     );
   }
 }
+ 

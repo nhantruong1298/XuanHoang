@@ -1,3 +1,4 @@
+import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,27 +13,25 @@ class SearchInputField extends StatelessWidget {
   final Color? fillColor;
   final Color? focusBorderColor;
   final Color? borderColor;
-  final double? elevation;
-  SearchInputField(
-      {Key? key,
-      this.hintText,
-      this.borderRadius = 10,
-      this.contentPadding = 20,
-      this.suffixIcon,
-      this.maxLines,
-      this.minLines,
-      this.fillColor,
-      this.focusColor,
-      this.focusBorderColor,
-      this.borderColor,
-      this.elevation})
-      : super(key: key);
+  SearchInputField({
+    Key? key,
+    this.hintText,
+    this.borderRadius = 10,
+    this.contentPadding = 20,
+    this.suffixIcon,
+    this.maxLines,
+    this.minLines,
+    this.fillColor,
+    this.focusColor,
+    this.focusBorderColor,
+    this.borderColor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(borderRadius),
-      elevation: elevation ?? 0.0,
+      elevation: 5,
       child: TextFormField(
         minLines: minLines,
         maxLines: maxLines,
@@ -43,11 +42,8 @@ class SearchInputField extends StatelessWidget {
             hintText: hintText,
             focusColor: focusColor ?? Colors.white,
             suffixIcon: suffixIcon ??
-                const Icon(
-                  Icons.search,
-                  color: Color(0xFFC0C0C0),
-                  size: 25,
-                ),
+                Assets.images.searchIcon
+                    .svg(height: 22, width: 22, fit: BoxFit.scaleDown),
             contentPadding: EdgeInsets.all(contentPadding.h),
             filled: true,
             fillColor: fillColor ?? Colors.white,

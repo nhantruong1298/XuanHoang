@@ -66,6 +66,7 @@ class ChooseJobView extends StatelessWidget {
                         SizedBox(height: 20.h),
                         _StaffJob(),
                         SizedBox(height: 20.h),
+                        _CustomerJob()
                         // _CustomerJob(
                         //   color: AppColors.green400,
                         // )
@@ -94,41 +95,34 @@ class _CustomerJob extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       key: const ValueKey(0),
-      child: PhysicalModel(
-        color: color ?? AppColors.primaryLightColor,
-        elevation: 5,
-        shadowColor: AppColors.primaryDarkColor,
-        borderRadius: BorderRadius.circular(15),
-        child: Container(
-          child: ClipRRect(
-            child: AppListTile(
-              color: color,
-              title: Text('Đầu báo khói 001',
+      child: Container(
+        child: AppListTile(
+          onTap: () {},
+          color: color,
+          title: Text('Đầu báo khói 001',
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17.sp,
+                  color: (color == null)
+                      ? AppColors.primaryDarkColor
+                      : AppColors.primaryLightColor)),
+          subTitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 15,
+              ),
+              Text('KingstonL1B1ID001',
                   style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 17.sp,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
                       color: (color == null)
                           ? AppColors.primaryDarkColor
                           : AppColors.primaryLightColor)),
-              subTitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text('KingstonL1B1ID001',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.sp,
-                          color: (color == null)
-                              ? AppColors.primaryDarkColor
-                              : AppColors.primaryLightColor)),
-                ],
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
-              borderRadius: BorderRadius.circular(15),
-            ),
+            ],
           ),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          borderRadius: BorderRadius.circular(15),
         ),
       ),
       endActionPane: ActionPane(
@@ -205,24 +199,14 @@ class _StaffJob extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       key: const ValueKey(0),
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 10),
-        width: double.infinity,
-        height: 90,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-        decoration: BoxDecoration(
-            color: AppColors.primaryLightColor,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [AppConstants.defaultBoxShadow]),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Vệ sinh tủ điện',
-                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
-            Assets.images.infoIcon.svg(
-                color: Color(0xFF0081C9), height: 27, fit: BoxFit.scaleDown)
-          ],
-        ),
+      child: AppListTile(
+        onTap: () {},
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        borderRadius: BorderRadius.circular(15),
+        title: Text('Vệ sinh tủ điện',
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
+        trailing: Assets.images.infoIcon
+            .svg(color: Color(0xFF0081C9), height: 27, fit: BoxFit.scaleDown),
       ),
       endActionPane: ActionPane(
         extentRatio: 0.7,
