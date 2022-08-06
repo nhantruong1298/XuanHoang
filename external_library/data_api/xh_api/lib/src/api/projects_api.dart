@@ -8,10 +8,11 @@ import 'package:built_value/serializer.dart';
 import 'package:dio/dio.dart';
 
 import 'package:built_collection/built_collection.dart';
-import 'package:built_value/json_object.dart';
+import 'package:xh_api/src/api_util.dart';
+import 'package:xh_api/src/model/project_model.dart';
+import 'package:xh_api/src/model/result_crud_model.dart';
 
 class ProjectsApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -19,7 +20,7 @@ class ProjectsApi {
   const ProjectsApi(this._dio, this._serializers);
 
   /// apiProjectsCheckprojectnameGet
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -31,7 +32,7 @@ class ProjectsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiProjectsCheckprojectnameGet({ 
+  Future<Response<void>> apiProjectsCheckprojectnameGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -46,7 +47,14 @@ class ProjectsApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       validateStatus: validateStatus,
@@ -64,9 +72,10 @@ class ProjectsApi {
   }
 
   /// apiProjectsDetailsGet
-  /// 
+  ///
   ///
   /// Parameters:
+  /// * [idProject]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -74,9 +83,10 @@ class ProjectsApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future]
+  /// Returns a [Future] containing a [Response] with a [ProjectModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiProjectsDetailsGet({ 
+  Future<Response<ProjectModel>> apiProjectsDetailsGet({
+    String? idProject,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -91,25 +101,65 @@ class ProjectsApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       validateStatus: validateStatus,
     );
 
+    final _queryParameters = <String, dynamic>{
+      if (idProject != null)
+        r'idProject': encodeQueryParameter(
+            _serializers, idProject, const FullType(String)),
+    };
+
     final _response = await _dio.request<Object>(
       _path,
       options: _options,
+      queryParameters: _queryParameters,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    ProjectModel _responseData;
+
+    try {
+      const _responseType = FullType(ProjectModel);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as ProjectModel;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<ProjectModel>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
   /// apiProjectsGet
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -119,9 +169,9 @@ class ProjectsApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future]
+  /// Returns a [Future] containing a [Response] with a [BuiltList<ProjectModel>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiProjectsGet({ 
+  Future<Object?> apiProjectsGet({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -136,7 +186,14 @@ class ProjectsApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       validateStatus: validateStatus,
@@ -150,14 +207,41 @@ class ProjectsApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
+    return _response.data;
+    BuiltList<ProjectModel> _responseData;
+
+    try {
+      const _responseType = FullType(BuiltList, [FullType(ProjectModel)]);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as BuiltList<ProjectModel>;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<BuiltList<ProjectModel>>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
   /// apiProjectsPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [requestBody] 
+  /// * [projectModel]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -165,10 +249,10 @@ class ProjectsApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future]
+  /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiProjectsPost({ 
-    BuiltMap<String, JsonObject>? requestBody,
+  Future<Response<ResultCRUDModel>> apiProjectsPost({
+    ProjectModel? projectModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -183,7 +267,14 @@ class ProjectsApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -193,12 +284,13 @@ class ProjectsApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(BuiltMap, [FullType(String), FullType(JsonObject)]);
-      _bodyData = requestBody == null ? null : _serializers.serialize(requestBody, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      const _type = FullType(ProjectModel);
+      _bodyData = projectModel == null
+          ? null
+          : _serializers.serialize(projectModel, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -216,7 +308,32 @@ class ProjectsApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
-  }
+    ResultCRUDModel _responseData;
 
+    try {
+      const _responseType = FullType(ResultCRUDModel);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as ResultCRUDModel;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<ResultCRUDModel>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
 }

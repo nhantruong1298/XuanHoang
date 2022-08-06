@@ -15,21 +15,29 @@ class TextInputField extends StatelessWidget {
   final Color? focusBorderColor;
   final Color? borderColor;
   final double? elevation;
-  TextInputField(
-      {Key? key,
-      this.hintText,
-      this.borderRadius = 10,
-      this.contentPadding = 20,
-      this.suffixIcon,
-      this.maxLines,
-      this.minLines,
-      this.fillColor,
-      this.focusColor,
-      this.focusBorderColor,
-      this.borderColor,
-      this.elevation,
-      this.name = ''})
-      : super(key: key);
+  final String obscuringCharacter;
+  final bool obscureText;
+  final String initValue;
+  final Function(String?)? onChanged;
+  TextInputField({
+    Key? key,
+    this.hintText,
+    this.borderRadius = 10,
+    this.contentPadding = 20,
+    this.suffixIcon,
+    this.maxLines = 1,
+    this.minLines = 1,
+    this.fillColor,
+    this.focusColor,
+    this.focusBorderColor,
+    this.borderColor,
+    this.elevation,
+    this.name = '',
+    this.obscuringCharacter = '•',
+    this.obscureText = false,
+    this.initValue = '',
+    this.onChanged,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +45,13 @@ class TextInputField extends StatelessWidget {
       borderRadius: BorderRadius.circular(borderRadius),
       elevation: 5,
       child: FormBuilderTextField(
+        initialValue: initValue,
+        onChanged: onChanged,
         name: name,
         minLines: minLines,
         maxLines: maxLines,
+        obscuringCharacter: obscuringCharacter,
+        obscureText: obscureText,
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: borderColor ?? Colors.white),
@@ -60,4 +72,3 @@ class TextInputField extends StatelessWidget {
     );
   }
 }
- 

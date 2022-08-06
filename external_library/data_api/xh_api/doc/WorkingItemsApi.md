@@ -18,55 +18,69 @@ Method | HTTP request | Description
 
 
 # **apiWorkingItemsDetailsGet**
-> apiWorkingItemsDetailsGet()
+> WorkingItemModel apiWorkingItemsDetailsGet(idWorkingItem)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
+final String idWorkingItem = idWorkingItem_example; // String | 
 
 try {
-    api.apiWorkingItemsDetailsGet();
+    final response = api.apiWorkingItemsDetailsGet(idWorkingItem);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsDetailsGet: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idWorkingItem** | **String**|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**WorkingItemModel**](WorkingItemModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingItemsDocheckImagesPatch**
-> apiWorkingItemsDocheckImagesPatch(requestBody)
+> ResultCRUDModel apiWorkingItemsDocheckImagesPatch(doCheckImageModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final DoCheckImageModel doCheckImageModel = ; // DoCheckImageModel | 
 
 try {
-    api.apiWorkingItemsDocheckImagesPatch(requestBody);
+    final response = api.apiWorkingItemsDocheckImagesPatch(doCheckImageModel);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsDocheckImagesPatch: $e\n');
 }
@@ -76,38 +90,43 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **doCheckImageModel** | [**DoCheckImageModel**](DoCheckImageModel.md)|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**ResultCRUDModel**](ResultCRUDModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingItemsDocheckImagesPost**
-> apiWorkingItemsDocheckImagesPost(idWorkingItem, sessionId)
+> apiWorkingItemsDocheckImagesPost(idWorkingItem, sessionId, file)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
 final String idWorkingItem = idWorkingItem_example; // String | 
 final String sessionId = sessionId_example; // String | 
+final MultipartFile file = BINARY_DATA_HERE; // MultipartFile | 
 
 try {
-    api.apiWorkingItemsDocheckImagesPost(idWorkingItem, sessionId);
+    api.apiWorkingItemsDocheckImagesPost(idWorkingItem, sessionId, file);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsDocheckImagesPost: $e\n');
 }
@@ -119,6 +138,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **idWorkingItem** | **String**|  | [optional] 
  **sessionId** | **String**|  | [optional] 
+ **file** | **MultipartFile**|  | [optional] 
 
 ### Return type
 
@@ -126,29 +146,34 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
+ - **Content-Type**: multipart/form-data
  - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingItemsDocheckPost**
-> apiWorkingItemsDocheckPost(requestBody)
+> ResultCRUDModel apiWorkingItemsDocheckPost(doCheckModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final DoCheckModel doCheckModel = ; // DoCheckModel | 
 
 try {
-    api.apiWorkingItemsDocheckPost(requestBody);
+    final response = api.apiWorkingItemsDocheckPost(doCheckModel);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsDocheckPost: $e\n');
 }
@@ -158,36 +183,41 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **doCheckModel** | [**DoCheckModel**](DoCheckModel.md)|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**ResultCRUDModel**](ResultCRUDModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingItemsGet**
-> apiWorkingItemsGet()
+> BuiltList<WorkingItemModel> apiWorkingItemsGet()
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
 
 try {
-    api.apiWorkingItemsGet();
+    final response = api.apiWorkingItemsGet();
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsGet: $e\n');
 }
@@ -198,33 +228,38 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-void (empty response body)
+[**BuiltList&lt;WorkingItemModel&gt;**](WorkingItemModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingItemsPost**
-> apiWorkingItemsPost(requestBody)
+> ResultCRUDModel apiWorkingItemsPost(workingItemModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingItemsApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final WorkingItemModel workingItemModel = ; // WorkingItemModel | 
 
 try {
-    api.apiWorkingItemsPost(requestBody);
+    final response = api.apiWorkingItemsPost(workingItemModel);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingItemsApi->apiWorkingItemsPost: $e\n');
 }
@@ -234,20 +269,20 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **workingItemModel** | [**WorkingItemModel**](WorkingItemModel.md)|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**ResultCRUDModel**](ResultCRUDModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

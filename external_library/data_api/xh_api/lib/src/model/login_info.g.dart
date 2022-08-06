@@ -11,13 +11,11 @@ class _$LoginInfo extends LoginInfo {
   final String? username;
   @override
   final String? password;
-  @override
-  final String? passwordHash;
 
   factory _$LoginInfo([void Function(LoginInfoBuilder)? updates]) =>
       (new LoginInfoBuilder()..update(updates)).build();
 
-  _$LoginInfo._({this.username, this.password, this.passwordHash}) : super._();
+  _$LoginInfo._({this.username, this.password}) : super._();
 
   @override
   LoginInfo rebuild(void Function(LoginInfoBuilder) updates) =>
@@ -31,22 +29,19 @@ class _$LoginInfo extends LoginInfo {
     if (identical(other, this)) return true;
     return other is LoginInfo &&
         username == other.username &&
-        password == other.password &&
-        passwordHash == other.passwordHash;
+        password == other.password;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, username.hashCode), password.hashCode),
-        passwordHash.hashCode));
+    return $jf($jc($jc(0, username.hashCode), password.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('LoginInfo')
           ..add('username', username)
-          ..add('password', password)
-          ..add('passwordHash', passwordHash))
+          ..add('password', password))
         .toString();
   }
 }
@@ -62,10 +57,6 @@ class LoginInfoBuilder implements Builder<LoginInfo, LoginInfoBuilder> {
   String? get password => _$this._password;
   set password(String? password) => _$this._password = password;
 
-  String? _passwordHash;
-  String? get passwordHash => _$this._passwordHash;
-  set passwordHash(String? passwordHash) => _$this._passwordHash = passwordHash;
-
   LoginInfoBuilder() {
     LoginInfo._defaults(this);
   }
@@ -75,7 +66,6 @@ class LoginInfoBuilder implements Builder<LoginInfo, LoginInfoBuilder> {
     if ($v != null) {
       _username = $v.username;
       _password = $v.password;
-      _passwordHash = $v.passwordHash;
       _$v = null;
     }
     return this;
@@ -94,9 +84,8 @@ class LoginInfoBuilder implements Builder<LoginInfo, LoginInfoBuilder> {
 
   @override
   _$LoginInfo build() {
-    final _$result = _$v ??
-        new _$LoginInfo._(
-            username: username, password: password, passwordHash: passwordHash);
+    final _$result =
+        _$v ?? new _$LoginInfo._(username: username, password: password);
     replace(_$result);
     return _$result;
   }

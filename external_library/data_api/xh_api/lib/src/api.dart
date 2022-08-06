@@ -11,6 +11,7 @@ import 'package:xh_api/src/auth/bearer_auth.dart';
 import 'package:xh_api/src/auth/oauth.dart';
 import 'package:xh_api/src/api/auth_api.dart';
 import 'package:xh_api/src/api/common_api.dart';
+import 'package:xh_api/src/api/documents_api.dart';
 import 'package:xh_api/src/api/dynamic_form_api.dart';
 import 'package:xh_api/src/api/file_manager_api.dart';
 import 'package:xh_api/src/api/phases_api.dart';
@@ -83,6 +84,12 @@ class XhApi {
   /// by doing that all interceptors will not be executed
   CommonApi getCommonApi() {
     return CommonApi(dio, serializers);
+  }
+
+  /// Get DocumentsApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  DocumentsApi getDocumentsApi() {
+    return DocumentsApi(dio, serializers);
   }
 
   /// Get DynamicFormApi instance, base route and serializer can be overridden by a given but be careful,

@@ -1,3 +1,4 @@
+import 'package:example_nav2/app/modules/choose_project/controllers/choose_project_controller.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
@@ -8,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-class ChooseProjectView extends StatelessWidget {
+class ChooseProjectView extends GetView<ChooseProjectController> {
   static const String routeName = '${HomeView.path}$path';
   static const String path = '/choose-project';
   const ChooseProjectView({Key? key}) : super(key: key);
@@ -41,7 +42,28 @@ class ChooseProjectView extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 20.h),
-                        _ProjectItem()
+                        Obx(
+                          () {
+                            final list = controller.listProject;
+                            return Expanded(
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 10),
+                                itemCount: list.length,
+                                itemBuilder: (context, index) {
+                                  return _ProjectItem(
+                                      name: list[index].name,
+                                      address: list[index].address,
+                                      onTap: () {
+                                        Get.toNamed(
+                                            ChooseProgressView.routeName,
+                                            arguments: list[index].idProject);
+                                      });
+                                },
+                              ),
+                            );
+                          },
+                        )
                       ])),
             ),
           ],
@@ -75,19 +97,23 @@ class ChooseProjectView extends StatelessWidget {
 }
 
 class _ProjectItem extends StatelessWidget {
+  final String? name;
+  final String? address;
+  final VoidCallback? onTap;
   const _ProjectItem({
     Key? key,
+    this.name,
+    this.address,
+    this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppListTile(
-      onTap: () {
-        Get.toNamed(ChooseProgressView.routeName);
-      },
-      contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
+      onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       borderRadius: BorderRadius.circular(15),
-      title: Text('Toà nhà công đoàn cao su',
+      title: Text(name ?? '',
           style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
       subTitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(height: 16.h),
@@ -96,33 +122,33 @@ class _ProjectItem extends StatelessWidget {
             SvgPicture.asset('assets/images/location-icon.svg',
                 height: 13, fit: BoxFit.scaleDown),
             SizedBox(width: 8.w),
-            Text('229 Hoàng Văn Thụ, F8, PN',
+            Text(address ?? '',
                 style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
             SizedBox(width: 8.w),
           ],
         )
       ]),
     );
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(15)),
-      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('Toà nhà công đoàn cao su',
-            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
-        SizedBox(height: 16.h),
-        Row(
-          children: [
-            SvgPicture.asset('assets/images/location-icon.svg',
-                height: 13, fit: BoxFit.scaleDown),
-            SizedBox(width: 8.w),
-            Text('229 Hoàng Văn Thụ, F8, PN',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
-            SizedBox(width: 8.w),
-          ],
-        )
-      ]),
-    );
+    // return Container(
+    //   width: double.infinity,
+    //   padding: EdgeInsets.all(16),
+    //   decoration: BoxDecoration(
+    //       color: Colors.white, borderRadius: BorderRadius.circular(15)),
+    //   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    //     Text('Toà nhà công đoàn cao su',
+    //         style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
+    //     SizedBox(height: 16.h),
+    //     Row(
+    //       children: [
+    //         SvgPicture.asset('assets/images/location-icon.svg',
+    //             height: 13, fit: BoxFit.scaleDown),
+    //         SizedBox(width: 8.w),
+    //         Text('229 Hoàng Văn Thụ, F8, PN',
+    //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
+    //         SizedBox(width: 8.w),
+    //       ],
+    //     )
+    //   ]),
+    // );
   }
 }

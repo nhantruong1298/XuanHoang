@@ -11,13 +11,14 @@ import 'package:built_collection/built_collection.dart';
 import 'package:built_value/json_object.dart';
 import 'package:xh_api/src/api_util.dart';
 import 'package:xh_api/src/model/account_forgot_password.dart';
+import 'package:xh_api/src/model/change_pass_model.dart';
 import 'package:xh_api/src/model/login_info.dart';
 import 'package:xh_api/src/model/new_account.dart';
+import 'package:xh_api/src/model/response_login_model.dart';
 import 'package:xh_api/src/model/sign_up_account.dart';
 import 'package:xh_api/src/model/user_info.dart';
 
 class AuthApi {
-
   final Dio _dio;
 
   final Serializers _serializers;
@@ -25,10 +26,10 @@ class AuthApi {
   const AuthApi(this._dio, this._serializers);
 
   /// apiAuthChangeStatusUserPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [userInfo] 
+  /// * [userInfo]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -38,7 +39,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthChangeStatusUserPost({ 
+  Future<Response<void>> apiAuthChangeStatusUserPost({
     UserInfo? userInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -54,7 +55,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -65,11 +73,12 @@ class AuthApi {
 
     try {
       const _type = FullType(UserInfo);
-      _bodyData = userInfo == null ? null : _serializers.serialize(userInfo, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = userInfo == null
+          ? null
+          : _serializers.serialize(userInfo, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -91,10 +100,10 @@ class AuthApi {
   }
 
   /// apiAuthLoginByUserIdGet
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [idLogin] 
+  /// * [idLogin]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -104,7 +113,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthLoginByUserIdGet({ 
+  Future<Response<void>> apiAuthLoginByUserIdGet({
     String? idLogin,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -120,14 +129,23 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       validateStatus: validateStatus,
     );
 
     final _queryParameters = <String, dynamic>{
-      if (idLogin != null) r'idLogin': encodeQueryParameter(_serializers, idLogin, const FullType(String)),
+      if (idLogin != null)
+        r'idLogin':
+            encodeQueryParameter(_serializers, idLogin, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -143,10 +161,10 @@ class AuthApi {
   }
 
   /// apiAuthLoginPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [loginInfo] 
+  /// * [loginInfo]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -154,9 +172,9 @@ class AuthApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future]
+  /// Returns a [Future] containing a [Response] with a [ResponseLoginModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthLoginPost({ 
+  Future<Response<Object>> apiAuthLoginPost({
     LoginInfo? loginInfo,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -172,7 +190,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -183,11 +208,12 @@ class AuthApi {
 
     try {
       const _type = FullType(LoginInfo);
-      _bodyData = loginInfo == null ? null : _serializers.serialize(loginInfo, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = loginInfo == null
+          ? null
+          : _serializers.serialize(loginInfo, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -206,13 +232,41 @@ class AuthApi {
     );
 
     return _response;
+
+    ResponseLoginModel _responseData;
+
+    try {
+      const _responseType = FullType(ResponseLoginModel);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as ResponseLoginModel;
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<ResponseLoginModel>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
   }
 
   /// apiAuthPasswordChangePost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [requestBody] 
+  /// * [changePassModel]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -222,8 +276,8 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthPasswordChangePost({ 
-    BuiltMap<String, JsonObject>? requestBody,
+  Future<Response<void>> apiAuthPasswordChangePost({
+    ChangePassModel? changePassModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -238,7 +292,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -248,12 +309,13 @@ class AuthApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(BuiltMap, [FullType(String), FullType(JsonObject)]);
-      _bodyData = requestBody == null ? null : _serializers.serialize(requestBody, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      const _type = FullType(ChangePassModel);
+      _bodyData = changePassModel == null
+          ? null
+          : _serializers.serialize(changePassModel, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -275,10 +337,10 @@ class AuthApi {
   }
 
   /// apiAuthPasswordForgotPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [accountForgotPassword] 
+  /// * [accountForgotPassword]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -288,7 +350,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthPasswordForgotPost({ 
+  Future<Response<void>> apiAuthPasswordForgotPost({
     AccountForgotPassword? accountForgotPassword,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -304,7 +366,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -315,11 +384,12 @@ class AuthApi {
 
     try {
       const _type = FullType(AccountForgotPassword);
-      _bodyData = accountForgotPassword == null ? null : _serializers.serialize(accountForgotPassword, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = accountForgotPassword == null
+          ? null
+          : _serializers.serialize(accountForgotPassword, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -341,10 +411,10 @@ class AuthApi {
   }
 
   /// apiAuthPasswordResendEmailNewPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [signUpAccount] 
+  /// * [signUpAccount]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -354,7 +424,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthPasswordResendEmailNewPost({ 
+  Future<Response<void>> apiAuthPasswordResendEmailNewPost({
     SignUpAccount? signUpAccount,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -370,7 +440,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -381,11 +458,12 @@ class AuthApi {
 
     try {
       const _type = FullType(SignUpAccount);
-      _bodyData = signUpAccount == null ? null : _serializers.serialize(signUpAccount, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = signUpAccount == null
+          ? null
+          : _serializers.serialize(signUpAccount, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -407,10 +485,10 @@ class AuthApi {
   }
 
   /// apiAuthPasswordResetPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [requestBody] 
+  /// * [requestBody]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -420,7 +498,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthPasswordResetPost({ 
+  Future<Response<void>> apiAuthPasswordResetPost({
     BuiltMap<String, JsonObject>? requestBody,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -436,7 +514,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -446,12 +531,14 @@ class AuthApi {
     dynamic _bodyData;
 
     try {
-      const _type = FullType(BuiltMap, [FullType(String), FullType(JsonObject)]);
-      _bodyData = requestBody == null ? null : _serializers.serialize(requestBody, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      const _type =
+          FullType(BuiltMap, [FullType(String), FullType(JsonObject)]);
+      _bodyData = requestBody == null
+          ? null
+          : _serializers.serialize(requestBody, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -473,7 +560,7 @@ class AuthApi {
   }
 
   /// apiAuthRefreshtokenPost
-  /// 
+  ///
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -485,7 +572,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthRefreshtokenPost({ 
+  Future<Response<void>> apiAuthRefreshtokenPost({
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -500,7 +587,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       validateStatus: validateStatus,
@@ -518,10 +612,10 @@ class AuthApi {
   }
 
   /// apiAuthResendActivateEmailPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [accountForgotPassword] 
+  /// * [accountForgotPassword]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -531,7 +625,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthResendActivateEmailPost({ 
+  Future<Response<void>> apiAuthResendActivateEmailPost({
     AccountForgotPassword? accountForgotPassword,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -547,7 +641,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -558,11 +659,12 @@ class AuthApi {
 
     try {
       const _type = FullType(AccountForgotPassword);
-      _bodyData = accountForgotPassword == null ? null : _serializers.serialize(accountForgotPassword, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = accountForgotPassword == null
+          ? null
+          : _serializers.serialize(accountForgotPassword, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -584,10 +686,10 @@ class AuthApi {
   }
 
   /// apiAuthUserPost
-  /// 
+  ///
   ///
   /// Parameters:
-  /// * [newAccount] 
+  /// * [newAccount]
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -597,7 +699,7 @@ class AuthApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiAuthUserPost({ 
+  Future<Response<void>> apiAuthUserPost({
     NewAccount? newAccount,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -613,7 +715,14 @@ class AuthApi {
         ...?headers,
       },
       extra: <String, dynamic>{
-        'secure': <Map<String, String>>[],
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
         ...?extra,
       },
       contentType: 'application/json',
@@ -624,11 +733,12 @@ class AuthApi {
 
     try {
       const _type = FullType(NewAccount);
-      _bodyData = newAccount == null ? null : _serializers.serialize(newAccount, specifiedType: _type);
-
-    } catch(error, stackTrace) {
+      _bodyData = newAccount == null
+          ? null
+          : _serializers.serialize(newAccount, specifiedType: _type);
+    } catch (error, stackTrace) {
       throw DioError(
-         requestOptions: _options.compose(
+        requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -648,5 +758,4 @@ class AuthApi {
 
     return _response;
   }
-
 }

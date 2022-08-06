@@ -5,7 +5,7 @@ import 'package:openapi_generator_annotations/openapi_generator_annotations.dart
     pubName: 'xh_api',
     pubAuthor: 'Phan Nhat Quang',
   ),
-  inputSpecFile: 'https://xuanhoang.xoontec.vn/swagger/v1/swagger.json',
+  inputSpecFile: 'http://xuanhoang.xoontec.vn/swagger/v1/swagger.json',
   generatorName: Generator.dioNext,
   outputDirectory: 'xh_api',
   skipSpecValidation: true,

@@ -12,16 +12,12 @@ part 'login_info.g.dart';
 /// Properties:
 /// * [username] 
 /// * [password] 
-/// * [passwordHash] 
 abstract class LoginInfo implements Built<LoginInfo, LoginInfoBuilder> {
     @BuiltValueField(wireName: r'username')
     String? get username;
 
     @BuiltValueField(wireName: r'password')
     String? get password;
-
-    @BuiltValueField(wireName: r'passwordHash')
-    String? get passwordHash;
 
     LoginInfo._();
 
@@ -57,12 +53,6 @@ class _$LoginInfoSerializer implements StructuredSerializer<LoginInfo> {
                 ..add(serializers.serialize(object.password,
                     specifiedType: const FullType.nullable(String)));
         }
-        if (object.passwordHash != null) {
-            result
-                ..add(r'passwordHash')
-                ..add(serializers.serialize(object.passwordHash,
-                    specifiedType: const FullType.nullable(String)));
-        }
         return result;
     }
 
@@ -89,12 +79,6 @@ class _$LoginInfoSerializer implements StructuredSerializer<LoginInfo> {
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.password = valueDes;
-                    break;
-                case r'passwordHash':
-                    final valueDes = serializers.deserialize(value,
-                        specifiedType: const FullType.nullable(String)) as String?;
-                    if (valueDes == null) continue;
-                    result.passwordHash = valueDes;
                     break;
             }
         }

@@ -1,12 +1,16 @@
 import 'package:example_nav2/app/modules/authenticate/reset_password/views/reset_password_view.dart';
+import 'package:example_nav2/app/modules/choose_category/bindings/choose_category_binding.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
+import 'package:example_nav2/app/modules/choose_job/bindings/choose_job_binding.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
+import 'package:example_nav2/app/modules/choose_project/bindings/choose_project_binding.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
 import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
+import 'package:example_nav2/app/modules/progress/choose_progress/bindings/choose_progress_binding.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/app/modules/report/create_report/views/create_report_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/views/edit_report_view.dart';
@@ -67,13 +71,15 @@ class AppPages {
                   preventDuplicates: true,
                   name: ChooseProjectView.path,
                   page: () => ChooseProjectView(),
-                  bindings: [],
+                  bindings: [ChooseProjectBinding()],
                   children: []),
               GetPage(
                   preventDuplicates: true,
                   name: ChooseProgressView.path,
                   page: () => ChooseProgressView(),
-                  bindings: [],
+                  bindings: [
+                    ChooseProgressBinding()
+                  ],
                   children: [
                     GetPage(
                       preventDuplicates: true,
@@ -86,13 +92,17 @@ class AppPages {
                         preventDuplicates: true,
                         name: ChooseCategoryView.path,
                         page: () => ChooseCategoryView(),
-                        bindings: [],
+                        bindings: [
+                          ChooseCategoryBinding()
+                        ],
                         children: [
                           GetPage(
                               preventDuplicates: true,
                               name: ChooseJobView.path,
                               page: () => ChooseJobView(),
-                              bindings: [],
+                              bindings: [
+                                ChooseJobBinding()
+                              ],
                               children: [
                                 GetPage(
                                   preventDuplicates: true,

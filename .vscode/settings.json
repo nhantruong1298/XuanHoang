@@ -6,6 +6,7 @@
         "Getx",
         "Memoizer",
         "middlewares",
+        "openapi",
         "screenutil"
     ]
 }

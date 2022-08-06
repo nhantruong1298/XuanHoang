@@ -11,7 +11,7 @@ dependencies:
   flutter_localizations: # Add this line
     sdk: flutter
   data_api:
-    path: external_library/data_api
+    path: external_library/data_api/
   cupertino_icons: ^1.0.2
   get: ^4.1.4
   flutter_lints: ^1.0.4
@@ -26,7 +26,10 @@ dependencies:
   get_cli: ^1.8.1
   flutter_form_builder: ^7.5.0
   image_picker: ^0.8.5+3
-
+  dio: ^4.0.4
+  json_serializable: ^6.3.1
+  uuid: ^3.0.6
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter

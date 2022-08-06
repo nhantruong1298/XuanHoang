@@ -31,7 +31,7 @@ class EditReportView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 25, fit: BoxFit.scaleDown)),
@@ -41,7 +41,9 @@ class EditReportView extends StatelessWidget {
           ],
         ),
         bottomNavigationBar: AppButton(
-          onTap: () {},
+          onTap: () {
+            Get.back();
+          },
           text: S.current.EDIT_REPORT__SEND,
         ),
         body: Stack(

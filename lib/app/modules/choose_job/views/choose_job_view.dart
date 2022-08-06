@@ -1,4 +1,5 @@
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/choose_job/controllers/choose_job_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/widgets/remark_dialog.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
@@ -18,7 +19,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ChooseJobView extends StatelessWidget {
+class ChooseJobView extends GetView<ChooseJobController> {
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}$path';
   static const String path = '/choose-job';
@@ -64,26 +65,51 @@ class ChooseJobView extends StatelessWidget {
                           borderRadius: AppDimensions.defaultXLRadius,
                         ),
                         SizedBox(height: 20.h),
-                        _StaffJob(),
+                        Obx(() {
+                          final list = controller.listJob;
+                          return Expanded(
+                              child: ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    final item = list[index];
+                                    return _StaffJob(
+                                      onTap: () {},
+                                      onSuccessTap: () async {
+                                        final note =
+                                            await showRemarkDialog(context);
+                                        controller.doCheck(item, note);
+                                      },
+                                      onFailedTap: () async {
+                                        final note =
+                                            await showRemarkDialog(context);
+                                        controller.doCheck(item, note);
+                                      },
+                                      name: item.itemName,
+                                      description: item.description,
+                                      IdWorkingItem: item.idWorkingItem,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                  itemCount: list.length));
+                        }),
                         SizedBox(height: 20.h),
-                        _CustomerJob()
-                        // _CustomerJob(
-                        //   color: AppColors.green400,
-                        // )
                       ])),
             ),
           ],
         ));
   }
 
-  Future<void> showRemarkDialog(BuildContext context) async {
-    return showDialog<void>(
+  Future<String> showRemarkDialog(BuildContext context) async {
+    final note = await showDialog<String>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return RemarkDialog();
       },
     );
+    return note ?? '';
   }
 }
 
@@ -151,39 +177,6 @@ class _CustomerJob extends StatelessWidget {
               ],
             ),
           )
-          // Expanded(
-          //   child: PhysicalModel(
-          //     color: AppColors.primaryLightColor,
-          //     elevation: 5,
-          //     shadowColor: AppColors.primaryDarkColor,
-          //     borderRadius: BorderRadius.circular(15),
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(5),
-          //       child: Row(children: [
-          //         SizedBox(
-          //           width: 5,
-          //         ),
-          //         Expanded(
-          //           child: Container(
-          //             height: double.infinity,
-          //             width: double.infinity,
-          //             decoration: BoxDecoration(),
-          //             child: SizedBox(
-          //               child: ClipRRect(
-          //                 borderRadius: BorderRadius.circular(15),
-          //                 child: Material(
-          //                   borderRadius: BorderRadius.circular(15),
-          //                   child: Assets.images.galleryIcon.svg(
-          //                       height: 37, width: 37, fit: BoxFit.scaleDown),
-          //                 ),
-          //               ),
-          //             ),
-          //           ),
-          //         )
-          //       ]),
-          //     ),
-          //   ),
-          // )
         ],
       ),
     );
@@ -191,22 +184,46 @@ class _CustomerJob extends StatelessWidget {
 }
 
 class _StaffJob extends StatelessWidget {
-  const _StaffJob({
-    Key? key,
-  }) : super(key: key);
+  final String? IdWorkingItem;
+  final String? name;
+  final String? description;
+  final VoidCallback? onTap;
+  final VoidCallback? onSuccessTap;
+  final VoidCallback? onFailedTap;
+  const _StaffJob(
+      {Key? key,
+      this.IdWorkingItem,
+      this.name,
+      this.description,
+      this.onTap,
+      this.onSuccessTap,
+      this.onFailedTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: const ValueKey(0),
-      child: AppListTile(
-        onTap: () {},
-        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-        borderRadius: BorderRadius.circular(15),
-        title: Text('Vệ sinh tủ điện',
-            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
-        trailing: Assets.images.infoIcon
-            .svg(color: Color(0xFF0081C9), height: 27, fit: BoxFit.scaleDown),
+      key: ValueKey<String?>(IdWorkingItem),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        child: AppListTile(
+          onTap: onTap,
+          contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          borderRadius: BorderRadius.circular(15),
+          title: Text(name ?? '',
+              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
+          subTitle: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 15),
+                Text(description ?? '',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
+              ],
+            ),
+          ),
+        ),
       ),
       endActionPane: ActionPane(
         extentRatio: 0.7,
@@ -214,7 +231,7 @@ class _StaffJob extends StatelessWidget {
         children: [
           Expanded(
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [AppConstants.defaultBoxShadow]),
@@ -224,7 +241,9 @@ class _StaffJob extends StatelessWidget {
                   child: Container(),
                 ),
                 CustomSlidableAction(
-                  onPressed: (_) {},
+                  onPressed: (_) {
+                    onSuccessTap!();
+                  },
                   backgroundColor: AppColors.green400,
                   child: Text(
                     'Đạt',
@@ -239,7 +258,9 @@ class _StaffJob extends StatelessWidget {
                       bottomLeft: Radius.circular(15)),
                 ),
                 CustomSlidableAction(
-                    onPressed: (_) {},
+                    onPressed: (_) {
+                      onFailedTap!();
+                    },
                     backgroundColor: AppColors.errorColor,
                     child: Text(
                       'Không\nđạt',
@@ -251,10 +272,10 @@ class _StaffJob extends StatelessWidget {
                     )),
                 CustomSlidableAction(
                     onPressed: (context) async {
-                      final ImagePicker _picker = ImagePicker();
-                      // Pick an image
-                      final XFile? image =
-                          await _picker.pickImage(source: ImageSource.gallery);
+                      // final ImagePicker _picker = ImagePicker();
+                      // // Pick an image
+                      // final XFile? image =
+                      //     await _picker.pickImage(source: ImageSource.gallery);
                     },
                     backgroundColor: AppColors.primaryLightColor,
                     child: Assets.images.galleryIcon

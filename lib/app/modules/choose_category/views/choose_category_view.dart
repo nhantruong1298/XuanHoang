@@ -1,3 +1,4 @@
+import 'package:example_nav2/app/modules/choose_category/controllers/choose_category_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
@@ -14,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ChooseCategoryView extends StatelessWidget {
+class ChooseCategoryView extends GetView<ChooseCategoryController> {
   static const String path = '/choose-category';
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}$path';
@@ -57,9 +58,27 @@ class ChooseCategoryView extends StatelessWidget {
                           contentPadding: 20,
                         ),
                         SizedBox(height: 20.h),
-                        _StaffCategory(),
-                        SizedBox(height: 20.h),
-                        _CustomerCategory()
+                        Obx(() {
+                          final list = controller.listCategory;
+                          return Expanded(
+                              child: ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    return _StaffCategory(
+                                      onTap: () {
+                                        Get.toNamed(
+                                          ChooseJobView.routeName,
+                                          arguments: list[index].idWorkingTerm
+                                        );
+                                      },
+                                      termName: list[index].termName,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                  itemCount: list.length));
+                        })
                       ])),
             ),
           ],
@@ -68,9 +87,9 @@ class ChooseCategoryView extends StatelessWidget {
 }
 
 class _StaffCategory extends StatelessWidget {
-  const _StaffCategory({
-    Key? key,
-  }) : super(key: key);
+  final String? termName;
+  final VoidCallback? onTap;
+  const _StaffCategory({Key? key, this.termName, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,13 +103,13 @@ class _StaffCategory extends StatelessWidget {
         child: Material(
           color: Colors.white,
           child: InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Vệ sinh tủ điện',
+                  Text(termName ?? '',
                       style: TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 17.sp)),
                   Assets.images.infoIcon.svg(

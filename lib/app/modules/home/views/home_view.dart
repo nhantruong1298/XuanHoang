@@ -36,13 +36,8 @@ class HomeView extends StatelessWidget {
                   children: [
                     SizedBox(height: 50.h),
                     Heading1Text(S.current.CHOOSE_FEATURE__TITLE),
-                    Expanded(
-                        child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildCustomerFeatures(),
-                      ],
-                    ))
+                    SizedBox(height: 200.h),
+                    Expanded(child: _buildStaffFeatures())
                   ]),
             ),
           ),
@@ -93,6 +88,7 @@ class HomeView extends StatelessWidget {
 
   Widget _buildStaffFeatures() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _FeatureItem(
           onTap: () {
@@ -103,6 +99,9 @@ class HomeView extends StatelessWidget {
         ),
         SizedBox(height: 30.h),
         _FeatureItem(
+          onTap: () {
+            Get.toNamed(ReportListView.routeName);
+          },
           icon: Assets.images.customerIcon.path,
           title: 'Kiểm tra sự cố',
           amount: 99,

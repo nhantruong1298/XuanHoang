@@ -15,54 +15,68 @@ Method | HTTP request | Description
 
 
 # **apiPhasesDetailsGet**
-> apiPhasesDetailsGet()
+> PhaseModel apiPhasesDetailsGet(idPhase)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getPhasesApi();
+final String idPhase = idPhase_example; // String | 
 
 try {
-    api.apiPhasesDetailsGet();
+    final response = api.apiPhasesDetailsGet(idPhase);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling PhasesApi->apiPhasesDetailsGet: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idPhase** | **String**|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**PhaseModel**](PhaseModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiPhasesGet**
-> apiPhasesGet()
+> BuiltList<PhaseModel> apiPhasesGet()
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getPhasesApi();
 
 try {
-    api.apiPhasesGet();
+    final response = api.apiPhasesGet();
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling PhasesApi->apiPhasesGet: $e\n');
 }
@@ -73,33 +87,38 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-void (empty response body)
+[**BuiltList&lt;PhaseModel&gt;**](PhaseModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiPhasesPost**
-> apiPhasesPost(requestBody)
+> ResultCRUDModel apiPhasesPost(phaseModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getPhasesApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final PhaseModel phaseModel = ; // PhaseModel | 
 
 try {
-    api.apiPhasesPost(requestBody);
+    final response = api.apiPhasesPost(phaseModel);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling PhasesApi->apiPhasesPost: $e\n');
 }
@@ -109,20 +128,20 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **phaseModel** | [**PhaseModel**](PhaseModel.md)|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**ResultCRUDModel**](ResultCRUDModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

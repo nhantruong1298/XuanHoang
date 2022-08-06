@@ -42,12 +42,15 @@ class LoginView extends GetView<LoginController> {
                       SizedBox(height: 100.h),
                       TextInputField(
                         hintText: S.current.SIGN_IN__USERNAME,
-                        name: 'username',
+                        name: controller.USER_NAME_KEY,
+                        initValue: 'hnlam',
                       ),
                       SizedBox(height: 23.h),
                       TextInputField(
                         hintText: S.current.SIGN_IN__PASSWORD,
-                        name: 'password',
+                        name: controller.PASSWORD_KEY,
+                        obscureText: true,
+                        initValue: '123456aaabc',
                       ),
                       SizedBox(height: 80.h),
                       AppButton(
@@ -55,7 +58,7 @@ class LoginView extends GetView<LoginController> {
                             BorderRadius.circular(AppDimensions.defaultMRadius),
                         text: S.current.SIGN_IN__SIGN_IN_TEXT,
                         onTap: () {
-                          Get.toNamed(HomeView.routeName);
+                          controller.onLoginPressed();
                         },
                       ),
                       const Spacer(),

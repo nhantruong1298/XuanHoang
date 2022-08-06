@@ -1,13 +1,13 @@
+import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
+import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'app/modules/splash/controllers/splash_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'app/modules/splash/views/splash_view.dart';
 import 'app/routes/app_pages.dart';
-import 'services/auth_service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +17,13 @@ void main() {
       builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: "Application",
+          title: "XH APP",
           initialBinding: BindingsBuilder(
             () {
-              Get.put(SplashService());
-              Get.put(AuthService());
+              // Get.put(SplashService());
+              // Get.put(ApiService());
+              // Get.put(AuthService());
+              initDependencies();
             },
           ),
           getPages: AppPages.routes,

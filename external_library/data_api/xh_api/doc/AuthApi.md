@@ -29,6 +29,10 @@ Method | HTTP request | Description
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final UserInfo userInfo = ; // UserInfo | 
@@ -52,7 +56,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -69,6 +73,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final String idLogin = idLogin_example; // String | 
@@ -92,7 +100,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -102,19 +110,24 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiAuthLoginPost**
-> apiAuthLoginPost(loginInfo)
+> ResponseLoginModel apiAuthLoginPost(loginInfo)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final LoginInfo loginInfo = ; // LoginInfo | 
 
 try {
-    api.apiAuthLoginPost(loginInfo);
+    final response = api.apiAuthLoginPost(loginInfo);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling AuthApi->apiAuthLoginPost: $e\n');
 }
@@ -128,33 +141,37 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**ResponseLoginModel**](ResponseLoginModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiAuthPasswordChangePost**
-> apiAuthPasswordChangePost(requestBody)
+> apiAuthPasswordChangePost(changePassModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final ChangePassModel changePassModel = ; // ChangePassModel | 
 
 try {
-    api.apiAuthPasswordChangePost(requestBody);
+    api.apiAuthPasswordChangePost(changePassModel);
 } catch on DioError (e) {
     print('Exception when calling AuthApi->apiAuthPasswordChangePost: $e\n');
 }
@@ -164,7 +181,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **changePassModel** | [**ChangePassModel**](ChangePassModel.md)|  | [optional] 
 
 ### Return type
 
@@ -172,7 +189,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -189,6 +206,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final AccountForgotPassword accountForgotPassword = ; // AccountForgotPassword | 
@@ -212,7 +233,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -229,6 +250,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final SignUpAccount signUpAccount = ; // SignUpAccount | 
@@ -252,7 +277,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -269,6 +294,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
@@ -292,7 +321,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -309,6 +338,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 
@@ -328,7 +361,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -345,6 +378,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final AccountForgotPassword accountForgotPassword = ; // AccountForgotPassword | 
@@ -368,7 +405,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
@@ -385,6 +422,10 @@ No authorization required
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getAuthApi();
 final NewAccount newAccount = ; // NewAccount | 
@@ -408,7 +449,7 @@ void (empty response body)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 

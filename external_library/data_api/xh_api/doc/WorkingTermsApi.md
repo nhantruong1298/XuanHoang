@@ -15,54 +15,68 @@ Method | HTTP request | Description
 
 
 # **apiWorkingTermsDetailsGet**
-> apiWorkingTermsDetailsGet()
+> WorkingTermModel apiWorkingTermsDetailsGet(idWorkingTerm)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingTermsApi();
+final String idWorkingTerm = idWorkingTerm_example; // String | 
 
 try {
-    api.apiWorkingTermsDetailsGet();
+    final response = api.apiWorkingTermsDetailsGet(idWorkingTerm);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingTermsApi->apiWorkingTermsDetailsGet: $e\n');
 }
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idWorkingTerm** | **String**|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**WorkingTermModel**](WorkingTermModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingTermsGet**
-> apiWorkingTermsGet()
+> BuiltList<WorkingTermModel> apiWorkingTermsGet()
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingTermsApi();
 
 try {
-    api.apiWorkingTermsGet();
+    final response = api.apiWorkingTermsGet();
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingTermsApi->apiWorkingTermsGet: $e\n');
 }
@@ -73,33 +87,38 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-void (empty response body)
+[**BuiltList&lt;WorkingTermModel&gt;**](WorkingTermModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiWorkingTermsPost**
-> apiWorkingTermsPost(requestBody)
+> ResultCRUDModel apiWorkingTermsPost(workingTermModel)
 
 
 
 ### Example
 ```dart
 import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getWorkingTermsApi();
-final BuiltMap<String, JsonObject> requestBody = ; // BuiltMap<String, JsonObject> | 
+final WorkingTermModel workingTermModel = ; // WorkingTermModel | 
 
 try {
-    api.apiWorkingTermsPost(requestBody);
+    final response = api.apiWorkingTermsPost(workingTermModel);
+    print(response);
 } catch on DioError (e) {
     print('Exception when calling WorkingTermsApi->apiWorkingTermsPost: $e\n');
 }
@@ -109,20 +128,20 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **requestBody** | [**BuiltMap&lt;String, JsonObject&gt;**](JsonObject.md)|  | [optional] 
+ **workingTermModel** | [**WorkingTermModel**](WorkingTermModel.md)|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**ResultCRUDModel**](ResultCRUDModel.md)
 
 ### Authorization
 
-No authorization required
+[Bearer](../README.md#Bearer)
 
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/_*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -3,16 +3,18 @@ import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_backg
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
+import 'package:example_nav2/app/modules/progress/choose_progress/controllers/choose_progress_controller.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
+import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ChooseProgressView extends StatelessWidget {
+class ChooseProgressView extends GetView<ChooseProgressController> {
   static const String routeName = '${HomeView.routeName}/choose-progress';
   static const String path = '/choose-progress';
   const ChooseProgressView({Key? key}) : super(key: key);
@@ -24,7 +26,7 @@ class ChooseProgressView extends StatelessWidget {
         extendBodyBehindAppBar: true,
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
+          title: S.current.CHOOSE_PROGRESS__CHOOSE_PROGRESS_TEXT,
           actions: [
             IconButton(
                 onPressed: () {
@@ -56,13 +58,30 @@ class ChooseProgressView extends StatelessWidget {
                               height: 22, width: 22, fit: BoxFit.scaleDown),
                         ),
                         SizedBox(height: 20.h),
-                        _ProgressItem(
-                          title: 'Kỳ 1',
-                          date: '1/7/2022 - 30/7/2022',
-                          onTap: () {
-                            Get.toNamed(ChooseCategoryView.routeName);
-                          },
-                        )
+                        Obx(() {
+                          final listProgress = controller.listProgress;
+                          return Expanded(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(
+                                height: 10,
+                              ),
+                              itemCount: listProgress.length,
+                              itemBuilder: (context, index) {
+                                final item = listProgress[index];
+                                return _ProgressItem(
+                                  onTap: () {
+                                    Get.toNamed(ChooseCategoryView.routeName,
+                                        arguments: item.idPhase);
+                                  },
+                                  fromDate: item.fromDate,
+                                  toDate: item.toDate,
+                                  title: item.name,
+                                );
+                              },
+                            ),
+                          );
+                        })
                       ])),
             ),
           ],
@@ -72,12 +91,14 @@ class ChooseProgressView extends StatelessWidget {
 
 class _ProgressItem extends StatelessWidget {
   final String? title;
-  final String? date;
+  final DateTime? fromDate;
+  final DateTime? toDate;
   final VoidCallback? onTap;
   const _ProgressItem({
     Key? key,
     this.title,
-    this.date,
+    this.fromDate,
+    this.toDate,
     this.onTap,
   }) : super(key: key);
 
@@ -106,7 +127,10 @@ class _ProgressItem extends StatelessWidget {
                     SizedBox(height: 16.h),
                     Row(
                       children: [
-                        Text(date ?? '',
+                        Text(
+                            AppFormatter.formatDate(fromDate) +
+                                ' - ' +
+                                AppFormatter.formatDate(toDate),
                             style: TextStyle(
                                 fontWeight: FontWeight.w400, fontSize: 16.sp)),
                       ],
