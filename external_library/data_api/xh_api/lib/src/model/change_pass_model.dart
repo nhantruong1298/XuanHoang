@@ -13,10 +13,10 @@ part 'change_pass_model.g.dart';
 /// * [newPassword] 
 /// * [retypePassword] 
 abstract class ChangePassModel implements Built<ChangePassModel, ChangePassModelBuilder> {
-    @BuiltValueField(wireName: r'newPassword')
+    @BuiltValueField(wireName: r'NewPassword')
     String? get newPassword;
 
-    @BuiltValueField(wireName: r'retypePassword')
+    @BuiltValueField(wireName: r'RetypePassword')
     String? get retypePassword;
 
     ChangePassModel._();
@@ -43,13 +43,13 @@ class _$ChangePassModelSerializer implements StructuredSerializer<ChangePassMode
         final result = <Object?>[];
         if (object.newPassword != null) {
             result
-                ..add(r'newPassword')
+                ..add(r'NewPassword')
                 ..add(serializers.serialize(object.newPassword,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.retypePassword != null) {
             result
-                ..add(r'retypePassword')
+                ..add(r'RetypePassword')
                 ..add(serializers.serialize(object.retypePassword,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -68,13 +68,13 @@ class _$ChangePassModelSerializer implements StructuredSerializer<ChangePassMode
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'newPassword':
+                case r'NewPassword':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.newPassword = valueDes;
                     break;
-                case r'retypePassword':
+                case r'RetypePassword':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

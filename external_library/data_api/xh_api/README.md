@@ -79,11 +79,12 @@ Class | Method | HTTP request | Description
 [*DocumentsApi*](doc/DocumentsApi.md) | [**apiDocumentsGet**](doc/DocumentsApi.md#apidocumentsget) | **GET** /api/Documents | 
 [*DocumentsApi*](doc/DocumentsApi.md) | [**apiDocumentsPost**](doc/DocumentsApi.md#apidocumentspost) | **POST** /api/Documents | 
 [*DynamicFormApi*](doc/DynamicFormApi.md) | [**formGroupSettingsGet**](doc/DynamicFormApi.md#formgroupsettingsget) | **GET** /FormGroupSettings | 
-[*FileManagerApi*](doc/FileManagerApi.md) | [**apiFileManagerCheckFileExistedGet**](doc/FileManagerApi.md#apifilemanagercheckfileexistedget) | **GET** /api/FileManager/CheckFileExisted | 
-[*FileManagerApi*](doc/FileManagerApi.md) | [**apiFileManagerGetFileGet**](doc/FileManagerApi.md#apifilemanagergetfileget) | **GET** /api/FileManager/GetFile | 
+[*FileManagerApi*](doc/FileManagerApi.md) | [**apiFileManagerFileGet**](doc/FileManagerApi.md#apifilemanagerfileget) | **GET** /api/FileManager/file | 
+[*FileManagerApi*](doc/FileManagerApi.md) | [**apiFileManagerPublicFileGet**](doc/FileManagerApi.md#apifilemanagerpublicfileget) | **GET** /api/FileManager/public-file | 
 [*PhasesApi*](doc/PhasesApi.md) | [**apiPhasesDetailsGet**](doc/PhasesApi.md#apiphasesdetailsget) | **GET** /api/Phases/details | 
 [*PhasesApi*](doc/PhasesApi.md) | [**apiPhasesGet**](doc/PhasesApi.md#apiphasesget) | **GET** /api/Phases | 
 [*PhasesApi*](doc/PhasesApi.md) | [**apiPhasesPost**](doc/PhasesApi.md#apiphasespost) | **POST** /api/Phases | 
+[*ProjectsApi*](doc/ProjectsApi.md) | [**apiProjectsAllGet**](doc/ProjectsApi.md#apiprojectsallget) | **GET** /api/Projects/all | 
 [*ProjectsApi*](doc/ProjectsApi.md) | [**apiProjectsCheckprojectnameGet**](doc/ProjectsApi.md#apiprojectscheckprojectnameget) | **GET** /api/Projects/checkprojectname | 
 [*ProjectsApi*](doc/ProjectsApi.md) | [**apiProjectsDetailsGet**](doc/ProjectsApi.md#apiprojectsdetailsget) | **GET** /api/Projects/details | 
 [*ProjectsApi*](doc/ProjectsApi.md) | [**apiProjectsGet**](doc/ProjectsApi.md#apiprojectsget) | **GET** /api/Projects | 
@@ -110,6 +111,7 @@ Class | Method | HTTP request | Description
 [*WorkingItemsApi*](doc/WorkingItemsApi.md) | [**apiWorkingItemsDocheckImagesPost**](doc/WorkingItemsApi.md#apiworkingitemsdocheckimagespost) | **POST** /api/working-items/docheck/images | 
 [*WorkingItemsApi*](doc/WorkingItemsApi.md) | [**apiWorkingItemsDocheckPost**](doc/WorkingItemsApi.md#apiworkingitemsdocheckpost) | **POST** /api/working-items/docheck | 
 [*WorkingItemsApi*](doc/WorkingItemsApi.md) | [**apiWorkingItemsGet**](doc/WorkingItemsApi.md#apiworkingitemsget) | **GET** /api/working-items | 
+[*WorkingItemsApi*](doc/WorkingItemsApi.md) | [**apiWorkingItemsImagesGet**](doc/WorkingItemsApi.md#apiworkingitemsimagesget) | **GET** /api/working-items/images | 
 [*WorkingItemsApi*](doc/WorkingItemsApi.md) | [**apiWorkingItemsPost**](doc/WorkingItemsApi.md#apiworkingitemspost) | **POST** /api/working-items | 
 [*WorkingTermsApi*](doc/WorkingTermsApi.md) | [**apiWorkingTermsDetailsGet**](doc/WorkingTermsApi.md#apiworkingtermsdetailsget) | **GET** /api/working-terms/details | 
 [*WorkingTermsApi*](doc/WorkingTermsApi.md) | [**apiWorkingTermsGet**](doc/WorkingTermsApi.md#apiworkingtermsget) | **GET** /api/working-terms | 

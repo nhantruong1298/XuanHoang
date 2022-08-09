@@ -13,6 +13,7 @@ import 'package:xh_api/src/model/phase_model.dart';
 import 'package:xh_api/src/model/result_crud_model.dart';
 
 class PhasesApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -20,10 +21,10 @@ class PhasesApi {
   const PhasesApi(this._dio, this._serializers);
 
   /// apiPhasesDetailsGet
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [idPhase]
+  /// * [idPhase] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -33,7 +34,7 @@ class PhasesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [PhaseModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<PhaseModel>> apiPhasesDetailsGet({
+  Future<Response<PhaseModel>> apiPhasesDetailsGet({ 
     String? idPhase,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -63,9 +64,7 @@ class PhasesApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (idPhase != null)
-        r'IdPhase':
-            encodeQueryParameter(_serializers, idPhase, const FullType(String)),
+      if (idPhase != null) r'IdPhase': encodeQueryParameter(_serializers, idPhase, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -85,6 +84,7 @@ class PhasesApi {
         _response.data!,
         specifiedType: _responseType,
       ) as PhaseModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -107,7 +107,7 @@ class PhasesApi {
   }
 
   /// apiPhasesGet
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -119,8 +119,7 @@ class PhasesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<PhaseModel>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Object?> apiPhasesGet({
-    String? projectId,
+  Future<Response<BuiltList<PhaseModel>>> apiPhasesGet({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -129,7 +128,6 @@ class PhasesApi {
     ProgressCallback? onReceiveProgress,
   }) async {
     final _path = r'/api/Phases';
-
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -149,16 +147,13 @@ class PhasesApi {
       validateStatus: validateStatus,
     );
 
-    var _queryParameters = <String, dynamic>{'IdProject': projectId.toString()};
-
-    final _response = await _dio.request<Object>(_path,
-        options: _options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-        queryParameters: _queryParameters);
-
-    return _response.data;
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
 
     BuiltList<PhaseModel> _responseData;
 
@@ -168,6 +163,7 @@ class PhasesApi {
         _response.data!,
         specifiedType: _responseType,
       ) as BuiltList<PhaseModel>;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -190,10 +186,10 @@ class PhasesApi {
   }
 
   /// apiPhasesPost
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [phaseModel]
+  /// * [phaseModel] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -203,7 +199,7 @@ class PhasesApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ResultCRUDModel>> apiPhasesPost({
+  Future<Response<ResultCRUDModel>> apiPhasesPost({ 
     PhaseModel? phaseModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -237,12 +233,11 @@ class PhasesApi {
 
     try {
       const _type = FullType(PhaseModel);
-      _bodyData = phaseModel == null
-          ? null
-          : _serializers.serialize(phaseModel, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = phaseModel == null ? null : _serializers.serialize(phaseModel, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -268,6 +263,7 @@ class PhasesApi {
         _response.data!,
         specifiedType: _responseType,
       ) as ResultCRUDModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -288,4 +284,5 @@ class PhasesApi {
       extra: _response.extra,
     );
   }
+
 }

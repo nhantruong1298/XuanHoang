@@ -13,10 +13,10 @@ part 'result_crud_model.g.dart';
 /// * [returnId] 
 /// * [message] 
 abstract class ResultCRUDModel implements Built<ResultCRUDModel, ResultCRUDModelBuilder> {
-    @BuiltValueField(wireName: r'returnId')
+    @BuiltValueField(wireName: r'ReturnId')
     String? get returnId;
 
-    @BuiltValueField(wireName: r'message')
+    @BuiltValueField(wireName: r'Message')
     String? get message;
 
     ResultCRUDModel._();
@@ -43,13 +43,13 @@ class _$ResultCRUDModelSerializer implements StructuredSerializer<ResultCRUDMode
         final result = <Object?>[];
         if (object.returnId != null) {
             result
-                ..add(r'returnId')
+                ..add(r'ReturnId')
                 ..add(serializers.serialize(object.returnId,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.message != null) {
             result
-                ..add(r'message')
+                ..add(r'Message')
                 ..add(serializers.serialize(object.message,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -68,13 +68,13 @@ class _$ResultCRUDModelSerializer implements StructuredSerializer<ResultCRUDMode
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'returnId':
+                case r'ReturnId':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.returnId = valueDes;
                     break;
-                case r'message':
+                case r'Message':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

@@ -1,4 +1,6 @@
+import 'package:example_nav2/app/data/models/enum/working_item_status.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/controllers/choose_job_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/widgets/remark_dialog.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
@@ -17,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ChooseJobView extends GetView<ChooseJobController> {
   static const String routeName =
@@ -76,16 +77,33 @@ class ChooseJobView extends GetView<ChooseJobController> {
                                       onSuccessTap: () async {
                                         final note =
                                             await showRemarkDialog(context);
-                                        controller.doCheck(item, note);
+                                        controller.doCheck(
+                                            item.copyWith(
+                                                idWorkingItemStatus:
+                                                    WorkingItemStatus.success),
+                                            note);
                                       },
                                       onFailedTap: () async {
                                         final note =
                                             await showRemarkDialog(context);
-                                        controller.doCheck(item, note);
+                                        controller.doCheck(
+                                            item.copyWith(
+                                                idWorkingItemStatus:
+                                                    WorkingItemStatus.failed),
+                                            note);
+                                      },
+                                      onImageTap: () {
+                                        controller.loadWorkingItemImages(
+                                            item.idWorkingItem ?? '');
+                                      },
+                                      onCameraTap: () {
+                                        Get.toNamed(ChooseImageView.routeName);
                                       },
                                       name: item.itemName,
                                       description: item.description,
-                                      IdWorkingItem: item.idWorkingItem,
+                                      idWorkingItem: item.idWorkingItem,
+                                      idWorkingItemStatus:
+                                          item.idWorkingItemStatus,
                                     );
                                   },
                                   separatorBuilder: (context, index) =>
@@ -184,29 +202,47 @@ class _CustomerJob extends StatelessWidget {
 }
 
 class _StaffJob extends StatelessWidget {
-  final String? IdWorkingItem;
+  final String? idWorkingItem;
   final String? name;
+  final String? idWorkingItemStatus;
   final String? description;
   final VoidCallback? onTap;
   final VoidCallback? onSuccessTap;
   final VoidCallback? onFailedTap;
-  const _StaffJob(
-      {Key? key,
-      this.IdWorkingItem,
-      this.name,
-      this.description,
-      this.onTap,
-      this.onSuccessTap,
-      this.onFailedTap})
-      : super(key: key);
+  final VoidCallback? onImageTap;
+  final VoidCallback? onCameraTap;
+  const _StaffJob({
+    Key? key,
+    this.idWorkingItem,
+    this.name,
+    this.description,
+    this.onTap,
+    this.onSuccessTap,
+    this.onFailedTap,
+    this.idWorkingItemStatus,
+    this.onImageTap,
+    this.onCameraTap,
+  }) : super(key: key);
+
+  Color get statusColor {
+    switch (idWorkingItemStatus) {
+      case WorkingItemStatus.success:
+        return AppColors.green400;
+      case WorkingItemStatus.failed:
+        return AppColors.errorColor;
+      default:
+        return AppColors.primaryLightColor;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: ValueKey<String?>(IdWorkingItem),
+      key: ValueKey<String?>(idWorkingItem),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         child: AppListTile(
+          color: statusColor,
           onTap: onTap,
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           borderRadius: BorderRadius.circular(15),
@@ -226,12 +262,12 @@ class _StaffJob extends StatelessWidget {
         ),
       ),
       endActionPane: ActionPane(
-        extentRatio: 0.7,
+        extentRatio: 0.9,
         motion: ScrollMotion(),
         children: [
           Expanded(
             child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              margin: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [AppConstants.defaultBoxShadow]),
@@ -271,12 +307,13 @@ class _StaffJob extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 CustomSlidableAction(
-                    onPressed: (context) async {
-                      // final ImagePicker _picker = ImagePicker();
-                      // // Pick an image
-                      // final XFile? image =
-                      //     await _picker.pickImage(source: ImageSource.gallery);
-                    },
+                  onPressed: (_) => onCameraTap!(),
+                  backgroundColor: AppColors.primaryLightColor,
+                  child: Assets.images.cameraIcon
+                      .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
+                ),
+                CustomSlidableAction(
+                    onPressed: (_) => onImageTap!(),
                     backgroundColor: AppColors.primaryLightColor,
                     child: Assets.images.galleryIcon
                         .svg(height: 37, width: 37, fit: BoxFit.scaleDown),

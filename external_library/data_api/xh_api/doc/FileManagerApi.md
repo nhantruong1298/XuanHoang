@@ -9,12 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**apiFileManagerCheckFileExistedGet**](FileManagerApi.md#apifilemanagercheckfileexistedget) | **GET** /api/FileManager/CheckFileExisted | 
-[**apiFileManagerGetFileGet**](FileManagerApi.md#apifilemanagergetfileget) | **GET** /api/FileManager/GetFile | 
+[**apiFileManagerFileGet**](FileManagerApi.md#apifilemanagerfileget) | **GET** /api/FileManager/file | 
+[**apiFileManagerPublicFileGet**](FileManagerApi.md#apifilemanagerpublicfileget) | **GET** /api/FileManager/public-file | 
 
 
-# **apiFileManagerCheckFileExistedGet**
-> bool apiFileManagerCheckFileExistedGet(fileName, mode, subFolder)
+# **apiFileManagerFileGet**
+> apiFileManagerFileGet(name)
 
 
 
@@ -27,15 +27,12 @@ import 'package:xh_api/api.dart';
 //defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
 
 final api = XhApi().getFileManagerApi();
-final String fileName = fileName_example; // String | 
-final UploadMode mode = ; // UploadMode | 
-final String subFolder = subFolder_example; // String | 
+final String name = name_example; // String | 
 
 try {
-    final response = api.apiFileManagerCheckFileExistedGet(fileName, mode, subFolder);
-    print(response);
+    api.apiFileManagerFileGet(name);
 } catch on DioError (e) {
-    print('Exception when calling FileManagerApi->apiFileManagerCheckFileExistedGet: $e\n');
+    print('Exception when calling FileManagerApi->apiFileManagerFileGet: $e\n');
 }
 ```
 
@@ -43,13 +40,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fileName** | **String**|  | [optional] 
- **mode** | [**UploadMode**](.md)|  | [optional] 
- **subFolder** | **String**|  | [optional] 
+ **name** | **String**|  | [optional] 
 
 ### Return type
 
-**bool**
+void (empty response body)
 
 ### Authorization
 
@@ -58,12 +53,12 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: text/plain, application/json, text/json
+ - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiFileManagerGetFileGet**
-> apiFileManagerGetFileGet(name, returnName, mode, subFolder, contentType)
+# **apiFileManagerPublicFileGet**
+> apiFileManagerPublicFileGet(name, returnName, mode, subFolder, contentType)
 
 
 
@@ -83,9 +78,9 @@ final String subFolder = subFolder_example; // String |
 final String contentType = contentType_example; // String | 
 
 try {
-    api.apiFileManagerGetFileGet(name, returnName, mode, subFolder, contentType);
+    api.apiFileManagerPublicFileGet(name, returnName, mode, subFolder, contentType);
 } catch on DioError (e) {
-    print('Exception when calling FileManagerApi->apiFileManagerGetFileGet: $e\n');
+    print('Exception when calling FileManagerApi->apiFileManagerPublicFileGet: $e\n');
 }
 ```
 

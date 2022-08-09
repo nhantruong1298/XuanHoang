@@ -85,6 +85,10 @@ Serializers serializers = (_$serializers.toBuilder()
         () => MapBuilder<String, JsonObject>(),
       )
       ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(DoCheckImageModel)]),
+        () => ListBuilder<DoCheckImageModel>(),
+      )
+      ..addBuilderFactory(
         const FullType(BuiltList, [FullType(WorkingItemModel)]),
         () => ListBuilder<WorkingItemModel>(),
       )

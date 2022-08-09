@@ -1,10 +1,20 @@
 import 'package:dio/dio.dart';
+import 'package:example_nav2/app/data/models/progress.dart';
+import 'package:example_nav2/app/data/models/project.dart';
+import 'package:example_nav2/app/data/models/request/do_check_request.dart';
+import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
+import 'package:example_nav2/app/data/models/response/do_check_response.dart';
+import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/token.dart';
-import 'package:get/get.dart' hide Response;
+import 'package:example_nav2/app/data/models/working_item.dart';
+import 'package:example_nav2/app/data/models/working_term.dart';
+import 'package:example_nav2/app/data/services/xh_api_service.dart';
+import 'package:get/get.dart' hide Response, Progress;
 import 'package:xh_api/xh_api.dart';
 
 class ApiService extends GetxService {
   static ApiService get to => Get.find();
+  late XHApiService _xhApiService;
   final String _baseUrl = 'http://xuanhoang.xoontec.vn/';
   ApiService() {
     _xhApi = XhApi(dio: Dio(BaseOptions(baseUrl: _baseUrl)));
@@ -12,10 +22,11 @@ class ApiService extends GetxService {
   late XhApi _xhApi;
 
   void setToken(Token token) {
-    _xhApi = XhApi(
-        dio: Dio(BaseOptions(
-            baseUrl: _baseUrl,
-            headers: {"authorization": "Bearer ${token.accessToken}"})));
+    final dio = Dio(BaseOptions(
+        baseUrl: _baseUrl,
+        headers: {"authorization": "Bearer ${token.accessToken}"}));
+    _xhApi = XhApi(dio: dio);
+    _xhApiService = XHApiService(dio);
   }
 
   Future<Response<Object>> login(String userName, String password) async {
@@ -29,40 +40,58 @@ class ApiService extends GetxService {
     return result;
   }
 
-  Future<Object?> getProjects() async {
-    final result = await _xhApi.getProjectsApi().apiProjectsGet();
+  Future<List<Project>> getProjects() async {
+    final result = await _xhApiService.loadProjectList();
     return result;
   }
 
-  Future<Object?> getPhaseByProjectId(String projectId) async {
-    final result =
-        await _xhApi.getPhasesApi().apiPhasesGet(projectId: projectId);
+  Future<List<Progress>> getPhaseByProjectId(String projectId) async {
+    try {
+      final result = await _xhApiService.loadPhaseByProjectId(projectId);
+      return result;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  Future<List<WorkingTerm>> getWorkingTermsByPhaseId(String phaseId) async {
+    try {
+      final result = await _xhApiService.loadWorkingTermByPhaseId(phaseId);
+
+      return result;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  Future<List<WorkingItem>> getWorkingItemsByTermId(String termId) async {
+    try {
+      final result = await _xhApiService.loadWorkingItemsByTermId(termId);
+      return result;
+    } catch (error) {
+      return [];
+    }
+  }
+
+  Future<EditWorkingItemResponse> editWorkingItem(
+      EditWorkingItemRequest request) async {
+    try {
+      final result = await _xhApiService.editWorkingItem(request);
+      return result;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<DoCheckResponse> doCheck(DoCheckRequest request) async {
+    final result = await _xhApiService.doCheckPost(request);
+
     return result;
   }
 
-  Future<Object?> getWorkingTermsByPhaseId(String phaseId) async {
-    final result =
-        await _xhApi.getWorkingTermsApi().apiWorkingTermsGet(phaseId: phaseId);
-    return result;
-  }
+  Future<dynamic> loadWorkingItemImages(String idWorkingItem) async {
+    final result = await _xhApiService.loadWorkingItemImages(idWorkingItem,'');
 
-  Future<Object?> getWorkingItemsByTermId(String termId) async {
-    final result =
-        await _xhApi.getWorkingItemsApi().apiWorkingItemsGet(termId: termId);
-    return result;
-  }
-
-  Future<Object?> editWorkingItem(WorkingItemModel? model) async {
-    final result = await _xhApi
-        .getWorkingItemsApi()
-        .apiWorkingItemsPost(workingItemModel: model);
-    return result;
-  }
-
-  Future<Response<Object>> doCheck(DoCheckModel? model) async {
-    final result = await _xhApi
-        .getWorkingItemsApi()
-        .apiWorkingItemsDocheckPost(doCheckModel: model);
     return result;
   }
 }

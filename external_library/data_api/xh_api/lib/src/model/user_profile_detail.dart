@@ -32,67 +32,67 @@ part 'user_profile_detail.g.dart';
 /// * [company] 
 /// * [idLogin] 
 abstract class UserProfileDetail implements Built<UserProfileDetail, UserProfileDetailBuilder> {
-    @BuiltValueField(wireName: r'email')
+    @BuiltValueField(wireName: r'Email')
     String? get email;
 
-    @BuiltValueField(wireName: r'lastName')
+    @BuiltValueField(wireName: r'LastName')
     String? get lastName;
 
-    @BuiltValueField(wireName: r'firstName')
+    @BuiltValueField(wireName: r'FirstName')
     String? get firstName;
 
-    @BuiltValueField(wireName: r'fullName')
+    @BuiltValueField(wireName: r'FullName')
     String? get fullName;
 
-    @BuiltValueField(wireName: r'idRepLanguage')
+    @BuiltValueField(wireName: r'IdRepLanguage')
     String? get idRepLanguage;
 
-    @BuiltValueField(wireName: r'password')
+    @BuiltValueField(wireName: r'Password')
     String? get password;
 
-    @BuiltValueField(wireName: r'phoneNr')
+    @BuiltValueField(wireName: r'PhoneNr')
     String? get phoneNr;
 
-    @BuiltValueField(wireName: r'mobileNr')
+    @BuiltValueField(wireName: r'MobileNr')
     String? get mobileNr;
 
-    @BuiltValueField(wireName: r'dateOfBirth')
+    @BuiltValueField(wireName: r'DateOfBirth')
     String? get dateOfBirth;
 
-    @BuiltValueField(wireName: r'idLoginRoles')
+    @BuiltValueField(wireName: r'IdLoginRoles')
     String? get idLoginRoles;
 
-    @BuiltValueField(wireName: r'initials')
+    @BuiltValueField(wireName: r'Initials')
     String? get initials;
 
-    @BuiltValueField(wireName: r'encrypted')
+    @BuiltValueField(wireName: r'Encrypted')
     String? get encrypted;
 
-    @BuiltValueField(wireName: r'isBlocked')
+    @BuiltValueField(wireName: r'IsBlocked')
     bool? get isBlocked;
 
-    @BuiltValueField(wireName: r'isLoginActived')
+    @BuiltValueField(wireName: r'IsLoginActived')
     bool? get isLoginActived;
 
-    @BuiltValueField(wireName: r'idPerson')
+    @BuiltValueField(wireName: r'IdPerson')
     String? get idPerson;
 
-    @BuiltValueField(wireName: r'idAppUser')
+    @BuiltValueField(wireName: r'IdAppUser')
     String? get idAppUser;
 
-    @BuiltValueField(wireName: r'currentDateTime')
+    @BuiltValueField(wireName: r'CurrentDateTime')
     String? get currentDateTime;
 
-    @BuiltValueField(wireName: r'isDeleted')
+    @BuiltValueField(wireName: r'IsDeleted')
     bool? get isDeleted;
 
-    @BuiltValueField(wireName: r'idApplicationOwner')
+    @BuiltValueField(wireName: r'IdApplicationOwner')
     String? get idApplicationOwner;
 
-    @BuiltValueField(wireName: r'company')
+    @BuiltValueField(wireName: r'Company')
     String? get company;
 
-    @BuiltValueField(wireName: r'idLogin')
+    @BuiltValueField(wireName: r'IdLogin')
     String? get idLogin;
 
     UserProfileDetail._();
@@ -119,127 +119,127 @@ class _$UserProfileDetailSerializer implements StructuredSerializer<UserProfileD
         final result = <Object?>[];
         if (object.email != null) {
             result
-                ..add(r'email')
+                ..add(r'Email')
                 ..add(serializers.serialize(object.email,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.lastName != null) {
             result
-                ..add(r'lastName')
+                ..add(r'LastName')
                 ..add(serializers.serialize(object.lastName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.firstName != null) {
             result
-                ..add(r'firstName')
+                ..add(r'FirstName')
                 ..add(serializers.serialize(object.firstName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.fullName != null) {
             result
-                ..add(r'fullName')
+                ..add(r'FullName')
                 ..add(serializers.serialize(object.fullName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idRepLanguage != null) {
             result
-                ..add(r'idRepLanguage')
+                ..add(r'IdRepLanguage')
                 ..add(serializers.serialize(object.idRepLanguage,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.password != null) {
             result
-                ..add(r'password')
+                ..add(r'Password')
                 ..add(serializers.serialize(object.password,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.phoneNr != null) {
             result
-                ..add(r'phoneNr')
+                ..add(r'PhoneNr')
                 ..add(serializers.serialize(object.phoneNr,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.mobileNr != null) {
             result
-                ..add(r'mobileNr')
+                ..add(r'MobileNr')
                 ..add(serializers.serialize(object.mobileNr,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.dateOfBirth != null) {
             result
-                ..add(r'dateOfBirth')
+                ..add(r'DateOfBirth')
                 ..add(serializers.serialize(object.dateOfBirth,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idLoginRoles != null) {
             result
-                ..add(r'idLoginRoles')
+                ..add(r'IdLoginRoles')
                 ..add(serializers.serialize(object.idLoginRoles,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.initials != null) {
             result
-                ..add(r'initials')
+                ..add(r'Initials')
                 ..add(serializers.serialize(object.initials,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.encrypted != null) {
             result
-                ..add(r'encrypted')
+                ..add(r'Encrypted')
                 ..add(serializers.serialize(object.encrypted,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isBlocked != null) {
             result
-                ..add(r'isBlocked')
+                ..add(r'IsBlocked')
                 ..add(serializers.serialize(object.isBlocked,
                     specifiedType: const FullType.nullable(bool)));
         }
         if (object.isLoginActived != null) {
             result
-                ..add(r'isLoginActived')
+                ..add(r'IsLoginActived')
                 ..add(serializers.serialize(object.isLoginActived,
                     specifiedType: const FullType.nullable(bool)));
         }
         if (object.idPerson != null) {
             result
-                ..add(r'idPerson')
+                ..add(r'IdPerson')
                 ..add(serializers.serialize(object.idPerson,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idAppUser != null) {
             result
-                ..add(r'idAppUser')
+                ..add(r'IdAppUser')
                 ..add(serializers.serialize(object.idAppUser,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.currentDateTime != null) {
             result
-                ..add(r'currentDateTime')
+                ..add(r'CurrentDateTime')
                 ..add(serializers.serialize(object.currentDateTime,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isDeleted != null) {
             result
-                ..add(r'isDeleted')
+                ..add(r'IsDeleted')
                 ..add(serializers.serialize(object.isDeleted,
                     specifiedType: const FullType.nullable(bool)));
         }
         if (object.idApplicationOwner != null) {
             result
-                ..add(r'idApplicationOwner')
+                ..add(r'IdApplicationOwner')
                 ..add(serializers.serialize(object.idApplicationOwner,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.company != null) {
             result
-                ..add(r'company')
+                ..add(r'Company')
                 ..add(serializers.serialize(object.company,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idLogin != null) {
             result
-                ..add(r'idLogin')
+                ..add(r'IdLogin')
                 ..add(serializers.serialize(object.idLogin,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -258,127 +258,127 @@ class _$UserProfileDetailSerializer implements StructuredSerializer<UserProfileD
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'email':
+                case r'Email':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.email = valueDes;
                     break;
-                case r'lastName':
+                case r'LastName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.lastName = valueDes;
                     break;
-                case r'firstName':
+                case r'FirstName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.firstName = valueDes;
                     break;
-                case r'fullName':
+                case r'FullName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.fullName = valueDes;
                     break;
-                case r'idRepLanguage':
+                case r'IdRepLanguage':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idRepLanguage = valueDes;
                     break;
-                case r'password':
+                case r'Password':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.password = valueDes;
                     break;
-                case r'phoneNr':
+                case r'PhoneNr':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.phoneNr = valueDes;
                     break;
-                case r'mobileNr':
+                case r'MobileNr':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.mobileNr = valueDes;
                     break;
-                case r'dateOfBirth':
+                case r'DateOfBirth':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.dateOfBirth = valueDes;
                     break;
-                case r'idLoginRoles':
+                case r'IdLoginRoles':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idLoginRoles = valueDes;
                     break;
-                case r'initials':
+                case r'Initials':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.initials = valueDes;
                     break;
-                case r'encrypted':
+                case r'Encrypted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.encrypted = valueDes;
                     break;
-                case r'isBlocked':
+                case r'IsBlocked':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(bool)) as bool?;
                     if (valueDes == null) continue;
                     result.isBlocked = valueDes;
                     break;
-                case r'isLoginActived':
+                case r'IsLoginActived':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(bool)) as bool?;
                     if (valueDes == null) continue;
                     result.isLoginActived = valueDes;
                     break;
-                case r'idPerson':
+                case r'IdPerson':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idPerson = valueDes;
                     break;
-                case r'idAppUser':
+                case r'IdAppUser':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idAppUser = valueDes;
                     break;
-                case r'currentDateTime':
+                case r'CurrentDateTime':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.currentDateTime = valueDes;
                     break;
-                case r'isDeleted':
+                case r'IsDeleted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(bool)) as bool?;
                     if (valueDes == null) continue;
                     result.isDeleted = valueDes;
                     break;
-                case r'idApplicationOwner':
+                case r'IdApplicationOwner':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idApplicationOwner = valueDes;
                     break;
-                case r'company':
+                case r'Company':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.company = valueDes;
                     break;
-                case r'idLogin':
+                case r'IdLogin':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

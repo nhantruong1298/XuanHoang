@@ -18,13 +18,11 @@ class FileManagerApi {
 
   const FileManagerApi(this._dio, this._serializers);
 
-  /// apiFileManagerCheckFileExistedGet
+  /// apiFileManagerFileGet
   /// 
   ///
   /// Parameters:
-  /// * [fileName] 
-  /// * [mode] 
-  /// * [subFolder] 
+  /// * [name] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -32,12 +30,10 @@ class FileManagerApi {
   /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
   /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
   ///
-  /// Returns a [Future] containing a [Response] with a [bool] as data
+  /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<bool>> apiFileManagerCheckFileExistedGet({ 
-    String? fileName,
-    UploadMode? mode,
-    String? subFolder,
+  Future<Response<void>> apiFileManagerFileGet({ 
+    String? name,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -45,7 +41,7 @@ class FileManagerApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/FileManager/CheckFileExisted';
+    final _path = r'/api/FileManager/file';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{
@@ -66,9 +62,7 @@ class FileManagerApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (fileName != null) r'fileName': encodeQueryParameter(_serializers, fileName, const FullType(String)),
-      if (mode != null) r'mode': encodeQueryParameter(_serializers, mode, const FullType(UploadMode)),
-      if (subFolder != null) r'subFolder': encodeQueryParameter(_serializers, subFolder, const FullType(String)),
+      if (name != null) r'name': encodeQueryParameter(_serializers, name, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -80,33 +74,10 @@ class FileManagerApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    bool _responseData;
-
-    try {
-      _responseData = _response.data as bool;
-
-    } catch (error, stackTrace) {
-      throw DioError(
-        requestOptions: _response.requestOptions,
-        response: _response,
-        type: DioErrorType.other,
-        error: error,
-      )..stackTrace = stackTrace;
-    }
-
-    return Response<bool>(
-      data: _responseData,
-      headers: _response.headers,
-      isRedirect: _response.isRedirect,
-      requestOptions: _response.requestOptions,
-      redirects: _response.redirects,
-      statusCode: _response.statusCode,
-      statusMessage: _response.statusMessage,
-      extra: _response.extra,
-    );
+    return _response;
   }
 
-  /// apiFileManagerGetFileGet
+  /// apiFileManagerPublicFileGet
   /// 
   ///
   /// Parameters:
@@ -124,7 +95,7 @@ class FileManagerApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiFileManagerGetFileGet({ 
+  Future<Response<void>> apiFileManagerPublicFileGet({ 
     String? name,
     String? returnName,
     UploadMode? mode,
@@ -137,7 +108,7 @@ class FileManagerApi {
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
   }) async {
-    final _path = r'/api/FileManager/GetFile';
+    final _path = r'/api/FileManager/public-file';
     final _options = Options(
       method: r'GET',
       headers: <String, dynamic>{

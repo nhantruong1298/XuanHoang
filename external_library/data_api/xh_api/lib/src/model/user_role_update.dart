@@ -16,19 +16,19 @@ part 'user_role_update.g.dart';
 /// * [isDefault] 
 /// * [idLogin] 
 abstract class UserRoleUpdate implements Built<UserRoleUpdate, UserRoleUpdateBuilder> {
-    @BuiltValueField(wireName: r'idLoginRolesLoginGw')
+    @BuiltValueField(wireName: r'IdLoginRolesLoginGw')
     String? get idLoginRolesLoginGw;
 
-    @BuiltValueField(wireName: r'idLoginRoles')
+    @BuiltValueField(wireName: r'IdLoginRoles')
     String? get idLoginRoles;
 
-    @BuiltValueField(wireName: r'isBlocked')
+    @BuiltValueField(wireName: r'IsBlocked')
     bool? get isBlocked;
 
-    @BuiltValueField(wireName: r'isDefault')
+    @BuiltValueField(wireName: r'IsDefault')
     bool? get isDefault;
 
-    @BuiltValueField(wireName: r'idLogin')
+    @BuiltValueField(wireName: r'IdLogin')
     int? get idLogin;
 
     UserRoleUpdate._();
@@ -55,31 +55,31 @@ class _$UserRoleUpdateSerializer implements StructuredSerializer<UserRoleUpdate>
         final result = <Object?>[];
         if (object.idLoginRolesLoginGw != null) {
             result
-                ..add(r'idLoginRolesLoginGw')
+                ..add(r'IdLoginRolesLoginGw')
                 ..add(serializers.serialize(object.idLoginRolesLoginGw,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idLoginRoles != null) {
             result
-                ..add(r'idLoginRoles')
+                ..add(r'IdLoginRoles')
                 ..add(serializers.serialize(object.idLoginRoles,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isBlocked != null) {
             result
-                ..add(r'isBlocked')
+                ..add(r'IsBlocked')
                 ..add(serializers.serialize(object.isBlocked,
                     specifiedType: const FullType.nullable(bool)));
         }
         if (object.isDefault != null) {
             result
-                ..add(r'isDefault')
+                ..add(r'IsDefault')
                 ..add(serializers.serialize(object.isDefault,
                     specifiedType: const FullType.nullable(bool)));
         }
         if (object.idLogin != null) {
             result
-                ..add(r'idLogin')
+                ..add(r'IdLogin')
                 ..add(serializers.serialize(object.idLogin,
                     specifiedType: const FullType.nullable(int)));
         }
@@ -98,31 +98,31 @@ class _$UserRoleUpdateSerializer implements StructuredSerializer<UserRoleUpdate>
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'idLoginRolesLoginGw':
+                case r'IdLoginRolesLoginGw':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idLoginRolesLoginGw = valueDes;
                     break;
-                case r'idLoginRoles':
+                case r'IdLoginRoles':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idLoginRoles = valueDes;
                     break;
-                case r'isBlocked':
+                case r'IsBlocked':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(bool)) as bool?;
                     if (valueDes == null) continue;
                     result.isBlocked = valueDes;
                     break;
-                case r'isDefault':
+                case r'IsDefault':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(bool)) as bool?;
                     if (valueDes == null) continue;
                     result.isDefault = valueDes;
                     break;
-                case r'idLogin':
+                case r'IdLogin':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(int)) as int?;
                     if (valueDes == null) continue;

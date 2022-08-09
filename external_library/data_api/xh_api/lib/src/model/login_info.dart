@@ -13,10 +13,10 @@ part 'login_info.g.dart';
 /// * [username] 
 /// * [password] 
 abstract class LoginInfo implements Built<LoginInfo, LoginInfoBuilder> {
-    @BuiltValueField(wireName: r'username')
+    @BuiltValueField(wireName: r'Username')
     String? get username;
 
-    @BuiltValueField(wireName: r'password')
+    @BuiltValueField(wireName: r'Password')
     String? get password;
 
     LoginInfo._();
@@ -43,13 +43,13 @@ class _$LoginInfoSerializer implements StructuredSerializer<LoginInfo> {
         final result = <Object?>[];
         if (object.username != null) {
             result
-                ..add(r'username')
+                ..add(r'Username')
                 ..add(serializers.serialize(object.username,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.password != null) {
             result
-                ..add(r'password')
+                ..add(r'Password')
                 ..add(serializers.serialize(object.password,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -68,13 +68,13 @@ class _$LoginInfoSerializer implements StructuredSerializer<LoginInfo> {
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'username':
+                case r'Username':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.username = valueDes;
                     break;
-                case r'password':
+                case r'Password':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

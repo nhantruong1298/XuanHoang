@@ -13,10 +13,10 @@ part 'account_forgot_password.g.dart';
 /// * [email] 
 /// * [idLogin] 
 abstract class AccountForgotPassword implements Built<AccountForgotPassword, AccountForgotPasswordBuilder> {
-    @BuiltValueField(wireName: r'email')
+    @BuiltValueField(wireName: r'Email')
     String get email;
 
-    @BuiltValueField(wireName: r'idLogin')
+    @BuiltValueField(wireName: r'IdLogin')
     String? get idLogin;
 
     AccountForgotPassword._();
@@ -42,12 +42,12 @@ class _$AccountForgotPasswordSerializer implements StructuredSerializer<AccountF
         {FullType specifiedType = FullType.unspecified}) {
         final result = <Object?>[];
         result
-            ..add(r'email')
+            ..add(r'Email')
             ..add(serializers.serialize(object.email,
                 specifiedType: const FullType(String)));
         if (object.idLogin != null) {
             result
-                ..add(r'idLogin')
+                ..add(r'IdLogin')
                 ..add(serializers.serialize(object.idLogin,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -66,12 +66,12 @@ class _$AccountForgotPasswordSerializer implements StructuredSerializer<AccountF
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'email':
+                case r'Email':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType(String)) as String;
                     result.email = valueDes;
                     break;
-                case r'idLogin':
+                case r'IdLogin':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

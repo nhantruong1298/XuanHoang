@@ -16,19 +16,19 @@ part 'working_term_model.g.dart';
 /// * [instructionFile] 
 /// * [isDeleted] 
 abstract class WorkingTermModel implements Built<WorkingTermModel, WorkingTermModelBuilder> {
-    @BuiltValueField(wireName: r'idWorkingTerm')
+    @BuiltValueField(wireName: r'IdWorkingTerm')
     String? get idWorkingTerm;
 
-    @BuiltValueField(wireName: r'idPhase')
+    @BuiltValueField(wireName: r'IdPhase')
     String? get idPhase;
 
-    @BuiltValueField(wireName: r'termName')
+    @BuiltValueField(wireName: r'TermName')
     String? get termName;
 
-    @BuiltValueField(wireName: r'instructionFile')
+    @BuiltValueField(wireName: r'InstructionFile')
     String? get instructionFile;
 
-    @BuiltValueField(wireName: r'isDeleted')
+    @BuiltValueField(wireName: r'IsDeleted')
     String? get isDeleted;
 
     WorkingTermModel._();
@@ -55,31 +55,31 @@ class _$WorkingTermModelSerializer implements StructuredSerializer<WorkingTermMo
         final result = <Object?>[];
         if (object.idWorkingTerm != null) {
             result
-                ..add(r'idWorkingTerm')
+                ..add(r'IdWorkingTerm')
                 ..add(serializers.serialize(object.idWorkingTerm,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idPhase != null) {
             result
-                ..add(r'idPhase')
+                ..add(r'IdPhase')
                 ..add(serializers.serialize(object.idPhase,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.termName != null) {
             result
-                ..add(r'termName')
+                ..add(r'TermName')
                 ..add(serializers.serialize(object.termName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.instructionFile != null) {
             result
-                ..add(r'instructionFile')
+                ..add(r'InstructionFile')
                 ..add(serializers.serialize(object.instructionFile,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isDeleted != null) {
             result
-                ..add(r'isDeleted')
+                ..add(r'IsDeleted')
                 ..add(serializers.serialize(object.isDeleted,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -98,31 +98,31 @@ class _$WorkingTermModelSerializer implements StructuredSerializer<WorkingTermMo
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'idWorkingTerm':
+                case r'IdWorkingTerm':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idWorkingTerm = valueDes;
                     break;
-                case r'idPhase':
+                case r'IdPhase':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idPhase = valueDes;
                     break;
-                case r'termName':
+                case r'TermName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.termName = valueDes;
                     break;
-                case r'instructionFile':
+                case r'InstructionFile':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.instructionFile = valueDes;
                     break;
-                case r'isDeleted':
+                case r'IsDeleted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

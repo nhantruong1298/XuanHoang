@@ -17,22 +17,22 @@ part 'do_check_image_model.g.dart';
 /// * [idWorkingItemHistoryPicture] 
 /// * [isDeleted] 
 abstract class DoCheckImageModel implements Built<DoCheckImageModel, DoCheckImageModelBuilder> {
-    @BuiltValueField(wireName: r'idWorkingItem')
+    @BuiltValueField(wireName: r'IdWorkingItem')
     String? get idWorkingItem;
 
-    @BuiltValueField(wireName: r'sessionId')
+    @BuiltValueField(wireName: r'SessionId')
     String? get sessionId;
 
-    @BuiltValueField(wireName: r'description')
+    @BuiltValueField(wireName: r'Description')
     String? get description;
 
-    @BuiltValueField(wireName: r'picture')
+    @BuiltValueField(wireName: r'Picture')
     String? get picture;
 
-    @BuiltValueField(wireName: r'idWorkingItemHistoryPicture')
+    @BuiltValueField(wireName: r'IdWorkingItemHistoryPicture')
     String? get idWorkingItemHistoryPicture;
 
-    @BuiltValueField(wireName: r'isDeleted')
+    @BuiltValueField(wireName: r'IsDeleted')
     String? get isDeleted;
 
     DoCheckImageModel._();
@@ -59,37 +59,37 @@ class _$DoCheckImageModelSerializer implements StructuredSerializer<DoCheckImage
         final result = <Object?>[];
         if (object.idWorkingItem != null) {
             result
-                ..add(r'idWorkingItem')
+                ..add(r'IdWorkingItem')
                 ..add(serializers.serialize(object.idWorkingItem,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.sessionId != null) {
             result
-                ..add(r'sessionId')
+                ..add(r'SessionId')
                 ..add(serializers.serialize(object.sessionId,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.description != null) {
             result
-                ..add(r'description')
+                ..add(r'Description')
                 ..add(serializers.serialize(object.description,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.picture != null) {
             result
-                ..add(r'picture')
+                ..add(r'Picture')
                 ..add(serializers.serialize(object.picture,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idWorkingItemHistoryPicture != null) {
             result
-                ..add(r'idWorkingItemHistoryPicture')
+                ..add(r'IdWorkingItemHistoryPicture')
                 ..add(serializers.serialize(object.idWorkingItemHistoryPicture,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isDeleted != null) {
             result
-                ..add(r'isDeleted')
+                ..add(r'IsDeleted')
                 ..add(serializers.serialize(object.isDeleted,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -108,37 +108,37 @@ class _$DoCheckImageModelSerializer implements StructuredSerializer<DoCheckImage
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'idWorkingItem':
+                case r'IdWorkingItem':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idWorkingItem = valueDes;
                     break;
-                case r'sessionId':
+                case r'SessionId':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.sessionId = valueDes;
                     break;
-                case r'description':
+                case r'Description':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.description = valueDes;
                     break;
-                case r'picture':
+                case r'Picture':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.picture = valueDes;
                     break;
-                case r'idWorkingItemHistoryPicture':
+                case r'IdWorkingItemHistoryPicture':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idWorkingItemHistoryPicture = valueDes;
                     break;
-                case r'isDeleted':
+                case r'IsDeleted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

@@ -16,14 +16,16 @@ class ChooseProjectController extends GetxController {
   Future<void> _fetchProject() async {
     final result = await _apiService.getProjects();
 
-    final listJson = result as List<dynamic>?;
-    final listResult = <Project>[];
-    if (listJson?.isNotEmpty == true) {
-      for (var item in listJson!) {
-        listResult.add(Project.fromJson(item));
-      }
+    listProject.value = result;
 
-      listProject.value = listResult;
-    }
+    //   final listJson = result as List<dynamic>?;
+    //   final listResult = <Project>[];
+    //   if (listJson?.isNotEmpty == true) {
+    //     for (var item in listJson!) {
+    //       listResult.add(Project.fromJson(item));
+    //     }
+
+    //     listProject.value = listResult;
+    //   }
   }
 }

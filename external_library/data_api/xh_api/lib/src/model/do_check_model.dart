@@ -16,19 +16,19 @@ part 'do_check_model.g.dart';
 /// * [idWorkingItemStatus] 
 /// * [isDeleted] 
 abstract class DoCheckModel implements Built<DoCheckModel, DoCheckModelBuilder> {
-    @BuiltValueField(wireName: r'idWorkingItem')
+    @BuiltValueField(wireName: r'IdWorkingItem')
     String? get idWorkingItem;
 
-    @BuiltValueField(wireName: r'sessionId')
+    @BuiltValueField(wireName: r'SessionId')
     String? get sessionId;
 
-    @BuiltValueField(wireName: r'reason')
+    @BuiltValueField(wireName: r'Reason')
     String? get reason;
 
-    @BuiltValueField(wireName: r'idWorkingItemStatus')
+    @BuiltValueField(wireName: r'IdWorkingItemStatus')
     String? get idWorkingItemStatus;
 
-    @BuiltValueField(wireName: r'isDeleted')
+    @BuiltValueField(wireName: r'IsDeleted')
     String? get isDeleted;
 
     DoCheckModel._();
@@ -55,31 +55,31 @@ class _$DoCheckModelSerializer implements StructuredSerializer<DoCheckModel> {
         final result = <Object?>[];
         if (object.idWorkingItem != null) {
             result
-                ..add(r'idWorkingItem')
+                ..add(r'IdWorkingItem')
                 ..add(serializers.serialize(object.idWorkingItem,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.sessionId != null) {
             result
-                ..add(r'sessionId')
+                ..add(r'SessionId')
                 ..add(serializers.serialize(object.sessionId,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.reason != null) {
             result
-                ..add(r'reason')
+                ..add(r'Reason')
                 ..add(serializers.serialize(object.reason,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idWorkingItemStatus != null) {
             result
-                ..add(r'idWorkingItemStatus')
+                ..add(r'IdWorkingItemStatus')
                 ..add(serializers.serialize(object.idWorkingItemStatus,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isDeleted != null) {
             result
-                ..add(r'isDeleted')
+                ..add(r'IsDeleted')
                 ..add(serializers.serialize(object.isDeleted,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -98,31 +98,31 @@ class _$DoCheckModelSerializer implements StructuredSerializer<DoCheckModel> {
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'idWorkingItem':
+                case r'IdWorkingItem':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idWorkingItem = valueDes;
                     break;
-                case r'sessionId':
+                case r'SessionId':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.sessionId = valueDes;
                     break;
-                case r'reason':
+                case r'Reason':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.reason = valueDes;
                     break;
-                case r'idWorkingItemStatus':
+                case r'IdWorkingItemStatus':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idWorkingItemStatus = valueDes;
                     break;
-                case r'isDeleted':
+                case r'IsDeleted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

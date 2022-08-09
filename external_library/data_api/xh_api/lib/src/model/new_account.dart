@@ -21,34 +21,34 @@ part 'new_account.g.dart';
 /// * [idRole] 
 /// * [isBlocked] 
 abstract class NewAccount implements Built<NewAccount, NewAccountBuilder> {
-    @BuiltValueField(wireName: r'email')
+    @BuiltValueField(wireName: r'Email')
     String? get email;
 
-    @BuiltValueField(wireName: r'lastName')
+    @BuiltValueField(wireName: r'LastName')
     String? get lastName;
 
-    @BuiltValueField(wireName: r'firstName')
+    @BuiltValueField(wireName: r'FirstName')
     String? get firstName;
 
-    @BuiltValueField(wireName: r'userName')
+    @BuiltValueField(wireName: r'UserName')
     String? get userName;
 
-    @BuiltValueField(wireName: r'fullName')
+    @BuiltValueField(wireName: r'FullName')
     String? get fullName;
 
-    @BuiltValueField(wireName: r'password')
+    @BuiltValueField(wireName: r'Password')
     String? get password;
 
-    @BuiltValueField(wireName: r'phoneNr')
+    @BuiltValueField(wireName: r'PhoneNr')
     String? get phoneNr;
 
-    @BuiltValueField(wireName: r'mobileNr')
+    @BuiltValueField(wireName: r'MobileNr')
     String? get mobileNr;
 
-    @BuiltValueField(wireName: r'idRole')
+    @BuiltValueField(wireName: r'IdRole')
     String? get idRole;
 
-    @BuiltValueField(wireName: r'isBlocked')
+    @BuiltValueField(wireName: r'IsBlocked')
     bool? get isBlocked;
 
     NewAccount._();
@@ -75,61 +75,61 @@ class _$NewAccountSerializer implements StructuredSerializer<NewAccount> {
         final result = <Object?>[];
         if (object.email != null) {
             result
-                ..add(r'email')
+                ..add(r'Email')
                 ..add(serializers.serialize(object.email,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.lastName != null) {
             result
-                ..add(r'lastName')
+                ..add(r'LastName')
                 ..add(serializers.serialize(object.lastName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.firstName != null) {
             result
-                ..add(r'firstName')
+                ..add(r'FirstName')
                 ..add(serializers.serialize(object.firstName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.userName != null) {
             result
-                ..add(r'userName')
+                ..add(r'UserName')
                 ..add(serializers.serialize(object.userName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.fullName != null) {
             result
-                ..add(r'fullName')
+                ..add(r'FullName')
                 ..add(serializers.serialize(object.fullName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.password != null) {
             result
-                ..add(r'password')
+                ..add(r'Password')
                 ..add(serializers.serialize(object.password,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.phoneNr != null) {
             result
-                ..add(r'phoneNr')
+                ..add(r'PhoneNr')
                 ..add(serializers.serialize(object.phoneNr,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.mobileNr != null) {
             result
-                ..add(r'mobileNr')
+                ..add(r'MobileNr')
                 ..add(serializers.serialize(object.mobileNr,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idRole != null) {
             result
-                ..add(r'idRole')
+                ..add(r'IdRole')
                 ..add(serializers.serialize(object.idRole,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isBlocked != null) {
             result
-                ..add(r'isBlocked')
+                ..add(r'IsBlocked')
                 ..add(serializers.serialize(object.isBlocked,
                     specifiedType: const FullType(bool)));
         }
@@ -148,61 +148,61 @@ class _$NewAccountSerializer implements StructuredSerializer<NewAccount> {
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'email':
+                case r'Email':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.email = valueDes;
                     break;
-                case r'lastName':
+                case r'LastName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.lastName = valueDes;
                     break;
-                case r'firstName':
+                case r'FirstName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.firstName = valueDes;
                     break;
-                case r'userName':
+                case r'UserName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.userName = valueDes;
                     break;
-                case r'fullName':
+                case r'FullName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.fullName = valueDes;
                     break;
-                case r'password':
+                case r'Password':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.password = valueDes;
                     break;
-                case r'phoneNr':
+                case r'PhoneNr':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.phoneNr = valueDes;
                     break;
-                case r'mobileNr':
+                case r'MobileNr':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.mobileNr = valueDes;
                     break;
-                case r'idRole':
+                case r'IdRole':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idRole = valueDes;
                     break;
-                case r'isBlocked':
+                case r'IsBlocked':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType(bool)) as bool;
                     result.isBlocked = valueDes;

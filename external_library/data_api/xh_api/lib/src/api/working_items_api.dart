@@ -15,6 +15,7 @@ import 'package:xh_api/src/model/result_crud_model.dart';
 import 'package:xh_api/src/model/working_item_model.dart';
 
 class WorkingItemsApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -22,10 +23,10 @@ class WorkingItemsApi {
   const WorkingItemsApi(this._dio, this._serializers);
 
   /// apiWorkingItemsDetailsGet
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [idWorkingItem]
+  /// * [idWorkingItem] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -35,7 +36,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [WorkingItemModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<WorkingItemModel>> apiWorkingItemsDetailsGet({
+  Future<Response<WorkingItemModel>> apiWorkingItemsDetailsGet({ 
     String? idWorkingItem,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -65,9 +66,7 @@ class WorkingItemsApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (idWorkingItem != null)
-        r'IdWorkingItem': encodeQueryParameter(
-            _serializers, idWorkingItem, const FullType(String)),
+      if (idWorkingItem != null) r'IdWorkingItem': encodeQueryParameter(_serializers, idWorkingItem, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -87,6 +86,7 @@ class WorkingItemsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as WorkingItemModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -109,10 +109,10 @@ class WorkingItemsApi {
   }
 
   /// apiWorkingItemsDocheckImagesPatch
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [doCheckImageModel]
+  /// * [doCheckImageModel] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -122,7 +122,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ResultCRUDModel>> apiWorkingItemsDocheckImagesPatch({
+  Future<Response<ResultCRUDModel>> apiWorkingItemsDocheckImagesPatch({ 
     DoCheckImageModel? doCheckImageModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -156,12 +156,11 @@ class WorkingItemsApi {
 
     try {
       const _type = FullType(DoCheckImageModel);
-      _bodyData = doCheckImageModel == null
-          ? null
-          : _serializers.serialize(doCheckImageModel, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = doCheckImageModel == null ? null : _serializers.serialize(doCheckImageModel, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -187,6 +186,7 @@ class WorkingItemsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as ResultCRUDModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -209,12 +209,12 @@ class WorkingItemsApi {
   }
 
   /// apiWorkingItemsDocheckImagesPost
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [idWorkingItem]
-  /// * [sessionId]
-  /// * [file]
+  /// * [idWorkingItem] 
+  /// * [sessionId] 
+  /// * [file] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -224,7 +224,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future]
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<void>> apiWorkingItemsDocheckImagesPost({
+  Future<Response<void>> apiWorkingItemsDocheckImagesPost({ 
     String? idWorkingItem,
     String? sessionId,
     MultipartFile? file,
@@ -257,12 +257,8 @@ class WorkingItemsApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (idWorkingItem != null)
-        r'idWorkingItem': encodeQueryParameter(
-            _serializers, idWorkingItem, const FullType(String)),
-      if (sessionId != null)
-        r'sessionId': encodeQueryParameter(
-            _serializers, sessionId, const FullType(String)),
+      if (idWorkingItem != null) r'idWorkingItem': encodeQueryParameter(_serializers, idWorkingItem, const FullType(String)),
+      if (sessionId != null) r'sessionId': encodeQueryParameter(_serializers, sessionId, const FullType(String)),
     };
 
     dynamic _bodyData;
@@ -271,9 +267,10 @@ class WorkingItemsApi {
       _bodyData = FormData.fromMap(<String, dynamic>{
         if (file != null) r'File': file,
       });
-    } catch (error, stackTrace) {
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
           queryParameters: _queryParameters,
@@ -297,10 +294,10 @@ class WorkingItemsApi {
   }
 
   /// apiWorkingItemsDocheckPost
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [doCheckModel]
+  /// * [doCheckModel] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -310,7 +307,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<Object>> apiWorkingItemsDocheckPost({
+  Future<Response<ResultCRUDModel>> apiWorkingItemsDocheckPost({ 
     DoCheckModel? doCheckModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -344,12 +341,11 @@ class WorkingItemsApi {
 
     try {
       const _type = FullType(DoCheckModel);
-      _bodyData = doCheckModel == null
-          ? null
-          : _serializers.serialize(doCheckModel, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = doCheckModel == null ? null : _serializers.serialize(doCheckModel, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -367,8 +363,6 @@ class WorkingItemsApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response;
-
     ResultCRUDModel _responseData;
 
     try {
@@ -377,6 +371,7 @@ class WorkingItemsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as ResultCRUDModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -399,7 +394,7 @@ class WorkingItemsApi {
   }
 
   /// apiWorkingItemsGet
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -411,8 +406,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<WorkingItemModel>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Object?> apiWorkingItemsGet({
-    String? termId,
+  Future<Response<BuiltList<WorkingItemModel>>> apiWorkingItemsGet({ 
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
@@ -440,15 +434,13 @@ class WorkingItemsApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{'IdWorkingTerm': termId};
-    final _response = await _dio.request<Object>(_path,
-        options: _options,
-        cancelToken: cancelToken,
-        onSendProgress: onSendProgress,
-        onReceiveProgress: onReceiveProgress,
-        queryParameters: _queryParameters);
-
-    return _response.data;
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
 
     BuiltList<WorkingItemModel> _responseData;
 
@@ -458,6 +450,7 @@ class WorkingItemsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as BuiltList<WorkingItemModel>;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -479,11 +472,100 @@ class WorkingItemsApi {
     );
   }
 
-  /// apiWorkingItemsPost
-  ///
+  /// apiWorkingItemsImagesGet
+  /// 
   ///
   /// Parameters:
-  /// * [workingItemModel]
+  /// * [idWorkingItem] 
+  /// * [sessionId] 
+  /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
+  /// * [headers] - Can be used to add additional headers to the request
+  /// * [extras] - Can be used to add flags to the request
+  /// * [validateStatus] - A [ValidateStatus] callback that can be used to determine request success based on the HTTP status of the response
+  /// * [onSendProgress] - A [ProgressCallback] that can be used to get the send progress
+  /// * [onReceiveProgress] - A [ProgressCallback] that can be used to get the receive progress
+  ///
+  /// Returns a [Future] containing a [Response] with a [BuiltList<DoCheckImageModel>] as data
+  /// Throws [DioError] if API call or serialization fails
+  Future<Response<BuiltList<DoCheckImageModel>>> apiWorkingItemsImagesGet({ 
+    String? idWorkingItem,
+    String? sessionId,
+    CancelToken? cancelToken,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? extra,
+    ValidateStatus? validateStatus,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    final _path = r'/api/working-items/images';
+    final _options = Options(
+      method: r'GET',
+      headers: <String, dynamic>{
+        ...?headers,
+      },
+      extra: <String, dynamic>{
+        'secure': <Map<String, String>>[
+          {
+            'type': 'apiKey',
+            'name': 'Bearer',
+            'keyName': 'Authorization',
+            'where': 'header',
+          },
+        ],
+        ...?extra,
+      },
+      validateStatus: validateStatus,
+    );
+
+    final _queryParameters = <String, dynamic>{
+      if (idWorkingItem != null) r'idWorkingItem': encodeQueryParameter(_serializers, idWorkingItem, const FullType(String)),
+      if (sessionId != null) r'sessionId': encodeQueryParameter(_serializers, sessionId, const FullType(String)),
+    };
+
+    final _response = await _dio.request<Object>(
+      _path,
+      options: _options,
+      queryParameters: _queryParameters,
+      cancelToken: cancelToken,
+      onSendProgress: onSendProgress,
+      onReceiveProgress: onReceiveProgress,
+    );
+
+    BuiltList<DoCheckImageModel> _responseData;
+
+    try {
+      const _responseType = FullType(BuiltList, [FullType(DoCheckImageModel)]);
+      _responseData = _serializers.deserialize(
+        _response.data!,
+        specifiedType: _responseType,
+      ) as BuiltList<DoCheckImageModel>;
+
+    } catch (error, stackTrace) {
+      throw DioError(
+        requestOptions: _response.requestOptions,
+        response: _response,
+        type: DioErrorType.other,
+        error: error,
+      )..stackTrace = stackTrace;
+    }
+
+    return Response<BuiltList<DoCheckImageModel>>(
+      data: _responseData,
+      headers: _response.headers,
+      isRedirect: _response.isRedirect,
+      requestOptions: _response.requestOptions,
+      redirects: _response.redirects,
+      statusCode: _response.statusCode,
+      statusMessage: _response.statusMessage,
+      extra: _response.extra,
+    );
+  }
+
+  /// apiWorkingItemsPost
+  /// 
+  ///
+  /// Parameters:
+  /// * [workingItemModel] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -493,7 +575,7 @@ class WorkingItemsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Object?> apiWorkingItemsPost({
+  Future<Response<ResultCRUDModel>> apiWorkingItemsPost({ 
     WorkingItemModel? workingItemModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -527,12 +609,11 @@ class WorkingItemsApi {
 
     try {
       const _type = FullType(WorkingItemModel);
-      _bodyData = workingItemModel == null
-          ? null
-          : _serializers.serialize(workingItemModel, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = workingItemModel == null ? null : _serializers.serialize(workingItemModel, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -550,8 +631,6 @@ class WorkingItemsApi {
       onReceiveProgress: onReceiveProgress,
     );
 
-    return _response.data;
-
     ResultCRUDModel _responseData;
 
     try {
@@ -560,6 +639,7 @@ class WorkingItemsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as ResultCRUDModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -580,4 +660,5 @@ class WorkingItemsApi {
       extra: _response.extra,
     );
   }
+
 }

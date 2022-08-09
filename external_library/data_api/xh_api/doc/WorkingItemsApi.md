@@ -14,6 +14,7 @@ Method | HTTP request | Description
 [**apiWorkingItemsDocheckImagesPost**](WorkingItemsApi.md#apiworkingitemsdocheckimagespost) | **POST** /api/working-items/docheck/images | 
 [**apiWorkingItemsDocheckPost**](WorkingItemsApi.md#apiworkingitemsdocheckpost) | **POST** /api/working-items/docheck | 
 [**apiWorkingItemsGet**](WorkingItemsApi.md#apiworkingitemsget) | **GET** /api/working-items | 
+[**apiWorkingItemsImagesGet**](WorkingItemsApi.md#apiworkingitemsimagesget) | **GET** /api/working-items/images | 
 [**apiWorkingItemsPost**](WorkingItemsApi.md#apiworkingitemspost) | **POST** /api/working-items | 
 
 
@@ -229,6 +230,53 @@ This endpoint does not need any parameter.
 ### Return type
 
 [**BuiltList&lt;WorkingItemModel&gt;**](WorkingItemModel.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiWorkingItemsImagesGet**
+> BuiltList<DoCheckImageModel> apiWorkingItemsImagesGet(idWorkingItem, sessionId)
+
+
+
+### Example
+```dart
+import 'package:xh_api/api.dart';
+// TODO Configure API key authorization: Bearer
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKey = 'YOUR_API_KEY';
+// uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//defaultApiClient.getAuthentication<ApiKeyAuth>('Bearer').apiKeyPrefix = 'Bearer';
+
+final api = XhApi().getWorkingItemsApi();
+final String idWorkingItem = idWorkingItem_example; // String | 
+final String sessionId = sessionId_example; // String | 
+
+try {
+    final response = api.apiWorkingItemsImagesGet(idWorkingItem, sessionId);
+    print(response);
+} catch on DioError (e) {
+    print('Exception when calling WorkingItemsApi->apiWorkingItemsImagesGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idWorkingItem** | **String**|  | [optional] 
+ **sessionId** | **String**|  | [optional] 
+
+### Return type
+
+[**BuiltList&lt;DoCheckImageModel&gt;**](DoCheckImageModel.md)
 
 ### Authorization
 

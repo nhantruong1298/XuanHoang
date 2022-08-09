@@ -106,7 +106,7 @@ class AppPages {
                               children: [
                                 GetPage(
                                   preventDuplicates: true,
-                                  name: ChooseImageView.routeName,
+                                  name: ChooseImageView.path,
                                   page: () => ChooseImageView(),
                                   bindings: [],
                                 ),

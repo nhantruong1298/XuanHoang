@@ -15,10 +15,10 @@ part 'user_role_update_model.g.dart';
 /// * [isSetDefaultRole] 
 /// * [roles] 
 abstract class UserRoleUpdateModel implements Built<UserRoleUpdateModel, UserRoleUpdateModelBuilder> {
-    @BuiltValueField(wireName: r'isSetDefaultRole')
+    @BuiltValueField(wireName: r'IsSetDefaultRole')
     String? get isSetDefaultRole;
 
-    @BuiltValueField(wireName: r'roles')
+    @BuiltValueField(wireName: r'Roles')
     BuiltList<UserRoleUpdate>? get roles;
 
     UserRoleUpdateModel._();
@@ -45,13 +45,13 @@ class _$UserRoleUpdateModelSerializer implements StructuredSerializer<UserRoleUp
         final result = <Object?>[];
         if (object.isSetDefaultRole != null) {
             result
-                ..add(r'isSetDefaultRole')
+                ..add(r'IsSetDefaultRole')
                 ..add(serializers.serialize(object.isSetDefaultRole,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.roles != null) {
             result
-                ..add(r'roles')
+                ..add(r'Roles')
                 ..add(serializers.serialize(object.roles,
                     specifiedType: const FullType.nullable(BuiltList, [FullType(UserRoleUpdate)])));
         }
@@ -70,13 +70,13 @@ class _$UserRoleUpdateModelSerializer implements StructuredSerializer<UserRoleUp
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'isSetDefaultRole':
+                case r'IsSetDefaultRole':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.isSetDefaultRole = valueDes;
                     break;
-                case r'roles':
+                case r'Roles':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(BuiltList, [FullType(UserRoleUpdate)])) as BuiltList<UserRoleUpdate>?;
                     if (valueDes == null) continue;

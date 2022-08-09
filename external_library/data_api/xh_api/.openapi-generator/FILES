@@ -75,14 +75,3 @@ lib/src/model/working_term_model.dart
 lib/src/serializers.dart
 lib/xh_api.dart
 pubspec.yaml
-test/change_pass_model_test.dart
-test/do_check_image_model_test.dart
-test/do_check_model_test.dart
-test/o_auth_tokens_test.dart
-test/phase_model_test.dart
-test/project_model_test.dart
-test/response_login_model_test.dart
-test/result_crud_model_test.dart
-test/user_from_service_test.dart
-test/working_item_model_test.dart
-test/working_term_model_test.dart

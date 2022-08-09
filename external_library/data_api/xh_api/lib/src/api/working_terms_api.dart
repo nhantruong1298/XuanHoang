@@ -13,6 +13,7 @@ import 'package:xh_api/src/model/result_crud_model.dart';
 import 'package:xh_api/src/model/working_term_model.dart';
 
 class WorkingTermsApi {
+
   final Dio _dio;
 
   final Serializers _serializers;
@@ -20,10 +21,10 @@ class WorkingTermsApi {
   const WorkingTermsApi(this._dio, this._serializers);
 
   /// apiWorkingTermsDetailsGet
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [idWorkingTerm]
+  /// * [idWorkingTerm] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -33,7 +34,7 @@ class WorkingTermsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [WorkingTermModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<WorkingTermModel>> apiWorkingTermsDetailsGet({
+  Future<Response<WorkingTermModel>> apiWorkingTermsDetailsGet({ 
     String? idWorkingTerm,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -63,9 +64,7 @@ class WorkingTermsApi {
     );
 
     final _queryParameters = <String, dynamic>{
-      if (idWorkingTerm != null)
-        r'IdWorkingTerm': encodeQueryParameter(
-            _serializers, idWorkingTerm, const FullType(String)),
+      if (idWorkingTerm != null) r'IdWorkingTerm': encodeQueryParameter(_serializers, idWorkingTerm, const FullType(String)),
     };
 
     final _response = await _dio.request<Object>(
@@ -85,6 +84,7 @@ class WorkingTermsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as WorkingTermModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -107,7 +107,7 @@ class WorkingTermsApi {
   }
 
   /// apiWorkingTermsGet
-  ///
+  /// 
   ///
   /// Parameters:
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
@@ -119,9 +119,8 @@ class WorkingTermsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [BuiltList<WorkingTermModel>] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Object?> apiWorkingTermsGet({
+  Future<Response<BuiltList<WorkingTermModel>>> apiWorkingTermsGet({ 
     CancelToken? cancelToken,
-    String? phaseId,
     Map<String, dynamic>? headers,
     Map<String, dynamic>? extra,
     ValidateStatus? validateStatus,
@@ -148,20 +147,13 @@ class WorkingTermsApi {
       validateStatus: validateStatus,
     );
 
-    final _queryParameters = <String, dynamic>{
-      'IdPhase':phaseId
-    };
-
     final _response = await _dio.request<Object>(
       _path,
       options: _options,
       cancelToken: cancelToken,
       onSendProgress: onSendProgress,
       onReceiveProgress: onReceiveProgress,
-      queryParameters: _queryParameters
     );
-
-    return _response.data;
 
     BuiltList<WorkingTermModel> _responseData;
 
@@ -171,6 +163,7 @@ class WorkingTermsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as BuiltList<WorkingTermModel>;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -193,10 +186,10 @@ class WorkingTermsApi {
   }
 
   /// apiWorkingTermsPost
-  ///
+  /// 
   ///
   /// Parameters:
-  /// * [workingTermModel]
+  /// * [workingTermModel] 
   /// * [cancelToken] - A [CancelToken] that can be used to cancel the operation
   /// * [headers] - Can be used to add additional headers to the request
   /// * [extras] - Can be used to add flags to the request
@@ -206,7 +199,7 @@ class WorkingTermsApi {
   ///
   /// Returns a [Future] containing a [Response] with a [ResultCRUDModel] as data
   /// Throws [DioError] if API call or serialization fails
-  Future<Response<ResultCRUDModel>> apiWorkingTermsPost({
+  Future<Response<ResultCRUDModel>> apiWorkingTermsPost({ 
     WorkingTermModel? workingTermModel,
     CancelToken? cancelToken,
     Map<String, dynamic>? headers,
@@ -240,12 +233,11 @@ class WorkingTermsApi {
 
     try {
       const _type = FullType(WorkingTermModel);
-      _bodyData = workingTermModel == null
-          ? null
-          : _serializers.serialize(workingTermModel, specifiedType: _type);
-    } catch (error, stackTrace) {
+      _bodyData = workingTermModel == null ? null : _serializers.serialize(workingTermModel, specifiedType: _type);
+
+    } catch(error, stackTrace) {
       throw DioError(
-        requestOptions: _options.compose(
+         requestOptions: _options.compose(
           _dio.options,
           _path,
         ),
@@ -271,6 +263,7 @@ class WorkingTermsApi {
         _response.data!,
         specifiedType: _responseType,
       ) as ResultCRUDModel;
+
     } catch (error, stackTrace) {
       throw DioError(
         requestOptions: _response.requestOptions,
@@ -291,4 +284,5 @@ class WorkingTermsApi {
       extra: _response.extra,
     );
   }
+
 }

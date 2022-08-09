@@ -10,14 +10,21 @@ class Heading1Text extends BodyText {
       height: 1.5);
 
   Heading1Text(
-    super.data, {
-    super.key,
-    super.style,
-    super.color,
-    super.textAlign = TextAlign.left,
-    super.overflow,
-    super.maxLines,
-  }) : super(fallbackStyle: defaultStyle);
+    String? data, {
+    Key? key,
+    TextStyle? style,
+    Color? color,
+    TextAlign textAlign = TextAlign.left,
+    TextOverflow? overflow,
+    int? maxLines,
+  }) : super(data,
+            fallbackStyle: defaultStyle,
+            key: key,
+            color: color,
+            maxLines: maxLines,
+            overflow: overflow,
+            style: style,
+            textAlign: textAlign);
 }
 
 class Heading2Text extends BodyText {
@@ -29,12 +36,19 @@ class Heading2Text extends BodyText {
       height: 1.5);
 
   Heading2Text(
-    super.data, {
-    super.key,
-    super.style,
-    super.color,
-    super.textAlign = TextAlign.left,
-    super.overflow,
-    super.maxLines,
-  }) : super(fallbackStyle: defaultStyle);
+    String? data, {
+    Key? key,
+    TextStyle? style,
+    Color? color,
+    TextAlign textAlign = TextAlign.left,
+    TextOverflow? overflow,
+    int? maxLines,
+  }) : super(data,
+            fallbackStyle: defaultStyle,
+            key: key,
+            color: color,
+            maxLines: maxLines,
+            overflow: overflow,
+            style: style,
+            textAlign: textAlign);
 }

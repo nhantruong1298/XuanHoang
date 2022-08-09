@@ -5,46 +5,34 @@ import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_pro
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
+import 'package:example_nav2/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ChooseImageView extends StatelessWidget {
-  static const String path = '/choose-image';
+class ImagesHistory extends StatelessWidget {
+  static const String path = '/images-history';
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}${ChooseJobView.path}$path';
-  const ChooseImageView({Key? key}) : super(key: key);
+  const ImagesHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        floatingActionButton: ClipRRect(
-          borderRadius: BorderRadius.circular(50),
-          child: Material(
-            color: Color(0xFFD9D9D9),
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: Assets.images.cameraIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown),
-              ),
-            ),
-          ),
-        ),
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
-          title: 'Thêm Ảnh',
+          title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
           actions: [
             IconButton(
                 onPressed: () {
                   Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
+                icon: Assets.images.cameraIcon
+                    .svg(height: 30, fit: BoxFit.scaleDown)),
+            IconButton(
+                onPressed: () {},
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
             SizedBox(
@@ -54,21 +42,14 @@ class ChooseImageView extends StatelessWidget {
         ),
         body: Stack(
           children: [
-            BlurBackGround(),
+            Positioned.fill(child: BlurBackGround()),
             SafeArea(
               child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      Expanded(
-                        child: ImageGridView(
-                            images: List.generate(
-                                5, (index) => ImageGridViewItem())),
-                      ),
-                    ],
-                  )),
+                  child: ImageGridView(
+                      images:
+                          List.generate(5, (index) => ImageGridViewItem()))),
             ),
           ],
         ));

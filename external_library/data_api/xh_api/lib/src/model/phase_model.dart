@@ -17,22 +17,22 @@ part 'phase_model.g.dart';
 /// * [toDate] 
 /// * [isDeleted] 
 abstract class PhaseModel implements Built<PhaseModel, PhaseModelBuilder> {
-    @BuiltValueField(wireName: r'idProject')
+    @BuiltValueField(wireName: r'IdProject')
     String? get idProject;
 
-    @BuiltValueField(wireName: r'phaseName')
+    @BuiltValueField(wireName: r'PhaseName')
     String? get phaseName;
 
-    @BuiltValueField(wireName: r'idPhase')
+    @BuiltValueField(wireName: r'IdPhase')
     String? get idPhase;
 
-    @BuiltValueField(wireName: r'fromDate')
+    @BuiltValueField(wireName: r'FromDate')
     String? get fromDate;
 
-    @BuiltValueField(wireName: r'toDate')
+    @BuiltValueField(wireName: r'ToDate')
     String? get toDate;
 
-    @BuiltValueField(wireName: r'isDeleted')
+    @BuiltValueField(wireName: r'IsDeleted')
     String? get isDeleted;
 
     PhaseModel._();
@@ -59,37 +59,37 @@ class _$PhaseModelSerializer implements StructuredSerializer<PhaseModel> {
         final result = <Object?>[];
         if (object.idProject != null) {
             result
-                ..add(r'idProject')
+                ..add(r'IdProject')
                 ..add(serializers.serialize(object.idProject,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.phaseName != null) {
             result
-                ..add(r'phaseName')
+                ..add(r'PhaseName')
                 ..add(serializers.serialize(object.phaseName,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.idPhase != null) {
             result
-                ..add(r'idPhase')
+                ..add(r'IdPhase')
                 ..add(serializers.serialize(object.idPhase,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.fromDate != null) {
             result
-                ..add(r'fromDate')
+                ..add(r'FromDate')
                 ..add(serializers.serialize(object.fromDate,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.toDate != null) {
             result
-                ..add(r'toDate')
+                ..add(r'ToDate')
                 ..add(serializers.serialize(object.toDate,
                     specifiedType: const FullType.nullable(String)));
         }
         if (object.isDeleted != null) {
             result
-                ..add(r'isDeleted')
+                ..add(r'IsDeleted')
                 ..add(serializers.serialize(object.isDeleted,
                     specifiedType: const FullType.nullable(String)));
         }
@@ -108,37 +108,37 @@ class _$PhaseModelSerializer implements StructuredSerializer<PhaseModel> {
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'idProject':
+                case r'IdProject':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idProject = valueDes;
                     break;
-                case r'phaseName':
+                case r'PhaseName':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.phaseName = valueDes;
                     break;
-                case r'idPhase':
+                case r'IdPhase':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.idPhase = valueDes;
                     break;
-                case r'fromDate':
+                case r'FromDate':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.fromDate = valueDes;
                     break;
-                case r'toDate':
+                case r'ToDate':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;
                     result.toDate = valueDes;
                     break;
-                case r'isDeleted':
+                case r'IsDeleted':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType.nullable(String)) as String?;
                     if (valueDes == null) continue;

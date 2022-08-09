@@ -29,4 +29,22 @@ class WorkingItem {
   }
 
   Map<String, dynamic> toJson() => _$WorkingItemToJson(this);
+
+  WorkingItem copyWith({
+    String? idWorkingTerm,
+    String? itemName,
+    String? idWorkingItem,
+    String? description,
+    String? idWorkingItemStatus,
+    bool? isDeleted,
+  }) {
+    return WorkingItem(
+      description: description ?? this.description,
+      idWorkingItem: idWorkingItem ?? this.idWorkingItem,
+      idWorkingItemStatus: idWorkingItemStatus ?? this.idWorkingItemStatus,
+      idWorkingTerm: idWorkingTerm ?? this.idWorkingTerm,
+      isDeleted: isDeleted ?? this.isDeleted,
+      itemName: itemName ?? this.itemName
+    );
+  }
 }

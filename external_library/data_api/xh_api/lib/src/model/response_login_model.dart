@@ -15,10 +15,10 @@ part 'response_login_model.g.dart';
 /// * [profile] 
 /// * [token] 
 abstract class ResponseLoginModel implements Built<ResponseLoginModel, ResponseLoginModelBuilder> {
-    @BuiltValueField(wireName: r'profile')
+    @BuiltValueField(wireName: r'Profile')
     UserFromService? get profile;
 
-    @BuiltValueField(wireName: r'token')
+    @BuiltValueField(wireName: r'Token')
     OAuthTokens? get token;
 
     ResponseLoginModel._();
@@ -45,13 +45,13 @@ class _$ResponseLoginModelSerializer implements StructuredSerializer<ResponseLog
         final result = <Object?>[];
         if (object.profile != null) {
             result
-                ..add(r'profile')
+                ..add(r'Profile')
                 ..add(serializers.serialize(object.profile,
                     specifiedType: const FullType(UserFromService)));
         }
         if (object.token != null) {
             result
-                ..add(r'token')
+                ..add(r'Token')
                 ..add(serializers.serialize(object.token,
                     specifiedType: const FullType(OAuthTokens)));
         }
@@ -70,12 +70,12 @@ class _$ResponseLoginModelSerializer implements StructuredSerializer<ResponseLog
             final Object? value = iterator.current;
             
             switch (key) {
-                case r'profile':
+                case r'Profile':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType(UserFromService)) as UserFromService;
                     result.profile.replace(valueDes);
                     break;
-                case r'token':
+                case r'Token':
                     final valueDes = serializers.deserialize(value,
                         specifiedType: const FullType(OAuthTokens)) as OAuthTokens;
                     result.token.replace(valueDes);

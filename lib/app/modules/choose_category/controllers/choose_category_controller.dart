@@ -10,30 +10,16 @@ class ChooseCategoryController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _fetchProgress();
+    _fetchTerms();
   }
 
-  Future<void> _fetchProgress() async {
+  Future<void> _fetchTerms() async {
     final phaseId = Get.arguments as String?;
 
     if (phaseId != null) {
       final result = await _apiService.getWorkingTermsByPhaseId(phaseId);
 
-     
-        if (result is String?) {
-          return;
-        }
-
-        final listJson = result as List<dynamic>?;
-        final listResult = <WorkingTerm>[];
-        if (listJson?.isNotEmpty == true) {
-          for (var item in listJson!) {
-            listResult.add(WorkingTerm.fromJson(item));
-          }
-
-          listCategory.value = listResult;
-        }
-
+      listCategory.value = result;
     }
   }
 }
