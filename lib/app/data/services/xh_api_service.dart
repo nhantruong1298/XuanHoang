@@ -4,8 +4,10 @@ import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
+import 'package:example_nav2/app/data/models/request/login_request.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
+import 'package:example_nav2/app/data/models/response/login_response.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:retrofit/retrofit.dart';
@@ -50,4 +52,7 @@ abstract class XHApiService {
     @Query('idWorkingItem') required String idWorkingItem,
     @Part(name: 'files') required List<File> files,
   });
+
+  @POST("/api/Auth/Login")
+  Future<LoginResponse> login(@Body() LoginRequest request);
 }

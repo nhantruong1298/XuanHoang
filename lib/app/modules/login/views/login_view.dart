@@ -1,7 +1,4 @@
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
-import 'package:example_nav2/app/modules/home/views/home_view.dart';
-import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +47,7 @@ class LoginView extends GetView<LoginController> {
                         hintText: S.current.SIGN_IN__PASSWORD,
                         name: controller.PASSWORD_KEY,
                         obscureText: true,
-                        initValue: '123456aaabc',
+                        initValue: '1351986',
                       ),
                       SizedBox(height: 80.h),
                       AppButton(

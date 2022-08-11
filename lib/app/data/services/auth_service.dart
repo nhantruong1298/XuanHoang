@@ -1,17 +1,30 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/models/profile.dart';
 import 'package:get/get.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
+  late Profile? _profile;
+  var _isLoggedIn = false.obs;
 
-  /// Mocks a login process
-  final isLoggedIn = false.obs;
-  bool get isLoggedInValue => isLoggedIn.value;
+  bool get isLoggedInValue => _isLoggedIn.value;
 
-  void login() {
-    isLoggedIn.value = true;
+  String? get accountType {
+    if (_profile != null) {
+      final type = AccountType.items
+          .firstWhereOrNull((type) => type == _profile?.idRole);
+      return type;
+    }
+    return null;
+  }
+
+  void login(Profile profile) {
+    _isLoggedIn.value = true;
+    _profile = profile;
   }
 
   void logout() {
-    isLoggedIn.value = false;
+    _isLoggedIn.value = false;
+    _profile = null;
   }
 }

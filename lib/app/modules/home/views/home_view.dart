@@ -1,3 +1,5 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
@@ -37,13 +39,26 @@ class HomeView extends StatelessWidget {
                     SizedBox(height: 50.h),
                     Heading1Text(S.current.CHOOSE_FEATURE__TITLE),
                     SizedBox(height: 200.h),
-                    Expanded(child: _buildStaffFeatures())
+                    Expanded(child: _buildMenu())
                   ]),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildMenu() {
+    final accountType = Get.find<AuthService>().accountType;
+    switch (accountType) {
+      case AccountType.staff:
+      case AccountType.admin:
+        return _buildStaffFeatures();
+      case AccountType.customer:
+        return _buildCustomerFeatures();
+      default:
+        return const SizedBox.shrink();
+    }
   }
 
   Widget _buildCustomerFeatures() {

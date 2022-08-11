@@ -1,6 +1,7 @@
 import 'package:example_nav2/app/modules/authenticate/reset_password/views/reset_password_view.dart';
 import 'package:example_nav2/app/modules/choose_category/bindings/choose_category_binding.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/choose_image/bindings/choose_image_binding.dart';
 import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/bindings/choose_job_binding.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
@@ -8,6 +9,7 @@ import 'package:example_nav2/app/modules/choose_project/bindings/choose_project_
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
 import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/bindings/choose_progress_binding.dart';
@@ -108,6 +110,12 @@ class AppPages {
                                   preventDuplicates: true,
                                   name: ChooseImageView.path,
                                   page: () => ChooseImageView(),
+                                  bindings: [ChooseImageBinding()],
+                                ),
+                                GetPage(
+                                  preventDuplicates: true,
+                                  name: ImagesHistoryView.path,
+                                  page: () => ImagesHistoryView(),
                                   bindings: [],
                                 ),
                               ]),
