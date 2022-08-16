@@ -1,0 +1,3 @@
+enum ProjectType{
+  manual,incident
+}

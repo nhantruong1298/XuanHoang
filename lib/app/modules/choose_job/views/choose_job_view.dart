@@ -1,6 +1,6 @@
 import 'package:example_nav2/app/data/models/enum/working_item_status.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
-import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
+import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/controllers/choose_job_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/widgets/remark_dialog.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
@@ -94,11 +94,11 @@ class ChooseJobView extends GetView<ChooseJobController> {
                                             note);
                                       },
                                       onImageTap: () {
-                                        Get.toNamed(
-                                            ImagesHistoryView.routeName);
+                                        Get.toNamed(ImagesHistoryView.routeName,
+                                            arguments: item.idWorkingItem);
                                       },
                                       onCameraTap: () {
-                                        Get.toNamed(ChooseImageView.routeName,
+                                        Get.toNamed(AddImageView.routeName,
                                             arguments: item.idWorkingItem);
                                       },
                                       name: item.itemName,

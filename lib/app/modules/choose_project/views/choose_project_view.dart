@@ -1,7 +1,9 @@
+import 'package:example_nav2/app/data/models/enum/project_type.dart';
 import 'package:example_nav2/app/modules/choose_project/controllers/choose_project_controller.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +18,11 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
 
   @override
   Widget build(BuildContext context) {
+    final projectType = Get.arguments as ProjectType;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: _buildAppBar(),
+        appBar: _buildAppBar(projectType),
         body: Stack(
           children: [
             const BlurBackGround(),
@@ -70,17 +73,25 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
         ));
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(ProjectType type) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: IconButton(
-        icon: SvgPicture.asset('assets/images/back-icon.svg',
-            height: 29, fit: BoxFit.scaleDown),
-        onPressed: () {
-          Get.toNamed(HomeView.routeName);
-        },
-      ),
+      leading: (type == ProjectType.manual)
+          ? IconButton(
+              icon: SvgPicture.asset('assets/images/back-icon.svg',
+                  height: 30, fit: BoxFit.scaleDown),
+              onPressed: () {
+                Get.back();
+              },
+            )
+          : IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: SvgPicture.asset(Assets.images.arrowBackIcon.path,
+                  height: 30, width: 30, fit: BoxFit.scaleDown),
+            ),
       centerTitle: true,
       title: Text('Chọn dự án',
           style: TextStyle(
@@ -88,8 +99,15 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
               fontWeight: FontWeight.w700,
               color: Colors.black)),
       actions: [
-        SvgPicture.asset('assets/images/key-icon.svg',
-            height: 29, fit: BoxFit.scaleDown),
+        (type == ProjectType.manual)
+            ? SvgPicture.asset('assets/images/key-icon.svg',
+                height: 29, fit: BoxFit.scaleDown)
+            : IconButton(
+                onPressed: () {
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
+                },
+                icon: Assets.images.homeIcon
+                    .svg(height: 30, fit: BoxFit.scaleDown)),
         SizedBox(width: 10.w)
       ],
     );

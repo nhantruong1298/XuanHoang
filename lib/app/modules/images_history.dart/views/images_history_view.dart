@@ -1,18 +1,20 @@
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
-import 'package:example_nav2/app/modules/choose_image/views/choose_image_view.dart';
+import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/images_history.dart/controllers/images_history_controller.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ImagesHistoryView extends StatelessWidget {
+class ImagesHistoryView extends GetView<ImageHistoryController> {
   static const String path = '/images-history';
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}${ChooseJobView.path}$path';
@@ -29,7 +31,7 @@ class ImagesHistoryView extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.toNamed(ChooseImageView.routeName);
+                  Get.toNamed(AddImageView.routeName);
                 },
                 icon: Assets.images.cameraIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -53,13 +55,19 @@ class ImagesHistoryView extends StatelessWidget {
                   height: double.infinity,
                   child: Column(
                     children: [
-                      _TitleGridView(
-                        date: '7/7/2022',
-                        name: 'NV01',
-                      ),
-                      _ImagesGridView(
-                          images: List.generate(
-                              5, (index) => _ImageGridViewItem())),
+                      // _TitleGridView(
+                      //   date: '7/7/2022',
+                      //   name: 'NV01',
+                      // ),
+                      Obx(() {
+                        final images = controller.listImageData;
+                        return _ImagesGridView(
+                            images: List.generate(
+                                images.length,
+                                (index) => _ImageGridViewItem(
+                                      data: images[index],
+                                    )));
+                      }),
                     ],
                   )),
             ),
@@ -133,16 +141,16 @@ class _ImagesGridView extends StatelessWidget {
 }
 
 class _ImageGridViewItem extends StatelessWidget {
-  const _ImageGridViewItem({Key? key}) : super(key: key);
+  final String? data;
+  const _ImageGridViewItem({Key? key, this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 40.h,
       height: 40.h,
-      padding: EdgeInsets.all(1),
       color: Colors.white,
-      child: Assets.images.bgLoginPng.image(fit: BoxFit.cover),
+      child: Html(data: data),
     );
   }
 }

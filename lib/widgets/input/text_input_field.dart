@@ -17,8 +17,9 @@ class TextInputField extends StatelessWidget {
   final double? elevation;
   final String obscuringCharacter;
   final bool obscureText;
-  final String initValue;
+  final String? initValue;
   final Function(String?)? onChanged;
+  final TextEditingController? controller;
   TextInputField({
     Key? key,
     this.hintText,
@@ -35,8 +36,9 @@ class TextInputField extends StatelessWidget {
     this.name = '',
     this.obscuringCharacter = '•',
     this.obscureText = false,
-    this.initValue = '',
+    this.initValue ,
     this.onChanged,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -45,6 +47,7 @@ class TextInputField extends StatelessWidget {
       borderRadius: BorderRadius.circular(borderRadius),
       elevation: 5,
       child: FormBuilderTextField(
+        controller: controller,
         initialValue: initValue,
         onChanged: onChanged,
         name: name,

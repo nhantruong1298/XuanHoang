@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
-import 'package:example_nav2/app/modules/choose_image/controllers/choose_image_controller.dart';
+import 'package:example_nav2/app/modules/add_image/controllers/add_image_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
@@ -16,11 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ChooseImageView extends GetView<ChooseImageController> {
+class AddImageView extends GetView<AddImageController> {
   static const String path = '/choose-image';
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}${ChooseJobView.path}$path';
-  const ChooseImageView({Key? key}) : super(key: key);
+  const AddImageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +72,7 @@ class ChooseImageView extends GetView<ChooseImageController> {
   }
 }
 
-class _ChooseImageButton extends GetView<ChooseImageController> {
+class _ChooseImageButton extends GetView<AddImageController> {
   const _ChooseImageButton({
     Key? key,
   }) : super(key: key);

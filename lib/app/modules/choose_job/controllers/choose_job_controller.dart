@@ -45,14 +45,13 @@ class ChooseJobController extends GetxController {
 
   Future<void> doCheck(WorkingItem item, String reason) async {
     try {
-      final result = await _apiService.doCheck(DoCheckRequest(
+      await _apiService.doCheck(DoCheckRequest(
         idWorkingItem: item.idWorkingItem,
         idWorkingItemStatus: item.idWorkingItemStatus,
         reason: reason,
         sessionId: Uuid().v4(),
       ));
 
-      print(result);
       await _fetchJobs();
     } catch (error) {
       print(error);
@@ -61,7 +60,8 @@ class ChooseJobController extends GetxController {
 
   Future<dynamic> loadWorkingItemImages(String idWorkingItem) async {
     try {
-      final result = await _apiService.loadWorkingItemImages(idWorkingItem);
+      final result = await _apiService.loadWorkingItemImagesHistory(idWorkingItem);
+      print(result);
     } catch (error) {
       print(error);
     }

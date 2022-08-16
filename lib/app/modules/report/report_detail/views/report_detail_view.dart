@@ -1,7 +1,10 @@
+import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
+import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/views/edit_report_view.dart';
+import 'package:example_nav2/app/modules/report/report_detail/controllers/report_detail_controller.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
@@ -11,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ReportDetailView extends StatelessWidget {
+class ReportDetailView extends GetView<ReportDetailController> {
   static const String routeName = '${HomeView.path}${ReportListView.path}$path';
   static const String path = '/report-detail';
   const ReportDetailView({Key? key}) : super(key: key);
@@ -24,54 +27,62 @@ class ReportDetailView extends StatelessWidget {
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.EDIT_REPORT__TITLE,
-          actions: [
-            IconButton(
-                onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
+          actions: _buildHeaderActions,
         ),
-        bottomNavigationBar: const SizedBox.shrink(),
         body: Stack(
           children: [
-            Positioned.fill(
-                child: BlurBackGround(
-              sigma: 30,
-            )),
+            BlurBackGround(),
             SafeArea(
               child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        _ReportTitle(),
-                        SizedBox(height: 25.h),
-                        _ReportContent(),
-                        const Spacer(),
-                        _ReportImages(
-                          images: [
-                            Assets.images.bgLoginPng.path,
-                            Assets.images.bgLoginPng.path,
-                            Assets.images.bgLoginPng.path
-                          ],
-                        ),
-                        _BottomButton()
-                      ])),
+                  child: Obx(() {
+                    final reportDetail = controller.reportDetail.value;
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 20.h),
+                          _ReportTitle(
+                            title: reportDetail.incidentName,
+                          ),
+                          SizedBox(height: 25.h),
+                          _ReportContent(
+                            replyContent: reportDetail.replyContent,
+                            userName: reportDetail.fullName,
+                          ),
+                          const Spacer(),
+                          _ReportImages(
+                            images: [
+                              Assets.images.bgLoginPng.path,
+                              Assets.images.bgLoginPng.path,
+                              Assets.images.bgLoginPng.path
+                            ],
+                          ),
+                          _BottomButton(),
+                        ]);
+                  })),
             ),
           ],
         ));
   }
+
+  List<Widget> get _buildHeaderActions {
+    return [
+      IconButton(
+          onPressed: () {
+            Get.offNamedUntil(HomeView.routeName, (route) => false);
+          },
+          icon: Assets.images.homeIcon.svg(height: 30, fit: BoxFit.scaleDown)),
+      SizedBox(
+        width: 10,
+      )
+    ];
+  }
 }
 
 class _ReportTitle extends StatelessWidget {
-  const _ReportTitle({Key? key}) : super(key: key);
+  final String? title;
+  const _ReportTitle({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +99,7 @@ class _ReportTitle extends StatelessWidget {
         Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('#001 - Đầu báo khói 01 không hoạt động không hoạt động',
+          Text(title ?? '',
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700))
         ]))
       ]),
@@ -97,20 +108,23 @@ class _ReportTitle extends StatelessWidget {
 }
 
 class _ReportContent extends StatelessWidget {
-  const _ReportContent({Key? key}) : super(key: key);
+  final String? userName;
+  final String? replyContent;
+  const _ReportContent({Key? key, this.userName, this.replyContent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text('UserKH01',
+        Text(userName ?? '',
             style: TextStyle(
                 color: AppColors.errorColor,
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700)),
         const SizedBox(height: 10),
-        Text('Sự cố đã được khắc phục')
+        Text(replyContent ?? '')
       ]),
     );
   }
@@ -163,7 +177,8 @@ class _BottomButton extends StatelessWidget {
       Expanded(
         child: AppButton(
           onTap: () {
-            Get.toNamed(EditReportView.routeName);
+            Get.toNamed(EditReportView.routeName,
+                arguments: ReportDetailResponse());
           },
           text: "Trả lời",
         ),

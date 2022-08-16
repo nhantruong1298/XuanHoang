@@ -1,4 +1,5 @@
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/models/enum/project_type.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
@@ -107,7 +108,8 @@ class HomeView extends StatelessWidget {
       children: [
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ChooseProjectView.routeName);
+            Get.toNamed(ChooseProjectView.routeName,
+                arguments: ProjectType.manual);
           },
           icon: Assets.images.checkIcon.path,
           title: 'Kiểm tra hạn mục',
@@ -115,7 +117,8 @@ class HomeView extends StatelessWidget {
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ReportListView.routeName);
+            Get.toNamed(ChooseProjectView.routeName,
+                arguments: ProjectType.incident);
           },
           icon: Assets.images.customerIcon.path,
           title: 'Kiểm tra sự cố',

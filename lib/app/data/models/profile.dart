@@ -7,7 +7,7 @@ class Profile {
   final String? fullName;
   @JsonKey(name: 'IdLogin')
   final String? idLogin;
-  @JsonKey(name: 'IdRole')
+  @JsonKey(name: 'Mode')
   final String? idRole;
 
   factory Profile.fromJson(Map<String, dynamic> json) {

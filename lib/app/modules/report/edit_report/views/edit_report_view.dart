@@ -1,7 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:example_nav2/app/data/models/constant/incident_status_item.dart';
+import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/report/edit_report/controllers/edit_report_controller.dart';
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
@@ -14,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class EditReportView extends StatelessWidget {
+class EditReportView extends GetView<EditReportController> {
   static const String routeName =
       '${HomeView.path}${ReportListView.path}${ReportDetailView.path}$path';
   static const String path = '/edit-report';
@@ -28,59 +31,80 @@ class EditReportView extends StatelessWidget {
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.EDIT_REPORT__REPLY,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 25, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
+          actions: _buildHeaderActions,
         ),
         bottomNavigationBar: AppButton(
           onTap: () {
-            Get.back();
+            controller.editReport();
           },
           text: S.current.EDIT_REPORT__SEND,
         ),
         body: Stack(
           children: [
-            Positioned.fill(
-                child: BlurBackGround(
-              sigma: 30,
-            )),
+            BlurBackGround(),
             SafeArea(
-              child: Container(
+              child: SizedBox(
                   width: double.infinity,
                   height: double.infinity,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 20.h),
-                        _ReportTitle(),
-                        SizedBox(height: 12.h),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: TextInputField(
-                              borderRadius: AppDimensions.defaultXLRadius,
-                              hintText: S.current
-                                  .EDIT_REPORT__DESCRIPTION_OF_THE_PROBLEM,
-                              maxLines: 10,
+                  child: Obx(
+                    () {
+                      final reportDetail = controller.reportDetail?.value;
+                      final idIncidentStatus = controller.incidentStatus.value;
+                      print(idIncidentStatus);
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 20.h),
+                            _ReportTitle(
+                              title: reportDetail?.incidentName,
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 7.h),
-                        _DropDownButton(),
-                        SizedBox(height: 7.h),
-                        _ChooseImages(),
-                      ])),
+                            SizedBox(height: 12.h),
+                            _buildReplyTextField(),
+                            SizedBox(height: 7.h),
+                            _DropDownMenu(
+                              value: (idIncidentStatus.isNotEmpty)
+                                  ? idIncidentStatus
+                                  : IncidentStatus.waiting,
+                              onChanged: (idIncidentStatus) {
+                                controller.onIdIncidentStatusChanged(
+                                    idIncidentStatus);
+                              },
+                            ),
+                            SizedBox(height: 7.h),
+                            _ChooseImages(),
+                          ]);
+                    },
+                  )),
             ),
           ],
         ));
+  }
+
+  Widget _buildReplyTextField() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: TextInputField(
+          controller: controller.replyContentController,
+          borderRadius: AppDimensions.defaultXLRadius,
+          hintText: S.current.EDIT_REPORT__DESCRIPTION_OF_THE_PROBLEM,
+          maxLines: 10,
+        ),
+      ),
+    );
+  }
+
+  List<Widget> get _buildHeaderActions {
+    return [
+      IconButton(
+          onPressed: () {
+            Get.offNamedUntil(HomeView.routeName, (route) => false);
+          },
+          icon: Assets.images.homeIcon.svg(height: 25, fit: BoxFit.scaleDown)),
+      SizedBox(
+        width: 10,
+      )
+    ];
   }
 }
 
@@ -113,22 +137,31 @@ class _ChooseImages extends StatelessWidget {
   }
 }
 
-class _DropDownButton extends StatelessWidget {
-  const _DropDownButton({
-    Key? key,
-  }) : super(key: key);
+class _DropDownMenu extends StatelessWidget {
+  final String? value;
+  final Function(String?)? onChanged;
+  const _DropDownMenu({Key? key, this.value, this.onChanged}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final label = IncidentStatusItem.items
+            .firstWhereOrNull((element) => element.key == value)
+            ?.label ??
+        '';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
-          items: [
-            DropdownMenuItem<String>(child: Text('1'), value: '1'),
-            DropdownMenuItem<String>(child: Text('2'), value: '2')
-          ],
-          onChanged: (value) {},
+          value: value,
+          items: List.generate(
+            IncidentStatusItem.items.length,
+            (index) {
+              final item = IncidentStatusItem.items[index];
+              return DropdownMenuItem<String>(
+                  child: Text(item.label), value: item.key);
+            },
+          ).toList(),
+          onChanged: onChanged,
           dropdownDecoration: BoxDecoration(
               color: AppColors.primaryLightColor,
               borderRadius: BorderRadius.circular(AppDimensions.defaultRadius)),
@@ -141,7 +174,7 @@ class _DropDownButton extends StatelessWidget {
                   color: AppColors.primaryLightColor),
               child: Row(
                 children: [
-                  Text('Đang kiểm tra',
+                  Text(label,
                       style: TextStyle(
                           fontSize: 16.sp, color: AppColors.textColor)),
                   const Spacer(),
@@ -156,7 +189,8 @@ class _DropDownButton extends StatelessWidget {
 }
 
 class _ReportTitle extends StatelessWidget {
-  const _ReportTitle({Key? key}) : super(key: key);
+  final String? title;
+  const _ReportTitle({Key? key, this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +207,7 @@ class _ReportTitle extends StatelessWidget {
         Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('#001 - Đầu báo khói 01 không hoạt động không hoạt động',
+          Text(title ?? '',
               style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w700))
         ]))
       ]),

@@ -15,6 +15,7 @@ class DoCheckResponse {
   });
 
   factory DoCheckResponse.fromJson(Map<String, dynamic> json) {
+    
     return _$DoCheckResponseFromJson(json);
   }
 

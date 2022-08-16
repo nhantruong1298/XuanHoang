@@ -1,8 +1,10 @@
+import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/report/create_report/views/create_report_view.dart';
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';
+import 'package:example_nav2/app/modules/report/report_list/controllers/report_list_controller.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
@@ -14,7 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 
-class ReportListView extends StatelessWidget {
+class ReportListView extends GetView<ReportListController> {
   static const String routeName = '${HomeView.path}$path';
   static const String path = '/report-list';
   const ReportListView({Key? key}) : super(key: key);
@@ -56,7 +58,31 @@ class ReportListView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 20.h),
-                        _ReportItem(),
+                        Obx(() {
+                          final reportList = controller.reportList;
+                          return Expanded(
+                              child: ListView.separated(
+                                  itemBuilder: (context, index) {
+                                    final item = reportList[index];
+                                    return _ReportItem(
+                                      onTap: () {
+                                        Get.toNamed(ReportDetailView.routeName,
+                                            arguments: item.idIncident ?? '');
+                                      },
+                                      onClosePressed: (_) {
+                                        controller
+                                            .closeReport(item.idIncident ?? '');
+                                      },
+                                      incidentName: item.incidentName,
+                                      idIncidentStatus: item.idIncidentStatus,
+                                    );
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                  itemCount: reportList.length));
+                        })
                       ])),
             ),
           ],
@@ -70,9 +96,45 @@ class ReportListView extends StatelessWidget {
 }
 
 class _ReportItem extends StatelessWidget {
+  final String? incidentName;
+  final String? idIncidentStatus;
+  final VoidCallback onTap;
+  final Function(BuildContext) onClosePressed;
   const _ReportItem({
     Key? key,
+    this.idIncidentStatus,
+    this.incidentName,
+    required this.onTap,
+    required this.onClosePressed,
   }) : super(key: key);
+
+  String get incidentStatus {
+    switch (idIncidentStatus) {
+      case IncidentStatus.close:
+        return 'Đóng';
+      case IncidentStatus.done:
+        return 'Hoàn thành';
+      case IncidentStatus.processing:
+        return 'Đang kiểm tra';
+      case IncidentStatus.waiting:
+        return 'Đang chờ';
+    }
+    return '';
+  }
+
+  Color get statusColor {
+    switch (idIncidentStatus) {
+      // case IncidentStatus.close:
+      //   return 'Đóng';
+      case IncidentStatus.done:
+        return AppColors.green700;
+      case IncidentStatus.processing:
+        return AppColors.blueColor;
+      case IncidentStatus.waiting:
+        return AppColors.greyBorderColor;
+    }
+    return AppColors.textColor;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,17 +142,18 @@ class _ReportItem extends StatelessWidget {
       key: const ValueKey(0),
       child: Container(
         child: AppListTile(
-          onTap: () {
-            Get.toNamed(ReportDetailView.routeName);
-          },
-          title: Text('Vệ sinh tủ điện',
+          onTap: onTap,
+          title: Text(incidentName ?? '',
               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
           subTitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
               SizedBox(height: 25.h),
-              Text('Trạng thái hoàn thành'),
+              Text(
+                'Trạng thái: ' + incidentStatus,
+                style: TextStyle(fontSize: 17.sp, color: statusColor),
+              ),
             ],
           ),
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
@@ -111,7 +174,7 @@ class _ReportItem extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   borderRadius:
                       BorderRadius.circular(AppDimensions.defaultRadius),
-                  onPressed: (_) {},
+                  onPressed: onClosePressed,
                   backgroundColor: AppColors.errorColor,
                   child: Text(
                     'Đóng',

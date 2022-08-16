@@ -9,7 +9,6 @@ import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
-import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
