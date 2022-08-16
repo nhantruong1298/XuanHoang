@@ -1,4 +1,4 @@
-package com.get.example_nav2
+package com.xoontect.xuanhoang
 
 import io.flutter.embedding.android.FlutterActivity
 

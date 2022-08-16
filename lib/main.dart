@@ -1,5 +1,3 @@
-import 'package:example_nav2/app/data/services/api_service.dart';
-import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:flutter/material.dart';

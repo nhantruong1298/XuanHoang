@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.get.example_nav2">
+    package="com.xoontect.xuanhoang">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="example_nav2"
+        android:label="Xuan Hoang"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
