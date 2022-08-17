@@ -15,7 +15,7 @@ void main() {
       builder: (context, child) {
         return GetMaterialApp(
           debugShowCheckedModeBanner: false,
-          title: "XH APP",
+          title: "Xuân Hoàng",
           initialBinding: BindingsBuilder(
             () {
               // Get.put(SplashService());

@@ -62,11 +62,11 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
                       Obx(() {
                         final images = controller.listImageData;
                         return _ImagesGridView(
-                            images: List.generate(
-                                images.length,
-                                (index) => _ImageGridViewItem(
-                                      data: images[index],
-                                    )));
+                          images: List.generate(
+                            images.length,
+                            (index) => _ImageGridViewItem(data: images[index]),
+                          ),
+                        );
                       }),
                     ],
                   )),
@@ -141,8 +141,11 @@ class _ImagesGridView extends StatelessWidget {
 }
 
 class _ImageGridViewItem extends StatelessWidget {
-  final String? data;
-  const _ImageGridViewItem({Key? key, this.data}) : super(key: key);
+  final String data;
+  const _ImageGridViewItem({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -150,7 +153,9 @@ class _ImageGridViewItem extends StatelessWidget {
       width: 40.h,
       height: 40.h,
       color: Colors.white,
-      child: Html(data: data),
+      child: Image(
+        image: NetworkImage(data),
+      ),
     );
   }
 }

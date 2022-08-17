@@ -11,7 +11,6 @@ import 'package:example_nav2/app/data/models/response/do_check_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
-import 'package:example_nav2/app/data/models/response/project_incident_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
@@ -26,7 +25,7 @@ class ApiService extends GetxService {
   late XHApiService _xhApiService;
   late Dio _dio;
   late Token _token;
-  final String _baseUrl = 'http://xuanhoang.xoontec.vn/';
+  final String _baseUrl = 'https://xuanhoang.xoontec.vn/';
   ApiService() {
     // _xhApi = XhApi(dio: Dio(BaseOptions(baseUrl: _baseUrl)));
 
@@ -43,6 +42,8 @@ class ApiService extends GetxService {
     // _xhApi = XhApi(dio: dio);
     _xhApiService = XHApiService(_dio);
   }
+
+  String get accessToken => _token.accessToken ?? '';
 
   Future<LoginResponse> login(String userName, String password) async {
     try {
@@ -153,7 +154,8 @@ class ApiService extends GetxService {
 
   Future<dynamic> loadFiles(String name) async {
     try {
-      final response = await _xhApiService.loadFiles(name, _token.accessToken ?? '');
+      final response =
+          await _xhApiService.loadFiles(name, _token.accessToken ?? '');
       return response;
     } catch (error) {
       print(error);
@@ -203,5 +205,11 @@ class ApiService extends GetxService {
       print(error);
       return null;
     }
+  }
+
+  String getImageFullUrl(String imagePath) {
+    final String query =
+        '${Uri.encodeComponent(imagePath)}&token=${_token.accessToken}';
+    return '${_baseUrl}api/FileManager/files?name=$query';
   }
 }

@@ -9,6 +9,8 @@ class ImageHistoryController extends GetxController {
   late final String? idWorkingItem;
   ImageHistoryController(this._apiService);
 
+  get accessToken => _apiService.accessToken;
+
   @override
   void onInit() {
     super.onInit();
@@ -26,10 +28,9 @@ class ImageHistoryController extends GetxController {
 
         listHistoryResult.forEach((item) async {
           final loadFileResult =
-              await _apiService.loadFiles(item.picture ?? '');
+              _apiService.getImageFullUrl(item.picture ?? '');
           try {
-            final imageData = loadFileResult as String;
-            listImageData.add(imageData);
+            listImageData.add(loadFileResult);
           } catch (error) {
             print(error);
           }
