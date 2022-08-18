@@ -2,6 +2,7 @@ import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -28,6 +29,7 @@ void main() {
           initialRoute: AppPages.INITIAL,
           localizationsDelegates: [
             S.delegate,
+            FormBuilderLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,

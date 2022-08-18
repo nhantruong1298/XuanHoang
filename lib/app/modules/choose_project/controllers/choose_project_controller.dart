@@ -6,13 +6,13 @@ import 'package:get/get.dart';
 class ChooseProjectController extends GetxController {
   final ApiService _apiService;
   final listProject = <Project>[].obs;
-  late final ProjectType projectType;
+  late final ProjectType? projectType;
   ChooseProjectController(this._apiService);
 
   @override
   void onInit() {
     super.onInit();
-    projectType = Get.arguments as ProjectType;
+    projectType = Get.arguments as ProjectType?;
     _fetchProject();
   }
 
@@ -31,6 +31,8 @@ class ChooseProjectController extends GetxController {
           listProject.value = result;
         }
 
+        break;
+      default:
         break;
     }
   }

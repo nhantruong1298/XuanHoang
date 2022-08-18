@@ -20,6 +20,7 @@ class TextInputField extends StatelessWidget {
   final String? initValue;
   final Function(String?)? onChanged;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   TextInputField({
     Key? key,
     this.hintText,
@@ -36,41 +37,66 @@ class TextInputField extends StatelessWidget {
     this.name = '',
     this.obscuringCharacter = '•',
     this.obscureText = false,
-    this.initValue ,
+    this.initValue,
     this.onChanged,
     this.controller,
+    this.validator,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      elevation: 5,
-      child: FormBuilderTextField(
-        controller: controller,
-        initialValue: initValue,
-        onChanged: onChanged,
-        name: name,
-        minLines: minLines,
-        maxLines: maxLines,
-        obscuringCharacter: obscuringCharacter,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: borderColor ?? Colors.white),
-                borderRadius: BorderRadius.circular(borderRadius)),
-            hintText: hintText,
-            focusColor: focusColor ?? Colors.white,
-            suffixIcon: suffixIcon,
-            contentPadding: EdgeInsets.all(contentPadding.h),
-            filled: true,
-            fillColor: fillColor ?? Colors.white,
-            focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: focusBorderColor ?? Colors.white),
-                borderRadius: BorderRadius.circular(borderRadius)),
-            border: OutlineInputBorder(
-                borderSide: BorderSide(color: borderColor ?? Colors.white),
-                borderRadius: BorderRadius.circular(borderRadius))),
+      child: Material(
+        borderRadius: BorderRadius.circular(borderRadius),
+        elevation: 5,
+        child: FormBuilderField(
+          initialValue: initValue,
+          onChanged: (String? value) {
+            onChanged?.call(value);
+          },
+          name: name,
+          builder: (field) {
+            return TextFormField(
+              initialValue: initValue,
+              onChanged: (value) {
+                field.didChange(value);
+              },
+              controller: controller,
+              minLines: minLines,
+              maxLines: maxLines,
+              obscuringCharacter: obscuringCharacter,
+              obscureText: obscureText,
+              decoration: InputDecoration(
+                  errorBorder: InputBorder.none,
+                  //errorText: '',
+                  errorStyle: TextStyle(
+                    color: Colors.transparent,
+                    fontSize: 0,
+                  ),
+                  focusedErrorBorder: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: borderColor ?? Colors.white),
+                      borderRadius: BorderRadius.circular(borderRadius)),
+                  hintText: hintText,
+                  focusColor: focusColor ?? Colors.white,
+                  suffixIcon: suffixIcon,
+                  contentPadding: EdgeInsets.all(contentPadding.h),
+                  filled: true,
+                  fillColor: fillColor ?? Colors.white,
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: focusBorderColor ?? Colors.white),
+                      borderRadius: BorderRadius.circular(borderRadius)),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: borderColor ?? Colors.white),
+                      borderRadius: BorderRadius.circular(borderRadius))),
+            );
+          },
+          validator: validator,
+        ),
       ),
     );
   }

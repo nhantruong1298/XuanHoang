@@ -1,10 +1,15 @@
 import 'package:example_nav2/app/data/models/enum/project_type.dart';
+import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
+import 'package:example_nav2/app/modules/authenticate/change_password/views/change_password_view.dart';
 import 'package:example_nav2/app/modules/choose_project/controllers/choose_project_controller.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/login/views/login_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
+import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +23,7 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
 
   @override
   Widget build(BuildContext context) {
-    final projectType = Get.arguments as ProjectType;
+    final projectType = Get.arguments as ProjectType?;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
@@ -73,18 +78,41 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
         ));
   }
 
-  AppBar _buildAppBar(ProjectType type) {
+  Widget _buildExitButton() {
+    return IconButton(
+      icon: SvgPicture.asset('assets/images/back-icon.svg',
+          height: 30, fit: BoxFit.scaleDown),
+      onPressed: () {
+        showConfirmDialog(
+            title: 'Đăng xuất khỏi tài khoản?',
+            textConfirm: 'Đăng xuất',
+            textCancel: 'Huỷ',
+            onCancel: () {},
+            onConfirm: () {
+              ApiService.to.clearToken();
+              AuthService.to.logout();
+              Get.offNamed(LoginView.routeName);
+            });
+      },
+    );
+  }
+
+  Widget _buildChangePasswordButton() {
+    return IconButton(
+      icon: SvgPicture.asset('assets/images/key-icon.svg',
+          height: 30, fit: BoxFit.scaleDown),
+      onPressed: () {
+        Get.toNamed(ChangePasswordView.routeName);
+      },
+    );
+  }
+
+  AppBar _buildAppBar(ProjectType? type) {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
       leading: (type == ProjectType.manual)
-          ? IconButton(
-              icon: SvgPicture.asset('assets/images/back-icon.svg',
-                  height: 30, fit: BoxFit.scaleDown),
-              onPressed: () {
-                Get.back();
-              },
-            )
+          ? _buildExitButton()
           : IconButton(
               onPressed: () {
                 Get.back();
@@ -100,8 +128,7 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
               color: Colors.black)),
       actions: [
         (type == ProjectType.manual)
-            ? SvgPicture.asset('assets/images/key-icon.svg',
-                height: 29, fit: BoxFit.scaleDown)
+            ? _buildChangePasswordButton()
             : IconButton(
                 onPressed: () {
                   Get.offNamedUntil(HomeView.routeName, (route) => false);

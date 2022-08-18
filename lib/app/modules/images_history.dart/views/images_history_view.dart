@@ -154,7 +154,10 @@ class _ImageGridViewItem extends StatelessWidget {
       height: 40.h,
       color: Colors.white,
       child: Image(
-        image: NetworkImage(data),
+        fit: BoxFit.cover,
+        image: NetworkImage(
+          data,
+        ),
       ),
     );
   }

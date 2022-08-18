@@ -32,6 +32,7 @@ dependencies:
   retrofit: ^3.0.1+1
   collection: ^1.16.0
   flutter_html: ^2.2.1
+  form_builder_validators: ^8.3.0
  
 dev_dependencies:
   flutter_test:

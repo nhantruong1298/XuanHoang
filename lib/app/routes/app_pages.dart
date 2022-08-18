@@ -1,4 +1,5 @@
-import 'package:example_nav2/app/modules/authenticate/reset_password/views/reset_password_view.dart';
+import 'package:example_nav2/app/modules/authenticate/change_password/bindings/change_password_binding.dart';
+import 'package:example_nav2/app/modules/authenticate/change_password/views/change_password_view.dart';
 import 'package:example_nav2/app/modules/choose_category/bindings/choose_category_binding.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/add_image/bindings/add_image_binding.dart';
@@ -51,16 +52,18 @@ class AppPages {
           bindings: [LoginBinding()],
         ),
         GetPage(
-          preventDuplicates: true,
-          name: ResetPasswordView.routeName,
-          page: () => ResetPasswordView(),
-          bindings: [],
-        ),
-        GetPage(
             preventDuplicates: true,
             name: HomeView.routeName,
             page: () => HomeView(),
             children: [
+               GetPage(
+                preventDuplicates: true,
+                name: ChangePasswordView.path,
+                page: () => ChangePasswordView(),
+                bindings: [
+                  ChangePasswordBinding()
+                ],
+              ),
               GetPage(
                 preventDuplicates: true,
                 name: WarningView.path,

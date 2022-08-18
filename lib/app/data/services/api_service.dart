@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
+import 'package:example_nav2/app/data/models/request/change_password_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
@@ -21,29 +22,33 @@ import 'package:example_nav2/app/data/services/xh_api_service.dart';
 import 'package:get/get.dart' hide Response, Progress;
 
 class ApiService extends GetxService {
-  // static ApiService get to => Get.find();
+  static ApiService get to => Get.find();
   late XHApiService _xhApiService;
   late Dio _dio;
-  late Token _token;
+  late Token? _token;
   final String _baseUrl = 'https://xuanhoang.xoontec.vn/';
   ApiService() {
-    // _xhApi = XhApi(dio: Dio(BaseOptions(baseUrl: _baseUrl)));
+    _init();
+  }
 
+  _init() {
     _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: _baseUrl)));
   }
-  // late XhApi _xhApi;
 
   void setToken(Token token) {
     _token = token;
-
     _dio = Dio(BaseOptions(
         baseUrl: _baseUrl,
-        headers: {"authorization": "Bearer ${_token.accessToken}"}));
-    // _xhApi = XhApi(dio: dio);
+        headers: {"authorization": "Bearer ${_token?.accessToken}"}));
     _xhApiService = XHApiService(_dio);
   }
 
-  String get accessToken => _token.accessToken ?? '';
+  void clearToken() {
+    _token = null;
+    _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: _baseUrl)));
+  }
+
+  String get accessToken => _token?.accessToken ?? '';
 
   Future<LoginResponse> login(String userName, String password) async {
     try {
@@ -155,7 +160,7 @@ class ApiService extends GetxService {
   Future<dynamic> loadFiles(String name) async {
     try {
       final response =
-          await _xhApiService.loadFiles(name, _token.accessToken ?? '');
+          await _xhApiService.loadFiles(name, _token?.accessToken ?? '');
       return response;
     } catch (error) {
       print(error);
@@ -209,7 +214,12 @@ class ApiService extends GetxService {
 
   String getImageFullUrl(String imagePath) {
     final String query =
-        '${Uri.encodeComponent(imagePath)}&token=${_token.accessToken}';
+        '${Uri.encodeComponent(imagePath)}&token=${_token?.accessToken}';
     return '${_baseUrl}api/FileManager/files?name=$query';
+  }
+
+  Future<void> changePassword(String newPassword, String retypePassword) async {
+    await _xhApiService.changePassword(ChangePasswordRequest(
+        newPassword: newPassword, retypePassword: retypePassword));
   }
 }

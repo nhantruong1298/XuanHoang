@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
@@ -28,11 +30,12 @@ class LoginController extends GetxController {
       }
     } catch (error) {
       if (error is DioError) {
-        Get.snackbar(
-          'Error',
-          error.response?.data ?? '',
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-          backgroundColor: Colors.white,
+        String errorMessage = error.response?.data ?? '';
+        showSnackbar(
+          message: errorMessage,
+          title: 'Error',
+          backgroundColor: AppColors.errorColor,
+          duration: Duration(milliseconds: 1500),
         );
         return;
       }

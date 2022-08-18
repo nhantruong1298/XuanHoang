@@ -2,7 +2,6 @@ import 'package:example_nav2/app/modules/choose_category/views/choose_category_v
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
-import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/controllers/choose_progress_controller.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';

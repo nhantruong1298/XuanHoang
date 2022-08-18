@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
+import 'package:example_nav2/app/data/models/request/change_password_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
@@ -97,5 +98,10 @@ abstract class XHApiService {
   @POST("/api/projects/incident/close")
   Future<UpdateReportResponse> closeReport(
     @Query('IdIncident') String idIncident,
+  );
+
+  @POST("/api/Auth/password/change")
+  Future<void> changePassword(
+    @Body() ChangePasswordRequest request,
   );
 }
