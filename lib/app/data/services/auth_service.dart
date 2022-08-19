@@ -9,6 +9,8 @@ class AuthService extends GetxService {
 
   bool get isLoggedInValue => _isLoggedIn.value;
 
+  Profile? get profile => _profile;
+
   String? get accountType {
     if (_profile != null) {
       final type = AccountType.items

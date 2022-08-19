@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
 import 'package:example_nav2/app/data/models/request/change_password_request.dart';
+import 'package:example_nav2/app/data/models/request/create_project_incident_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
+import 'package:example_nav2/app/data/models/response/document_project_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
@@ -15,6 +17,7 @@ import 'package:example_nav2/app/data/models/response/project_incident_response.
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
+import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:retrofit/retrofit.dart';
@@ -104,4 +107,23 @@ abstract class XHApiService {
   Future<void> changePassword(
     @Body() ChangePasswordRequest request,
   );
+
+  @GET("/api/Projects/warning-project")
+  Future<List<WarningProjectResponse>> loadWarningByIdProject(
+    @Query('idProject') String idProject,
+  );
+
+  @GET("/api/Documents/project")
+  Future<List<DocumentProjectResponse>> loadDocumentByIdProject(
+    @Query('idProject') String idProject,
+  );
+
+  @POST("/api/Projects/incident")
+  @MultiPart()
+  Future<UpdateReportResponse> createProjectIncident({
+    @Part(name: 'IdProject') required int idProject,
+    @Part(name: 'IncidentName') required String incidentName,
+    @Part(name: 'IncidentDescription') required String incidentDescription,
+    @Part(name: 'Files') required List<File> files,
+  });
 }

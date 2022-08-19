@@ -8,14 +8,17 @@ import 'package:example_nav2/app/modules/choose_job/bindings/choose_job_binding.
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/bindings/choose_project_binding.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
-import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
+import 'package:example_nav2/app/modules/document/bindings/document_binding.dart';
+import 'package:example_nav2/app/modules/document/views/document_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/bindings/images_history_binding.dart';
 import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
+import 'package:example_nav2/app/modules/progress/check_progress/bindings/check_progress_binding.dart';
 import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/bindings/choose_progress_binding.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/report/create_report/bindings/create_report_binding.dart';
 import 'package:example_nav2/app/modules/report/create_report/views/create_report_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/bindings/edit_report_binding.dart';
 import 'package:example_nav2/app/modules/report/edit_report/views/edit_report_view.dart';
@@ -23,6 +26,7 @@ import 'package:example_nav2/app/modules/report/report_detail/bindings/report_de
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/bindings/report_list_binding.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
+import 'package:example_nav2/app/modules/warning/bindings/warning_binding.dart';
 import 'package:example_nav2/app/modules/warning/views/warning_view.dart';
 import 'package:get/get.dart';
 
@@ -56,25 +60,25 @@ class AppPages {
             name: HomeView.routeName,
             page: () => HomeView(),
             children: [
-               GetPage(
+              GetPage(
                 preventDuplicates: true,
                 name: ChangePasswordView.path,
                 page: () => ChangePasswordView(),
-                bindings: [
-                  ChangePasswordBinding()
-                ],
+                bindings: [ChangePasswordBinding()],
               ),
               GetPage(
                 preventDuplicates: true,
                 name: WarningView.path,
                 page: () => WarningView(),
-                bindings: [],
+                bindings: [WarningBinding()],
               ),
               GetPage(
                 preventDuplicates: true,
-                name: CheckDocumentView.path,
-                page: () => CheckDocumentView(),
-                bindings: [],
+                name: DocumentView.path,
+                page: () => DocumentView(),
+                bindings: [
+                  DocumentBinding()
+                ],
               ),
               GetPage(
                   preventDuplicates: true,
@@ -94,8 +98,7 @@ class AppPages {
                       preventDuplicates: true,
                       name: CheckProgressView.path,
                       page: () => CheckProgressView(),
-                      bindings: [],
-                      children: [],
+                      bindings: [CheckProgressBinding()],
                     ),
                     GetPage(
                         preventDuplicates: true,
@@ -123,9 +126,7 @@ class AppPages {
                                   preventDuplicates: true,
                                   name: ImagesHistoryView.path,
                                   page: () => ImagesHistoryView(),
-                                  bindings: [
-                                    ImagesHistoryBinding()
-                                  ],
+                                  bindings: [ImagesHistoryBinding()],
                                 ),
                               ]),
                         ]),
@@ -142,7 +143,9 @@ class AppPages {
                       preventDuplicates: true,
                       name: CreateReportView.path,
                       page: () => CreateReportView(),
-                      bindings: [],
+                      bindings: [
+                        CreateReportBinding()
+                      ],
                     ),
                     GetPage(
                         preventDuplicates: true,
@@ -156,9 +159,7 @@ class AppPages {
                             preventDuplicates: true,
                             name: EditReportView.path,
                             page: () => EditReportView(),
-                            bindings: [
-                              EditReportBinding()
-                            ],
+                            bindings: [EditReportBinding()],
                           ),
                         ]),
                   ]),

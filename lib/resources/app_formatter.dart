@@ -5,7 +5,7 @@ class AppFormatter {
     try {
       return DateFormat('dd/MM/yyyy').format(date!);
     } catch (err) {
-      return '';
+      return date.toString();
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:example_nav2/app/data/models/enum/project_type.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/document/check_document/views/check_document_view.dart';
+import 'package:example_nav2/app/modules/document/views/document_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/app/modules/warning/views/warning_view.dart';
@@ -53,9 +53,9 @@ class HomeView extends StatelessWidget {
     final accountType = Get.find<AuthService>().accountType;
     switch (accountType) {
       case AccountType.staff:
-      case AccountType.admin:
         return _buildStaffFeatures();
       case AccountType.customer:
+      case AccountType.admin:
         return _buildCustomerFeatures();
       default:
         return const SizedBox.shrink();
@@ -69,13 +69,14 @@ class HomeView extends StatelessWidget {
           icon: Assets.images.progressIcon.path,
           title: S.current.CHOOSE_FEATURE__CHECK_THE_TERM,
           onTap: () {
-            Get.toNamed(ChooseProgressView.routeName);
+            Get.toNamed(ChooseProgressView.routeName,
+                arguments: AuthService.to.profile?.idProject);
           },
         ),
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ReportListView.routeName);
+            Get.toNamed(ReportListView.routeName,arguments: AuthService.to.profile?.idProject);
           },
           icon: Assets.images.customerIcon.path,
           title: S.current.CHOOSE_FEATURE__REPORT_THE_PROBLEM,
@@ -84,7 +85,8 @@ class HomeView extends StatelessWidget {
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(WarningView.routeName);
+            Get.toNamed(WarningView.routeName,
+                arguments: AuthService.to.profile?.idProject);
           },
           icon: Assets.images.warnIcon.path,
           title: S.current.CHOOSE_FEATURE__WARNING,
@@ -93,7 +95,7 @@ class HomeView extends StatelessWidget {
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(CheckDocumentView.routeName);
+            Get.toNamed(DocumentView.routeName);
           },
           icon: Assets.images.documentIcon.path,
           title: S.current.CHOOSE_FEATURE__CHECK_DOCUMENT,

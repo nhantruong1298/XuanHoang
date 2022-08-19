@@ -22,13 +22,11 @@ class ReportDetailController extends GetxController {
 
   Future<void> _fetchReportDetail(String? idIncident) async {
     try {
-      if (_authService.accountType == AccountType.staff) {
-        final reportDetailResponse =
-            await _apiService.loadReportDetail(idIncident ?? '');
+      final reportDetailResponse =
+          await _apiService.loadReportDetail(idIncident ?? '');
 
-        if (reportDetailResponse?.isNotEmpty == true) {
-          reportDetail.value = reportDetailResponse![0];
-        }
+      if (reportDetailResponse?.isNotEmpty == true) {
+        reportDetail.value = reportDetailResponse![0];
       }
     } catch (error) {
       print(error);

@@ -1,4 +1,3 @@
-import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -70,8 +69,7 @@ class ChooseProgressView extends GetView<ChooseProgressController> {
                                 final item = listProgress[index];
                                 return _ProgressItem(
                                   onTap: () {
-                                    Get.toNamed(ChooseCategoryView.routeName,
-                                        arguments: item.idPhase);
+                                    controller.onProgressItemPressed(item);
                                   },
                                   fromDate: item.fromDate,
                                   toDate: item.toDate,

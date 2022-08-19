@@ -4,17 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
 import 'package:example_nav2/app/data/models/request/change_password_request.dart';
+import 'package:example_nav2/app/data/models/request/create_project_incident_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
+import 'package:example_nav2/app/data/models/response/document_project_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
+import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
 import 'package:example_nav2/app/data/models/token.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
@@ -221,5 +224,46 @@ class ApiService extends GetxService {
   Future<void> changePassword(String newPassword, String retypePassword) async {
     await _xhApiService.changePassword(ChangePasswordRequest(
         newPassword: newPassword, retypePassword: retypePassword));
+  }
+
+  Future<List<WarningProjectResponse>> loadWarningByIdProject(
+      String idProject) async {
+    try {
+      final response = await _xhApiService.loadWarningByIdProject(idProject);
+      return response;
+    } catch (error) {
+      print(error);
+      return [];
+    }
+  }
+
+  Future<List<DocumentProjectResponse>> loadDocumentByIdProject(
+      String idProject) async {
+    try {
+      final response = await _xhApiService.loadDocumentByIdProject(idProject);
+      return response;
+    } catch (error) {
+      print(error);
+      return [];
+    }
+  }
+
+  Future<UpdateReportResponse?> createProjectIncident({
+    required int idProject,
+    required String incidentDescription,
+    required String incidentName,
+    required List<File> files,
+  }) async {
+    try {
+      final response = await _xhApiService.createProjectIncident(
+          idProject: idProject,
+          incidentDescription: incidentDescription,
+          incidentName: incidentName,
+          files: files);
+      return response;
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 }

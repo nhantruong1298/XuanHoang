@@ -335,6 +335,77 @@ class _XHApiService implements XHApiService {
     return null;
   }
 
+  @override
+  Future<List<WarningProjectResponse>> loadWarningByIdProject(idProject) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'idProject': idProject};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<WarningProjectResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/Projects/warning-project',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) =>
+            WarningProjectResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<DocumentProjectResponse>> loadDocumentByIdProject(
+      idProject) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'idProject': idProject};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<DocumentProjectResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/Documents/project',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) =>
+            DocumentProjectResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<UpdateReportResponse> createProjectIncident(
+      {required idProject,
+      required incidentName,
+      required incidentDescription,
+      required files}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry('IdProject', idProject.toString()));
+    _data.fields.add(MapEntry('IncidentName', incidentName));
+    _data.fields.add(MapEntry('IncidentDescription', incidentDescription));
+    _data.files.addAll(files.map((i) => MapEntry(
+        'Files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UpdateReportResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'multipart/form-data')
+            .compose(_dio.options, '/api/Projects/incident',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UpdateReportResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

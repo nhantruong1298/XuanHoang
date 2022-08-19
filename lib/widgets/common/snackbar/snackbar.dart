@@ -18,6 +18,6 @@ void showSnackbar({
     duration: Duration(milliseconds: 1500),
     snackStyle: SnackStyle.GROUNDED,
     margin: EdgeInsets.zero,
-    snackPosition: SnackPosition.BOTTOM,
+    snackPosition: SnackPosition.TOP,
   ));
 }

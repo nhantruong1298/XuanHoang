@@ -2,6 +2,7 @@ import 'package:example_nav2/app/modules/choose_category/views/choose_category_v
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/progress/check_progress/controllers/check_progress_controller.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
@@ -12,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class CheckProgressView extends StatelessWidget {
+class CheckProgressView extends GetView<CheckProgressController> {
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}$path';
   static const String path = '/check-progress';
@@ -75,9 +76,7 @@ class CheckProgressView extends StatelessWidget {
                         const SizedBox(height: 20),
                         AppButton(
                           text: S.current.CHECK_PROGRESS__DETAIL,
-                          onTap: () {
-                            Get.toNamed(ChooseCategoryView.routeName);
-                          },
+                          onTap: controller.onDetailButtonPressed,
                           borderRadius: BorderRadius.circular(
                               AppDimensions.defaultMRadius),
                         )

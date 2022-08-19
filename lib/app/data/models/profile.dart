@@ -9,12 +9,19 @@ class Profile {
   final String? idLogin;
   @JsonKey(name: 'Mode')
   final String? idRole;
+  @JsonKey(name: 'IdProject')
+  final String? idProject;
 
   factory Profile.fromJson(Map<String, dynamic> json) {
     return _$ProfileFromJson(json);
   }
 
-  Profile({this.fullName, this.idLogin, this.idRole});
+  Profile({
+    this.fullName,
+    this.idLogin,
+    this.idRole,
+    this.idProject,
+  });
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);
 }
