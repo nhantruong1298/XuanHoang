@@ -68,11 +68,22 @@ class ChooseCategoryView extends GetView<ChooseCategoryController> {
                             child: ListView.separated(
                                 itemBuilder: (context, index) {
                                   return _StaffCategory(
-                                    onTap: () {
-                                      Get.toNamed(ChooseJobView.routeName,
+                                    onTap: () async {
+                                      final isUpdated = await Get.toNamed(
+                                          ChooseJobView.routeName,
                                           arguments: list[index].idWorkingTerm);
+
+                                      if (isUpdated == true) {
+                                        controller.onRefreshData();
+                                      }
                                     },
                                     termName: list[index].termName,
+                                    onInfoPressed: () {
+                                      controller.onInfoPressed(
+                                          list[index].instructionFile);
+                                    },
+                                    instructionFile:
+                                        list[index].instructionFile,
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
@@ -91,8 +102,16 @@ class ChooseCategoryView extends GetView<ChooseCategoryController> {
 
 class _StaffCategory extends StatelessWidget {
   final String? termName;
+  final String? instructionFile;
   final VoidCallback? onTap;
-  const _StaffCategory({Key? key, this.termName, this.onTap}) : super(key: key);
+  final VoidCallback? onInfoPressed;
+  const _StaffCategory({
+    Key? key,
+    this.termName,
+    this.onTap,
+    this.onInfoPressed,
+    this.instructionFile,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -108,17 +127,21 @@ class _StaffCategory extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(termName ?? '',
                       style: TextStyle(
                           fontWeight: FontWeight.w700, fontSize: 17.sp)),
-                  Assets.images.infoIcon.svg(
-                      color: Color(0xFF0081C9),
-                      height: 27,
-                      fit: BoxFit.scaleDown)
+                  (instructionFile?.isNotEmpty == true)
+                      ? IconButton(
+                          onPressed: onInfoPressed,
+                          icon: Assets.images.infoIcon.svg(
+                              color: Color(0xFF0081C9),
+                              height: 27,
+                              fit: BoxFit.scaleDown))
+                      : const SizedBox.shrink()
                 ],
               ),
             ),

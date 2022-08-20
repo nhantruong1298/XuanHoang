@@ -4,7 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RemarkDialog extends StatefulWidget {
-  const RemarkDialog({Key? key}) : super(key: key);
+  final String? title;
+  final String? buttonText;
+  const RemarkDialog({
+    Key? key,
+    this.title,
+    this.buttonText,
+  }) : super(key: key);
 
   @override
   State<RemarkDialog> createState() => _RemarkDialogState();
@@ -22,7 +28,7 @@ class _RemarkDialogState extends State<RemarkDialog> {
         padding: EdgeInsets.all(16),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Center(
-            child: Text('Ghi chú',
+            child: Text(widget.title ??'Ghi chú',
                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 19.sp)),
           ),
           Padding(
@@ -39,7 +45,7 @@ class _RemarkDialogState extends State<RemarkDialog> {
             ),
           ),
           AppButton(
-            text: 'Lưu ghi chú',
+            text: widget.buttonText ?? 'Lưu ghi chú',
             borderRadius: BorderRadius.circular(15),
             onTap: () {
               Navigator.of(context).pop(_note ?? '');

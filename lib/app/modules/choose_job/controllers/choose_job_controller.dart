@@ -2,6 +2,7 @@ import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:get/get.dart' hide Progress;
 import 'package:uuid/uuid.dart';
 
@@ -85,6 +86,26 @@ class ChooseJobController extends GetxController {
                   .startsWith(_searchText.toLowerCase()) ==
               true)
           .toList();
+    }
+  }
+
+  void sendReport(String customerName) async {
+    try {
+      await _apiService.workingTermReport(termId ?? '', customerName);
+      showConfirmDialog(
+          title: 'Gửi báo cáo thành công',
+          textConfirm: 'Xác nhận',
+          onConfirm: () {
+            Get.back();
+            Get.back(result: true);
+          });
+    } catch (error) {
+      showConfirmDialog(
+          title: error.toString(),
+          textConfirm: 'Xác nhận',
+          onConfirm: () {
+            Get.back();
+          });
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
+import 'package:example_nav2/app/data/models/response/do_check_image_response.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
 import 'package:example_nav2/app/data/models/response/document_project_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
@@ -52,13 +53,12 @@ abstract class XHApiService {
   Future<DoCheckResponse> doCheckPost(@Body() DoCheckRequest request);
 
   @GET("/api/working-items/images")
-  Future<dynamic> loadWorkingItemImages(
-      @Query('idWorkingItem') String idWorkingItem,
-      @Query('sessionId') String sessionId);
+  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+      @Query('idWorkingItem') String idWorkingItem);
 
   @POST("/api/working-items/docheck/images")
   @MultiPart()
-  Future<dynamic> uploadDocheckImage({
+  Future<DoCheckImageResponse> uploadDocheckImage({
     @Query('idWorkingItem') required String idWorkingItem,
     @Part(name: 'File') required File file,
   });
@@ -128,4 +128,10 @@ abstract class XHApiService {
     @Part(name: 'IncidentDescription') required String incidentDescription,
     @Part(name: 'Files') required List<File> files,
   });
+
+  @POST("/api/working-terms/report")
+  Future<void> workingTermReport(
+    @Query('idWorkingTerm') String idWorkingTerm,
+    @Query('customerName') String customerName,
+  );
 }

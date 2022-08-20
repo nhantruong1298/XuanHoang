@@ -120,25 +120,27 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<dynamic> loadWorkingItemImages(idWorkingItem, sessionId) async {
+  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+      idWorkingItem) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'idWorkingItem': idWorkingItem,
-      r'sessionId': sessionId
-    };
+    final queryParameters = <String, dynamic>{r'idWorkingItem': idWorkingItem};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'GET', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/working-items/images',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<ImageHistoryResponse>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/working-items/images',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) =>
+            ImageHistoryResponse.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 
   @override
-  Future<dynamic> uploadDocheckImage(
+  Future<DoCheckImageResponse> uploadDocheckImage(
       {required idWorkingItem, required file}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingItem': idWorkingItem};
@@ -148,15 +150,16 @@ class _XHApiService implements XHApiService {
         'File',
         MultipartFile.fromFileSync(file.path,
             filename: file.path.split(Platform.pathSeparator).last)));
-    final _result = await _dio.fetch(_setStreamType<dynamic>(Options(
-            method: 'POST',
-            headers: _headers,
-            extra: _extra,
-            contentType: 'multipart/form-data')
-        .compose(_dio.options, '/api/working-items/docheck/images',
-            queryParameters: queryParameters, data: _data)
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DoCheckImageResponse>(Options(
+                method: 'POST',
+                headers: _headers,
+                extra: _extra,
+                contentType: 'multipart/form-data')
+            .compose(_dio.options, '/api/working-items/docheck/images',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DoCheckImageResponse.fromJson(_result.data!);
     return value;
   }
 
@@ -415,6 +418,23 @@ class _XHApiService implements XHApiService {
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UpdateReportResponse.fromJson(_result.data!);
     return value;
+  }
+
+  @override
+  Future<void> workingTermReport(idWorkingTerm, customerName) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'idWorkingTerm': idWorkingTerm,
+      r'customerName': customerName
+    };
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    await _dio.fetch<void>(_setStreamType<void>(
+        Options(method: 'POST', headers: _headers, extra: _extra)
+            .compose(_dio.options, '/api/working-terms/report',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    return null;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

@@ -9,6 +9,7 @@ import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
+import 'package:example_nav2/app/data/models/response/do_check_image_response.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
 import 'package:example_nav2/app/data/models/response/document_project_response.dart';
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
@@ -116,13 +117,20 @@ class ApiService extends GetxService {
     return result;
   }
 
-  Future<dynamic> loadWorkingItemImages(String idWorkingItem) async {
-    final result = await _xhApiService.loadWorkingItemImages(idWorkingItem, '');
+  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+      String idWorkingItem) async {
+    try {
+      final result = await _xhApiService.loadWorkingItemImages(idWorkingItem);
 
-    return result;
+      return result;
+    } catch (error) {
+      print(error);
+      return [];
+    }
   }
 
-  Future<dynamic> uploadDocheckImage(String idWorkingItem, File file) async {
+  Future<DoCheckImageResponse> uploadDocheckImage(
+      String idWorkingItem, File file) async {
     try {
       final result = await _xhApiService.uploadDocheckImage(
           idWorkingItem: idWorkingItem, file: file);
@@ -130,6 +138,7 @@ class ApiService extends GetxService {
       return result;
     } catch (error) {
       print(error);
+      return DoCheckImageResponse(message: error.toString());
     }
   }
 
@@ -270,6 +279,17 @@ class ApiService extends GetxService {
     } catch (error) {
       print(error);
       return null;
+    }
+  }
+
+  Future<void> workingTermReport(
+    String idWorkingTerm,
+    String customerName,
+  ) async {
+    try {
+      await _xhApiService.workingTermReport(idWorkingTerm, customerName);
+    } catch (error) {
+      rethrow;
     }
   }
 }

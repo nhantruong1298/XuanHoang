@@ -30,8 +30,11 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
           title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
           actions: [
             IconButton(
-                onPressed: () {
-                  Get.toNamed(AddImageView.routeName);
+                onPressed: () async {
+                  final isUpdated = await Get.toNamed(AddImageView.routeName);
+                  if (isUpdated == true) {
+                    controller.refreshData();
+                  }
                 },
                 icon: Assets.images.cameraIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),

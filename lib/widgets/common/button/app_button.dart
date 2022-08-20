@@ -1,3 +1,4 @@
+import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -7,6 +8,7 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onTap;
   final BorderRadius? borderRadius;
   final List<BoxShadow>? boxShadow;
+  final bool isLoading;
   const AppButton(
       {Key? key,
       this.text,
@@ -19,7 +21,8 @@ class AppButton extends StatelessWidget {
             blurRadius: 20,
             spreadRadius: 5,
             color: Color.fromRGBO(246, 106, 104, 0.36))
-      ]})
+      ],
+      this.isLoading = false})
       : super(key: key);
 
   @override
@@ -34,13 +37,23 @@ class AppButton extends StatelessWidget {
           child: Material(
             color: color,
             child: InkWell(
-                onTap: onTap,
+                onTap: () {
+                  if (!isLoading) {
+                    onTap?.call();
+                  }
+                },
                 child: Center(
-                    child: Text(
-                  text ?? '',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w700),
-                ))),
+                    child: (!isLoading)
+                        ? Text(
+                            text ?? '',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
+                          )
+                        : CircularProgressIndicator(
+                            color: AppColors.primaryLightColor,
+                            strokeWidth: 5,
+                          ))),
           ),
         ),
       ),

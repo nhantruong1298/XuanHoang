@@ -1,4 +1,7 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/models/enum/working_item_status.dart';
+import 'package:example_nav2/app/data/models/working_item.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/controllers/choose_job_controller.dart';
@@ -47,10 +50,18 @@ class ChooseJobView extends GetView<ChooseJobController> {
             )
           ],
         ),
-        bottomNavigationBar: AppButton(
-          text: 'Gửi báo cáo',
-          onTap: () {},
-        ),
+        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff)
+            ? AppButton(
+                text: 'Gửi báo cáo',
+                onTap: () async{
+                  final customerName = await showRemarkDialog(context: context,
+                  title: 'Tên khách hàng',
+                  buttonText: 'Xác nhận'
+                  );
+                  controller.sendReport(customerName);
+                },
+              )
+            : null,
         body: Stack(
           children: [
             BlurBackGround(),
@@ -78,40 +89,10 @@ class ChooseJobView extends GetView<ChooseJobController> {
                             child: ListView.separated(
                                 itemBuilder: (context, index) {
                                   final item = list[index];
-                                  return _StaffJob(
-                                    onTap: () {},
-                                    onSuccessTap: () async {
-                                      final note =
-                                          await showRemarkDialog(context);
-                                      controller.doCheck(
-                                          item.copyWith(
-                                              idWorkingItemStatus:
-                                                  WorkingItemStatus.success),
-                                          note);
-                                    },
-                                    onFailedTap: () async {
-                                      final note =
-                                          await showRemarkDialog(context);
-                                      controller.doCheck(
-                                          item.copyWith(
-                                              idWorkingItemStatus:
-                                                  WorkingItemStatus.failed),
-                                          note);
-                                    },
-                                    onImageTap: () {
-                                      Get.toNamed(ImagesHistoryView.routeName,
-                                          arguments: item.idWorkingItem);
-                                    },
-                                    onCameraTap: () {
-                                      Get.toNamed(AddImageView.routeName,
-                                          arguments: item.idWorkingItem);
-                                    },
-                                    name: item.itemName,
-                                    description: item.description,
-                                    idWorkingItem: item.idWorkingItem,
-                                    idWorkingItemStatus:
-                                        item.idWorkingItemStatus,
-                                  );
+                                  return (AuthService.to.accountType ==
+                                          AccountType.staff)
+                                      ? _buildStaffJob(context, item)
+                                      : _buildCustomerJob(item);
                                 },
                                 separatorBuilder: (context, index) =>
                                     const SizedBox(
@@ -127,12 +108,56 @@ class ChooseJobView extends GetView<ChooseJobController> {
         ));
   }
 
-  Future<String> showRemarkDialog(BuildContext context) async {
+  Widget _buildCustomerJob(WorkingItem item) {
+    return _CustomerJob(
+      name: item.itemName,
+      description: item.description,
+      idWorkingItem: item.idWorkingItem,
+      idWorkingItemStatus: item.idWorkingItemStatus,
+      onImageTap: () {
+        Get.toNamed(ImagesHistoryView.routeName, arguments: item.idWorkingItem);
+      },
+    );
+  }
+
+  Widget _buildStaffJob(BuildContext context, WorkingItem item) {
+    return _StaffJob(
+      onSuccessTap: () async {
+        final note = await showRemarkDialog(context: context);
+        controller.doCheck(
+            item.copyWith(idWorkingItemStatus: WorkingItemStatus.success),
+            note);
+      },
+      onFailedTap: () async {
+        final note = await showRemarkDialog(context :context);
+        controller.doCheck(
+            item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed), note);
+      },
+      onImageTap: () {
+        Get.toNamed(ImagesHistoryView.routeName, arguments: item.idWorkingItem);
+      },
+      onCameraTap: () {
+        Get.toNamed(AddImageView.routeName, arguments: item.idWorkingItem);
+      },
+      name: item.itemName,
+      description: item.description,
+      idWorkingItem: item.idWorkingItem,
+      idWorkingItemStatus: item.idWorkingItemStatus,
+    );
+  }
+
+  Future<String> showRemarkDialog(
+      {required BuildContext context,
+      String? title,
+      String? buttonText}) async {
     final note = await showDialog<String>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: false,
       builder: (BuildContext context) {
-        return RemarkDialog();
+        return RemarkDialog(
+          title: title,
+          buttonText: buttonText,
+        );
       },
     );
     return note ?? '';
@@ -140,37 +165,63 @@ class ChooseJobView extends GetView<ChooseJobController> {
 }
 
 class _CustomerJob extends StatelessWidget {
-  final Color? color;
-  const _CustomerJob({Key? key, this.color}) : super(key: key);
+  final String? idWorkingItem;
+  final String? name;
+  final String? idWorkingItemStatus;
+  final String? description;
+  final VoidCallback? onImageTap;
+
+  const _CustomerJob({
+    Key? key,
+    this.idWorkingItem,
+    this.name,
+    this.description,
+    this.idWorkingItemStatus,
+    this.onImageTap,
+  }) : super(key: key);
+
+  Color get statusColor {
+    switch (idWorkingItemStatus) {
+      case WorkingItemStatus.success:
+        return AppColors.green400;
+      case WorkingItemStatus.failed:
+        return AppColors.errorColor;
+      default:
+        return AppColors.primaryLightColor;
+    }
+  }
+
+  Color getTextColor(Color statusColor) {
+    if (statusColor == AppColors.primaryLightColor) {
+      return AppColors.textColor;
+    }
+    return AppColors.primaryLightColor;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      key: const ValueKey(0),
+      key: ValueKey<String?>(idWorkingItem),
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
         child: AppListTile(
-          onTap: () {},
-          color: color,
-          title: Text('Đầu báo khói 001',
+          color: statusColor,
+          title: Text(name ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 17.sp,
-                  color: (color == null)
-                      ? AppColors.primaryDarkColor
-                      : AppColors.primaryLightColor)),
+                  color: getTextColor(statusColor))),
           subTitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
                 height: 15,
               ),
-              Text('KingstonL1B1ID001',
+              Text(description ?? '',
                   style: TextStyle(
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,
-                      color: (color == null)
-                          ? AppColors.primaryDarkColor
-                          : AppColors.primaryLightColor)),
+                      color: getTextColor(statusColor))),
             ],
           ),
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -178,29 +229,27 @@ class _CustomerJob extends StatelessWidget {
         ),
       ),
       endActionPane: ActionPane(
-        extentRatio: 0.2,
+        extentRatio: 0.22,
         motion: ScrollMotion(),
         children: [
           Expanded(
-            child: Stack(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: PhysicalModel(
-                    color: AppColors.primaryLightColor,
-                    elevation: 5,
-                    shadowColor: AppColors.primaryDarkColor,
-                    borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      margin: EdgeInsets.all(10),
-                      width: double.infinity,
-                      height: double.infinity,
-                      child: Assets.images.galleryIcon
-                          .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
-                    ),
-                  ),
+            child: Container(
+              margin: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [AppConstants.defaultBoxShadow]),
+              child: Row(children: [
+                SizedBox(
+                  width: 5,
+                  child: Container(),
                 ),
-              ],
+                CustomSlidableAction(
+                    onPressed: (_) => onImageTap!(),
+                    backgroundColor: AppColors.primaryLightColor,
+                    child: Assets.images.galleryIcon
+                        .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
+                    borderRadius: BorderRadius.circular(15))
+              ]),
             ),
           )
         ],
@@ -243,6 +292,13 @@ class _StaffJob extends StatelessWidget {
     }
   }
 
+  Color getTextColor(Color statusColor) {
+    if (statusColor == AppColors.primaryLightColor) {
+      return AppColors.textColor;
+    }
+    return AppColors.primaryLightColor;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -255,7 +311,10 @@ class _StaffJob extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           borderRadius: BorderRadius.circular(15),
           title: Text(name ?? '',
-              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 17.sp,
+                  color: getTextColor(statusColor))),
           subTitle: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -263,7 +322,9 @@ class _StaffJob extends StatelessWidget {
                 const SizedBox(height: 15),
                 Text(description ?? '',
                     style: TextStyle(
-                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.sp,
+                        color: getTextColor(statusColor))),
               ],
             ),
           ),

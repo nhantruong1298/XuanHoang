@@ -80,7 +80,7 @@ class EditReportView extends GetView<EditReportController> {
                     },
                   )),
             ),
-             Obx(() {
+            Obx(() {
               return Visibility(
                 visible: controller.isLoading.value,
                 child: Positioned.fill(
@@ -93,7 +93,6 @@ class EditReportView extends GetView<EditReportController> {
                 )),
               );
             })
-
           ],
         ));
   }
@@ -159,6 +158,20 @@ class _ChooseImages extends GetView<EditReportController> {
                   : Image.network(
                       imagesData[index].path!,
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        return (loadingProgress != null)
+                            ? Container(
+                                width: double.infinity,
+                                height: double.infinity,
+                                color: AppColors.primaryLightColor,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.errorColor,
+                                  ),
+                                ),
+                              )
+                            : child;
+                      },
                     ),
             )));
 

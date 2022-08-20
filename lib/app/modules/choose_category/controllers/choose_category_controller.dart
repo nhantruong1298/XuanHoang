@@ -1,6 +1,7 @@
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:get/get.dart' hide Progress;
+import 'package:url_launcher/url_launcher_string.dart';
 
 class ChooseCategoryController extends GetxController {
   final ApiService _apiService;
@@ -21,9 +22,6 @@ class ChooseCategoryController extends GetxController {
     if (phaseId != null) {
       _listCategoryResult =
           await _apiService.getWorkingTermsByPhaseId(phaseId ?? '');
-
-      print(_apiService
-          .getImageFullUrl(_listCategoryResult[0].instructionFile ?? ''));
 
       onSearchChanged(_searchText);
     }
@@ -48,4 +46,15 @@ class ChooseCategoryController extends GetxController {
           .toList();
     }
   }
+
+  void onInfoPressed(String? instructionFile) {
+    try {
+      final url = _apiService.getImageFullUrl(instructionFile ?? '');
+
+      launchUrlString(url);
+    } catch (error) {
+      print(error);
+    }
+  }
+
 }

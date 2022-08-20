@@ -7,6 +7,7 @@ import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_backg
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
@@ -68,9 +69,19 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
                                         name: list[index].name,
                                         address: list[index].address,
                                         onTap: () {
-                                          Get.toNamed(
-                                              ChooseProgressView.routeName,
-                                              arguments: list[index].idProject);
+                                          if (projectType ==
+                                              ProjectType.manual) {
+                                            Get.toNamed(
+                                                ChooseProgressView.routeName,
+                                                arguments:
+                                                    list[index].idProject);
+                                          } else if (projectType ==
+                                              ProjectType.incident) {
+                                            Get.toNamed(
+                                                ReportListView.routeName,
+                                                arguments:
+                                                    list[index].idProject);
+                                          }
                                         });
                                   },
                                 ),

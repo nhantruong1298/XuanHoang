@@ -38,4 +38,8 @@ class ImageHistoryController extends GetxController {
       }
     }
   }
+
+  void refreshData() async {
+    await _fetchImagesHistory();
+  }
 }

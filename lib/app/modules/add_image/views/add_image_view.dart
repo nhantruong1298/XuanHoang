@@ -13,6 +13,7 @@ import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -25,11 +26,17 @@ class AddImageView extends GetView<AddImageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         extendBodyBehindAppBar: true,
         floatingActionButton: _ChooseImageButton(),
         appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
+          leading: IconButton(
+            onPressed: () {
+              Get.back(result: controller.isUpdated);
+            },
+            icon: SvgPicture.asset(Assets.images.arrowBackIcon.path,
+                height: 30, width: 30, fit: BoxFit.scaleDown),
+          ),
           title: 'Thêm Ảnh',
           actions: _buildActions,
         ),
@@ -50,7 +57,7 @@ class AddImageView extends GetView<AddImageController> {
                               images: List.generate(
                                   listImage.length,
                                   (index) => ImageGridViewItem(
-                                      file: File(listImage[index].path)))),
+                                      data: listImage[index]))),
                         );
                       })
                     ],
@@ -194,17 +201,33 @@ class ImageGridView extends StatelessWidget {
 }
 
 class ImageGridViewItem extends StatelessWidget {
-  final File file;
-  const ImageGridViewItem({Key? key, required this.file}) : super(key: key);
+  final String data;
+  const ImageGridViewItem({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 40.h,
-      // height: 40.h,
+      height: 145.h,
       padding: EdgeInsets.all(1),
       color: Colors.white,
-      child: Image.file(file, fit: BoxFit.cover),
+      child: Image.network(
+        data,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          return (loadingProgress != null)
+              ? Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.primaryLightColor,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.errorColor,
+                    ),
+                  ),
+                )
+              : child;
+        },
+      ),
     );
   }
 }

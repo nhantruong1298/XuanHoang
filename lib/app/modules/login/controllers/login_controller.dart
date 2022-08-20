@@ -12,10 +12,13 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
   final String USER_NAME_KEY = 'userName';
   final String PASSWORD_KEY = 'password';
+
+  RxBool isLoading = false.obs;
   final ApiService _apiService;
   LoginController(this._apiService);
 
   void onLoginPressed() async {
+    isLoading.value = true;
     try {
       final response = await _apiService.login(
           formKey.currentState!.fields[USER_NAME_KEY]!.value,
@@ -24,8 +27,6 @@ class LoginController extends GetxController {
       if (response.token != null && response.profile != null) {
         Get.find<ApiService>().setToken(response.token!);
         Get.find<AuthService>().login(response.profile!);
-        final image = await _apiService
-            .loadFile("/2022/08/13/8/docheck/637960242326574498.png");
         Get.offNamed(HomeView.routeName);
       }
     } catch (error) {
@@ -40,8 +41,8 @@ class LoginController extends GetxController {
         return;
       }
       print(error);
+    } finally {
+      isLoading.value = false;
     }
-
-    return;
   }
 }

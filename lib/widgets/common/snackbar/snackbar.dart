@@ -10,7 +10,7 @@ void showSnackbar({
   Duration duration = const Duration(milliseconds: 2000),
 }) {
   Get.showSnackbar(GetSnackBar(
-    message: message,
+    message: message ?? '',
     title: title,
     padding:
         padding ?? EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),

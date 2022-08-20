@@ -1,6 +1,7 @@
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
+import 'package:example_nav2/widgets/layouts/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,9 +20,7 @@ class LoginView extends GetView<LoginController> {
         resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
-            BlurBackGround(
-              sigma: 0,
-            ),
+            BlurBackGround(sigma: 0),
             SafeArea(
                 child: Container(
               width: double.infinity,
@@ -50,14 +49,17 @@ class LoginView extends GetView<LoginController> {
                         initValue: '1351986',
                       ),
                       SizedBox(height: 80.h),
-                      AppButton(
-                        borderRadius:
-                            BorderRadius.circular(AppDimensions.defaultMRadius),
-                        text: S.current.SIGN_IN__SIGN_IN_TEXT,
-                        onTap: () {
-                          controller.onLoginPressed();
-                        },
-                      ),
+                      Obx(() {
+                        return AppButton(
+                          isLoading: controller.isLoading.value,
+                          borderRadius: BorderRadius.circular(
+                              AppDimensions.defaultMRadius),
+                          text: S.current.SIGN_IN__SIGN_IN_TEXT,
+                          onTap: () {
+                            controller.onLoginPressed();
+                          },
+                        );
+                      }),
                       const Spacer(),
                       Center(
                         child: Text(S.current.SIGN_IN__LICENSE_DESCRIPTION,
@@ -66,7 +68,7 @@ class LoginView extends GetView<LoginController> {
                       ),
                     ]),
               ),
-            ))
+            )),
           ],
         ));
   }
