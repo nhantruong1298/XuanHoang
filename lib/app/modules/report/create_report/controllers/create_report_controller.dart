@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:example_nav2/app/data/models/response/document_project_response.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -16,6 +16,7 @@ class CreateReportController extends GetxController {
   final String TITLE_KEY = 'title';
   final String CONTENT_KEY = 'content';
   final images = <File>[].obs;
+  RxBool isLoading = false.obs;
   late final ImagePicker _imagePicker;
   CreateReportController(this._apiService);
 
@@ -26,6 +27,7 @@ class CreateReportController extends GetxController {
   }
 
   void onCreateReportPressed() async {
+    isLoading.value = true;
     formKey.currentState?.validate();
 
     final title = formKey.currentState?.fields[TITLE_KEY]?.value ?? '';
@@ -35,6 +37,7 @@ class CreateReportController extends GetxController {
 
     if (message != null) {
       showSnackbar(message: message, backgroundColor: AppColors.errorColor);
+      isLoading.value = false;
       return;
     }
 
@@ -42,21 +45,41 @@ class CreateReportController extends GetxController {
 
     if (message != null) {
       showSnackbar(message: message, backgroundColor: AppColors.errorColor);
+      isLoading.value = false;
       return;
     }
 
     try {
       int idProject = int.parse(AuthService.to.profile?.idProject ?? '');
+      final files = <File>[];
+      if (images.length > 3) {
+        files.addAll(images.skip(images.length - 3).toList());
+      } else {
+        files.addAll(images.toList());
+      }
+
       final response = await _apiService.createProjectIncident(
           idProject: idProject,
           incidentDescription: content,
           incidentName: title,
-          files: []);
+          files: files);
 
-      Get.back();
+      if (response != null) {
+        showConfirmDialog(
+            title: response.message ?? '',
+            textConfirm: 'OK',
+            onConfirm: () {
+              Get.back();
+              if ((response.message ?? '') == 'Success') {
+                Get.back(result: true);
+              }
+            });
+      }
     } catch (error) {
       print(error);
     }
+
+    isLoading.value = false;
   }
 
   void onChooseImage(ImageSource? imageSource) async {

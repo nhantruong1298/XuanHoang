@@ -246,12 +246,23 @@ class _XHApiService implements XHApiService {
 
   @override
   Future<UpdateReportResponse> updateReportDetail(
-      {required request, required files}) async {
+      {required idIncident,
+      required replyContent,
+      required idIncidentStatus,
+      required files}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
+    final _data = FormData();
+    _data.fields.add(MapEntry('IdIncident', idIncident.toString()));
+    _data.fields.add(MapEntry('ReplyContent', replyContent));
+    _data.fields.add(MapEntry('IdIncidentStatus', idIncidentStatus));
+    _data.files.addAll(files.map((i) => MapEntry(
+        'Files',
+        MultipartFile.fromFileSync(
+          i.path,
+          filename: i.path.split(Platform.pathSeparator).last,
+        ))));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UpdateReportResponse>(Options(
                 method: 'POST',

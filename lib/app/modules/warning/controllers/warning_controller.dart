@@ -21,4 +21,8 @@ class WarningController extends GetxController {
       listWarning.value = result;
     }
   }
+
+  Future<void> onRefreshData() async {
+    await _fetchWarning();
+  }
 }

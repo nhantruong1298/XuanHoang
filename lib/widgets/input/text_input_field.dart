@@ -53,12 +53,13 @@ class TextInputField extends StatelessWidget {
         child: FormBuilderField(
           initialValue: initValue,
           onChanged: (String? value) {
-            onChanged?.call(value);
+            onChanged?.call(value ?? '');
           },
           name: name,
           builder: (field) {
             return TextFormField(
               initialValue: initValue,
+              keyboardType: TextInputType.text,
               onChanged: (value) {
                 field.didChange(value);
               },

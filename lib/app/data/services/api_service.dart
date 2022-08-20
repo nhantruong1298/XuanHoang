@@ -74,6 +74,7 @@ class ApiService extends GetxService {
       final result = await _xhApiService.loadPhaseByProjectId(projectId);
       return result;
     } catch (error) {
+      print(error);
       return [];
     }
   }
@@ -84,6 +85,7 @@ class ApiService extends GetxService {
 
       return result;
     } catch (error) {
+      print(error);
       return [];
     }
   }
@@ -93,6 +95,7 @@ class ApiService extends GetxService {
       final result = await _xhApiService.loadWorkingItemsByTermId(termId);
       return result;
     } catch (error) {
+      print(error);
       return [];
     }
   }
@@ -187,7 +190,10 @@ class ApiService extends GetxService {
       IncidentDiscussionRequest request, List<File> files) async {
     try {
       final response = await _xhApiService.updateReportDetail(
-          request: request, files: files);
+          idIncident: request.idIncident,
+          idIncidentStatus: request.idIncidentStatus,
+          replyContent: request.idIncidentStatus,
+          files: files);
       return response;
     } catch (error) {
       print(error);

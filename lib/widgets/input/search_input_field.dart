@@ -13,6 +13,7 @@ class SearchInputField extends StatelessWidget {
   final Color? fillColor;
   final Color? focusBorderColor;
   final Color? borderColor;
+  final Function(String)? onChanged;
   SearchInputField({
     Key? key,
     this.hintText,
@@ -25,6 +26,7 @@ class SearchInputField extends StatelessWidget {
     this.focusColor,
     this.focusBorderColor,
     this.borderColor,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -35,6 +37,9 @@ class SearchInputField extends StatelessWidget {
       child: TextFormField(
         minLines: minLines,
         maxLines: maxLines,
+        onChanged: (value) {
+          onChanged?.call(value);
+        },
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: borderColor ?? Colors.white),

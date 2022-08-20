@@ -84,7 +84,9 @@ abstract class XHApiService {
   @POST("/api/Projects/incident-discussion")
   @MultiPart()
   Future<UpdateReportResponse> updateReportDetail({
-    @Body() required IncidentDiscussionRequest request,
+    @Part(name: 'IdIncident') required int idIncident,
+    @Part(name: 'ReplyContent') required String replyContent,
+    @Part(name: 'IdIncidentStatus') required String idIncidentStatus,
     @Part(name: 'Files') required List<File> files,
   });
 

@@ -53,20 +53,23 @@ class DocumentView extends GetView<DocumentController> {
                         Obx(() {
                           final listDocument = controller.listDocument;
                           return Expanded(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 10,
+                            child: RefreshIndicator(
+                              onRefresh: controller.onRefreshData,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 10,
+                                ),
+                                itemCount: listDocument.length,
+                                itemBuilder: (context, index) {
+                                  final item = listDocument[index];
+                                  return _DocumentItem(
+                                    name: item.documentName,
+                                    createDate: item.createDate,
+                                    expiredDate: item.expireDate,
+                                  );
+                                },
                               ),
-                              itemCount: listDocument.length,
-                              itemBuilder: (context, index) {
-                                final item = listDocument[index];
-                                return _DocumentItem(
-                                  name: item.documentName,
-                                  createDate: item.createDate,
-                                  expiredDate: item.expireDate,
-                                );
-                              },
                             ),
                           );
                         }),

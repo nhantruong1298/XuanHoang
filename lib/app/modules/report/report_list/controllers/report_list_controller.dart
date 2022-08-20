@@ -36,4 +36,8 @@ class ReportListController extends GetxController {
 
     await _fetchReportList();
   }
+
+  Future<void> refreshData() async{
+    await _fetchReportList();
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:example_nav2/app/data/models/constant/incident_status_item.dart';
 import 'package:example_nav2/app/data/models/enum/incident_status.dart';
+import 'package:example_nav2/app/data/models/image_data.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -11,6 +12,7 @@ import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
+import 'package:example_nav2/widgets/common/bottom_sheet/choose_image_bottom_sheet.dart';
 import 'package:example_nav2/widgets/common/button/app_button.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class EditReportView extends GetView<EditReportController> {
                     () {
                       final reportDetail = controller.reportDetail?.value;
                       final idIncidentStatus = controller.incidentStatus.value;
-                      print(idIncidentStatus);
+                      final imagesData = controller.imagesData;
                       return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -59,7 +61,7 @@ class EditReportView extends GetView<EditReportController> {
                               title: reportDetail?.incidentName,
                             ),
                             SizedBox(height: 12.h),
-                            _buildReplyTextField(),
+                            _buildReplyTextField(controller.replyContent!),
                             SizedBox(height: 7.h),
                             _DropDownMenu(
                               value: (idIncidentStatus.isNotEmpty)
@@ -71,24 +73,44 @@ class EditReportView extends GetView<EditReportController> {
                               },
                             ),
                             SizedBox(height: 7.h),
-                            _ChooseImages(),
+                            _ChooseImages(
+                              imagesData: imagesData.toList(),
+                            ),
                           ]);
                     },
                   )),
             ),
+             Obx(() {
+              return Visibility(
+                visible: controller.isLoading.value,
+                child: Positioned.fill(
+                    child: Container(
+                  color: AppColors.primaryDarkColor.withOpacity(.6),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: AppColors.errorColor,
+                  )),
+                )),
+              );
+            })
+
           ],
         ));
   }
 
-  Widget _buildReplyTextField() {
+  Widget _buildReplyTextField(String initText) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: TextInputField(
-          controller: controller.replyContentController,
           borderRadius: AppDimensions.defaultXLRadius,
           hintText: S.current.EDIT_REPORT__DESCRIPTION_OF_THE_PROBLEM,
-          maxLines: 10,
+          initValue: initText,
+          minLines: 30,
+          maxLines: 30,
+          onChanged: (value) {
+            controller.onReplyContentChanged(value);
+          },
         ),
       ),
     );
@@ -108,32 +130,65 @@ class EditReportView extends GetView<EditReportController> {
   }
 }
 
-class _ChooseImages extends StatelessWidget {
-  const _ChooseImages({
-    Key? key,
-  }) : super(key: key);
+class _ChooseImages extends GetView<EditReportController> {
+  final List<ImageData> imagesData;
+  const _ChooseImages({Key? key, this.imagesData = const []}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> items = _buildItems();
     return Row(
-      children: List.generate(
-          3,
-          (index) => Expanded(
-                  child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.5, color: AppColors.primaryLightColor)),
-                    padding: EdgeInsets.all(45),
-                    child: Assets.images.cameraIcon
-                        .svg(height: 47, fit: BoxFit.scaleDown),
-                  ),
-                ),
-              ))),
+      children: items,
     );
+  }
+
+  List<Widget> _buildItems() {
+    final result = List.generate(
+        imagesData.length,
+        (index) => Expanded(
+                child: Container(
+              height: 145.h,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 1.5, color: AppColors.primaryLightColor)),
+              child: (imagesData[index].isLocalFile)
+                  ? Image.file(
+                      imagesData[index].file!,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.network(
+                      imagesData[index].path!,
+                      fit: BoxFit.cover,
+                    ),
+            )));
+
+    while (result.length < 3) {
+      result.add(_buildPickImageButton());
+    }
+
+    return result;
+  }
+
+  Expanded _buildPickImageButton() {
+    return Expanded(
+        child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          final photoSource = await chooseImageBottomSheet();
+          controller.onChooseImage(photoSource);
+        },
+        child: Container(
+          height: 145.h,
+          decoration: BoxDecoration(
+              border:
+                  Border.all(width: 1.5, color: AppColors.primaryLightColor)),
+          padding: EdgeInsets.all(45),
+          child:
+              Assets.images.cameraIcon.svg(height: 47, fit: BoxFit.scaleDown),
+        ),
+      ),
+    ));
   }
 }
 

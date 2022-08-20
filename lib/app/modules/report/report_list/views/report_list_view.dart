@@ -43,8 +43,13 @@ class ReportListView extends GetView<ReportListController> {
         ),
         bottomNavigationBar: AppButton(
             text: 'Thêm báo cáo',
-            onTap: () {
-              Get.toNamed(CreateReportView.routeName);
+            onTap: () async {
+              final updated = await Get.toNamed(
+                CreateReportView.routeName,
+              );
+              if ((updated as bool?) == true) {
+                controller.refreshData();
+              }
             }),
         body: Stack(
           children: [

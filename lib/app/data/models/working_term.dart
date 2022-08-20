@@ -9,12 +9,11 @@ class WorkingTerm {
   final String? termName;
   @JsonKey(name: 'IdPhase')
   final String? idPhase;
+  @JsonKey(name: 'InstructionFile')
+  final String? instructionFile;
 
-  WorkingTerm({
-    this.idPhase,
-    this.idWorkingTerm,
-    this.termName,
-  });
+  WorkingTerm(
+      {this.idPhase, this.idWorkingTerm, this.termName, this.instructionFile});
 
   factory WorkingTerm.fromJson(Map<String, dynamic> json) {
     return _$WorkingTermFromJson(json);

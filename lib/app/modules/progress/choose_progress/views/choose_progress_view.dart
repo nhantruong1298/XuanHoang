@@ -39,7 +39,7 @@ class ChooseProgressView extends GetView<ChooseProgressController> {
         ),
         body: Stack(
           children: [
-            Positioned.fill(child: BlurBackGround()),
+            BlurBackGround(),
             SafeArea(
               child: Container(
                   width: double.infinity,
@@ -54,28 +54,34 @@ class ChooseProgressView extends GetView<ChooseProgressController> {
                           contentPadding: 20,
                           suffixIcon: Assets.images.searchIcon.svg(
                               height: 22, width: 22, fit: BoxFit.scaleDown),
+                          onChanged: (value) {
+                            controller.onSearchChanged(value ?? '');
+                          },
                         ),
                         SizedBox(height: 20.h),
                         Obx(() {
                           final listProgress = controller.listProgress;
                           return Expanded(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 10,
+                            child: RefreshIndicator(
+                              onRefresh: controller.onRefresh,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 10,
+                                ),
+                                itemCount: listProgress.length,
+                                itemBuilder: (context, index) {
+                                  final item = listProgress[index];
+                                  return _ProgressItem(
+                                    onTap: () {
+                                      controller.onProgressItemPressed(item);
+                                    },
+                                    fromDate: item.fromDate,
+                                    toDate: item.toDate,
+                                    title: item.name,
+                                  );
+                                },
                               ),
-                              itemCount: listProgress.length,
-                              itemBuilder: (context, index) {
-                                final item = listProgress[index];
-                                return _ProgressItem(
-                                  onTap: () {
-                                    controller.onProgressItemPressed(item);
-                                  },
-                                  fromDate: item.fromDate,
-                                  toDate: item.toDate,
-                                  title: item.name,
-                                );
-                              },
                             ),
                           );
                         })

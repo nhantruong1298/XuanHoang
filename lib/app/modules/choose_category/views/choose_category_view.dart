@@ -55,28 +55,32 @@ class ChooseCategoryView extends GetView<ChooseCategoryController> {
                         SearchInputField(
                           borderRadius: 25,
                           contentPadding: 20,
+                          onChanged: (value) {
+                            controller.onSearchChanged(value);
+                          },
                         ),
                         SizedBox(height: 20.h),
                         Obx(() {
                           final list = controller.listCategory;
                           return Expanded(
-                              child: ListView.separated(
-                                  itemBuilder: (context, index) {
-                                    return _StaffCategory(
-                                      onTap: () {
-                                        Get.toNamed(
-                                          ChooseJobView.routeName,
-                                          arguments: list[index].idWorkingTerm
-                                        );
-                                      },
-                                      termName: list[index].termName,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                  itemCount: list.length));
+                              child: RefreshIndicator(
+                            onRefresh: controller.onRefreshData,
+                            child: ListView.separated(
+                                itemBuilder: (context, index) {
+                                  return _StaffCategory(
+                                    onTap: () {
+                                      Get.toNamed(ChooseJobView.routeName,
+                                          arguments: list[index].idWorkingTerm);
+                                    },
+                                    termName: list[index].termName,
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                itemCount: list.length),
+                          ));
                         })
                       ])),
             ),

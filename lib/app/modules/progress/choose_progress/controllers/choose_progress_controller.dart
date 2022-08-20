@@ -8,22 +8,38 @@ import 'package:get/get.dart' hide Progress;
 
 class ChooseProgressController extends GetxController {
   final ApiService _apiService;
-  final listProgress = <Progress>[].obs;
+  var listProgress = <Progress>[].obs;
+
+  List<Progress> _listProgressResult = [];
+  String searchText = '';
   ChooseProgressController(this._apiService);
+
+  late String? idProject;
 
   @override
   void onInit() {
     super.onInit();
+    idProject = Get.arguments as String?;
+
     _fetchProgress();
   }
 
   Future<void> _fetchProgress() async {
-    final id = Get.arguments as String?;
+    if (idProject != null) {
+      _listProgressResult =
+          await _apiService.getPhaseByProjectId(idProject ?? '');
 
-    if (id != null) {
-      final result = await _apiService.getPhaseByProjectId(id);
-
-      listProgress.value = result;
+      if (searchText.isEmpty) {
+        listProgress.value = _listProgressResult;
+      } else {
+        listProgress.value = _listProgressResult
+            .where((element) =>
+                element.name
+                    ?.toLowerCase()
+                    .startsWith(searchText.toLowerCase()) ==
+                true)
+            .toList();
+      }
     }
   }
 
@@ -32,6 +48,25 @@ class ChooseProgressController extends GetxController {
       Get.toNamed(ChooseCategoryView.routeName, arguments: item.idPhase);
     } else {
       Get.toNamed(CheckProgressView.routeName, arguments: item.idPhase);
+    }
+  }
+
+  Future<void> onRefresh() async {
+    await _fetchProgress();
+  }
+
+  void onSearchChanged(String value) {
+    searchText = value;
+    if (searchText.isEmpty) {
+      listProgress.value = _listProgressResult;
+    } else {
+      listProgress.value = _listProgressResult
+          .where((element) =>
+              element.name
+                  ?.toLowerCase()
+                  .startsWith(searchText.toLowerCase()) ==
+              true)
+          .toList();
     }
   }
 }

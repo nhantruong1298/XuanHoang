@@ -22,4 +22,8 @@ class DocumentController extends GetxController {
       listDocument.value = result;
     }
   }
+
+  Future<void> onRefreshData() async {
+    await _fetchDocument();
+  }
 }

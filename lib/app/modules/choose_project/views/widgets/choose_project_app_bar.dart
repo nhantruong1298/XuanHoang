@@ -10,15 +10,17 @@ class ChooseProjectAppBar extends StatelessWidget implements PreferredSize {
   final double? titleSize;
   final List<Widget>? actions;
   final double? height;
-  ChooseProjectAppBar(
-      {Key? key,
-      this.leadingIcon,
-      this.leadingSize = 30,
-      this.titleSize,
-      this.title,
-      this.actions = const [],
-      this.height = 50})
-      : super(key: key);
+  final Widget? leading;
+  ChooseProjectAppBar({
+    Key? key,
+    this.leadingIcon,
+    this.leadingSize = 30,
+    this.titleSize,
+    this.title,
+    this.actions = const [],
+    this.height = 50,
+    this.leading,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class ChooseProjectAppBar extends StatelessWidget implements PreferredSize {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
+        leading: leading ?? IconButton(
           onPressed: () {
             Get.back();
           },

@@ -49,19 +49,22 @@ class WarningView extends GetView<WarningController> {
                         Obx(() {
                           final listWarning = controller.listWarning;
                           return Expanded(
-                            child: ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 10,
+                            child: RefreshIndicator(
+                              onRefresh: controller.onRefreshData,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                  height: 10,
+                                ),
+                                itemCount: listWarning.length,
+                                itemBuilder: (context, index) {
+                                  final item = listWarning[index];
+                                  return _WarningItem(
+                                    onTap: () {},
+                                    name: item.detailName,
+                                  );
+                                },
                               ),
-                              itemCount: listWarning.length,
-                              itemBuilder: (context, index) {
-                                final item = listWarning[index];
-                                return _WarningItem(
-                                  onTap: () {},
-                                  name: item.detailName,
-                                );
-                              },
                             ),
                           );
                         })

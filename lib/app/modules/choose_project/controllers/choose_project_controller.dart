@@ -6,6 +6,9 @@ import 'package:get/get.dart';
 class ChooseProjectController extends GetxController {
   final ApiService _apiService;
   final listProject = <Project>[].obs;
+
+  List<Project> _listProjectResult = [];
+  String _searchText = '';
   late final ProjectType? projectType;
   ChooseProjectController(this._apiService);
 
@@ -20,20 +23,39 @@ class ChooseProjectController extends GetxController {
     switch (projectType) {
       case ProjectType.manual:
         {
-          final result = await _apiService.getProjects();
-
-          listProject.value = result;
+          _listProjectResult = await _apiService.getProjects();
+          onSearchChanged(_searchText);
         }
         break;
       case ProjectType.incident:
         {
-          final result = await _apiService.loadProjectIncident();
-          listProject.value = result;
+          _listProjectResult = await _apiService.loadProjectIncident();
+          onSearchChanged(_searchText);
         }
 
         break;
       default:
         break;
+    }
+  }
+
+  Future<void> onRefreshData() async {
+    await _fetchProject();
+  }
+
+  void onSearchChanged(String searchText) {
+    _searchText = searchText;
+
+    if (_searchText.isEmpty) {
+      listProject.value = _listProjectResult;
+    } else {
+      listProject.value = _listProjectResult
+          .where((element) =>
+              element.name
+                  ?.toLowerCase()
+                  .startsWith(_searchText.toLowerCase()) ==
+              true)
+          .toList();
     }
   }
 }

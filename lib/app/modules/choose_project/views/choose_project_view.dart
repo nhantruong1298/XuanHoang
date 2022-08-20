@@ -48,26 +48,32 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
                             color: Color(0xFFC0C0C0),
                             size: 22,
                           ),
+                          onChanged: (value) {
+                            controller.onSearchChanged(value ?? '');
+                          },
                         ),
                         SizedBox(height: 20.h),
                         Obx(
                           () {
                             final list = controller.listProject;
                             return Expanded(
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 10),
-                                itemCount: list.length,
-                                itemBuilder: (context, index) {
-                                  return _ProjectItem(
-                                      name: list[index].name,
-                                      address: list[index].address,
-                                      onTap: () {
-                                        Get.toNamed(
-                                            ChooseProgressView.routeName,
-                                            arguments: list[index].idProject);
-                                      });
-                                },
+                              child: RefreshIndicator(
+                                onRefresh: controller.onRefreshData,
+                                child: ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 10),
+                                  itemCount: list.length,
+                                  itemBuilder: (context, index) {
+                                    return _ProjectItem(
+                                        name: list[index].name,
+                                        address: list[index].address,
+                                        onTap: () {
+                                          Get.toNamed(
+                                              ChooseProgressView.routeName,
+                                              arguments: list[index].idProject);
+                                        });
+                                  },
+                                ),
                               ),
                             );
                           },

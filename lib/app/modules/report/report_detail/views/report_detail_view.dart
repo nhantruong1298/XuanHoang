@@ -10,8 +10,10 @@ import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/button/app_button.dart';
+import 'package:example_nav2/widgets/layouts/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ReportDetailView extends GetView<ReportDetailController> {
@@ -25,9 +27,15 @@ class ReportDetailView extends GetView<ReportDetailController> {
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
         appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.EDIT_REPORT__TITLE,
           actions: _buildHeaderActions,
+          leading: IconButton(
+            onPressed: () {
+              Get.back(result: controller.isUpdated);
+            },
+            icon: SvgPicture.asset(Assets.images.arrowBackIcon.path,
+                height: 30, width: 30, fit: BoxFit.scaleDown),
+          ),
         ),
         body: Stack(
           children: [
@@ -51,17 +59,18 @@ class ReportDetailView extends GetView<ReportDetailController> {
                             userName: reportDetail.fullName,
                           ),
                           const Spacer(),
-                          _ReportImages(
-                            images: [
-                              Assets.images.bgLoginPng.path,
-                              Assets.images.bgLoginPng.path,
-                              Assets.images.bgLoginPng.path
-                            ],
-                          ),
+                          Obx(() {
+                            final images = controller.listImageData;
+                            return _ReportImages(images: images.toList());
+                          }),
                           _BottomButton(),
                         ]);
                   })),
             ),
+            Obx(() {
+              final isLoading = controller.isLoading;
+              return Visibility(visible: isLoading.value, child: LoadingView());
+            })
           ],
         ));
   }
@@ -137,7 +146,7 @@ class _ReportImages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 145,
+      height: 145.h,
       width: double.infinity,
       child: GridView.builder(
           padding: EdgeInsets.zero,
@@ -148,14 +157,32 @@ class _ReportImages extends StatelessWidget {
           itemBuilder: (context, index) {
             return Container(
                 color: Colors.white,
+                height: 145.h,
                 padding: EdgeInsets.all(1.5),
-                child: Image.asset(images[index], fit: BoxFit.fill));
+                child: Image.network(
+                  images[index],
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    return (loadingProgress != null)
+                        ? Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            color: AppColors.primaryLightColor,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.errorColor,
+                              ),
+                            ),
+                          )
+                        : child;
+                  },
+                ));
           }),
     );
   }
 }
 
-class _BottomButton extends StatelessWidget {
+class _BottomButton extends GetView<ReportDetailController> {
   const _BottomButton({Key? key}) : super(key: key);
 
   @override
@@ -170,19 +197,21 @@ class _BottomButton extends StatelessWidget {
             height: 65.h,
             padding: EdgeInsets.all(10),
             child: Assets.images.leftIcon.svg(width: 50, fit: BoxFit.scaleDown),
-            // flex: 1,
           ),
         ),
       ),
       Expanded(
         child: AppButton(
-          onTap: () {
-            Get.toNamed(EditReportView.routeName,
-                arguments: ReportDetailResponse());
+          onTap: () async {
+            final detail = controller.reportDetail.value;
+            final result =
+                await Get.toNamed(EditReportView.routeName, arguments: detail);
+            if ((result as bool?) == true) {
+              controller.refreshData();
+            }
           },
           text: "Trả lời",
         ),
-        // flex: 4,
       ),
       Material(
         color: Colors.transparent,

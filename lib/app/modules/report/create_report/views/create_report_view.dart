@@ -113,6 +113,19 @@ class CreateReportView extends GetView<CreateReportController> {
                         ]),
                   )),
             ),
+            Obx(() {
+              return Visibility(
+                visible: controller.isLoading.value,
+                child: Positioned.fill(
+                    child: Container(
+                  color: AppColors.primaryDarkColor.withOpacity(.6),
+                  child: Center(
+                      child: CircularProgressIndicator(
+                    color: AppColors.errorColor,
+                  )),
+                )),
+              );
+            })
           ],
         ));
   }
@@ -137,7 +150,7 @@ class _ChooseImages extends StatelessWidget {
 
   List<Widget> _buildItems() {
     List<Widget> result = [];
-    if (images.length > 3) {
+    if (images.length >= 3) {
       final items = images.skip(images.length - 3).toList();
       result = List.generate(
           items.length,
@@ -152,23 +165,6 @@ class _ChooseImages extends StatelessWidget {
                         border: Border.all(
                             width: 1.5, color: AppColors.primaryLightColor)),
                     child: Image.file(items[index], fit: BoxFit.cover),
-                  ),
-                ),
-              )));
-    } else if (images.length == 3) {
-      result = List.generate(
-          images.length,
-          (index) => Expanded(
-                  child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onItemTap,
-                  child: Container(
-                    height: 145.h,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.5, color: AppColors.primaryLightColor)),
-                    child: Image.file(images[index], fit: BoxFit.cover),
                   ),
                 ),
               )));

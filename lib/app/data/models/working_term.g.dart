@@ -10,6 +10,7 @@ WorkingTerm _$WorkingTermFromJson(Map<String, dynamic> json) => WorkingTerm(
       idPhase: json['IdPhase'] as String?,
       idWorkingTerm: json['IdWorkingTerm'] as String?,
       termName: json['TermName'] as String?,
+      instructionFile: json['InstructionFile'] as String?,
     );
 
 Map<String, dynamic> _$WorkingTermToJson(WorkingTerm instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$WorkingTermToJson(WorkingTerm instance) =>
       'IdWorkingTerm': instance.idWorkingTerm,
       'TermName': instance.termName,
       'IdPhase': instance.idPhase,
+      'InstructionFile': instance.instructionFile,
     };

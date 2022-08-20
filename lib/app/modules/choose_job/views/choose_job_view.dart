@@ -53,7 +53,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
         ),
         body: Stack(
           children: [
-            Positioned.fill(child: BlurBackGround()),
+            BlurBackGround(),
             SafeArea(
               child: Container(
                   width: double.infinity,
@@ -65,54 +65,60 @@ class ChooseJobView extends GetView<ChooseJobController> {
                         SizedBox(height: 30.h),
                         SearchInputField(
                           borderRadius: AppDimensions.defaultXLRadius,
+                          onChanged: (value) {
+                            controller.onSearchChanged(value);
+                          },
                         ),
                         SizedBox(height: 20.h),
                         Obx(() {
                           final list = controller.listJob;
                           return Expanded(
-                              child: ListView.separated(
-                                  itemBuilder: (context, index) {
-                                    final item = list[index];
-                                    return _StaffJob(
-                                      onTap: () {},
-                                      onSuccessTap: () async {
-                                        final note =
-                                            await showRemarkDialog(context);
-                                        controller.doCheck(
-                                            item.copyWith(
-                                                idWorkingItemStatus:
-                                                    WorkingItemStatus.success),
-                                            note);
-                                      },
-                                      onFailedTap: () async {
-                                        final note =
-                                            await showRemarkDialog(context);
-                                        controller.doCheck(
-                                            item.copyWith(
-                                                idWorkingItemStatus:
-                                                    WorkingItemStatus.failed),
-                                            note);
-                                      },
-                                      onImageTap: () {
-                                        Get.toNamed(ImagesHistoryView.routeName,
-                                            arguments: item.idWorkingItem);
-                                      },
-                                      onCameraTap: () {
-                                        Get.toNamed(AddImageView.routeName,
-                                            arguments: item.idWorkingItem);
-                                      },
-                                      name: item.itemName,
-                                      description: item.description,
-                                      idWorkingItem: item.idWorkingItem,
-                                      idWorkingItemStatus:
-                                          item.idWorkingItemStatus,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                  itemCount: list.length));
+                              child: RefreshIndicator(
+                            onRefresh: controller.onRefreshData,
+                            child: ListView.separated(
+                                itemBuilder: (context, index) {
+                                  final item = list[index];
+                                  return _StaffJob(
+                                    onTap: () {},
+                                    onSuccessTap: () async {
+                                      final note =
+                                          await showRemarkDialog(context);
+                                      controller.doCheck(
+                                          item.copyWith(
+                                              idWorkingItemStatus:
+                                                  WorkingItemStatus.success),
+                                          note);
+                                    },
+                                    onFailedTap: () async {
+                                      final note =
+                                          await showRemarkDialog(context);
+                                      controller.doCheck(
+                                          item.copyWith(
+                                              idWorkingItemStatus:
+                                                  WorkingItemStatus.failed),
+                                          note);
+                                    },
+                                    onImageTap: () {
+                                      Get.toNamed(ImagesHistoryView.routeName,
+                                          arguments: item.idWorkingItem);
+                                    },
+                                    onCameraTap: () {
+                                      Get.toNamed(AddImageView.routeName,
+                                          arguments: item.idWorkingItem);
+                                    },
+                                    name: item.itemName,
+                                    description: item.description,
+                                    idWorkingItem: item.idWorkingItem,
+                                    idWorkingItemStatus:
+                                        item.idWorkingItemStatus,
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                itemCount: list.length),
+                          ));
                         }),
                         SizedBox(height: 20.h),
                       ])),

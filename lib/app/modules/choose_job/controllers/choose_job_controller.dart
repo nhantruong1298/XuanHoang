@@ -4,25 +4,26 @@ import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:get/get.dart' hide Progress;
 import 'package:uuid/uuid.dart';
-import 'package:xh_api/xh_api.dart';
 
 class ChooseJobController extends GetxController {
   final ApiService _apiService;
   final listJob = <WorkingItem>[].obs;
+  List<WorkingItem> _listJobResult = [];
+  String _searchText = '';
   ChooseJobController(this._apiService);
+  late String? termId;
 
   @override
   void onInit() {
     super.onInit();
+    termId = Get.arguments as String?;
     _fetchJobs();
   }
 
   Future<void> _fetchJobs() async {
-    final termId = Get.arguments as String?;
-
     if (termId != null) {
-      final result = await _apiService.getWorkingItemsByTermId(termId);
-      listJob.value = result;
+      _listJobResult = await _apiService.getWorkingItemsByTermId(termId!);
+      onSearchChanged(_searchText);
     }
   }
 
@@ -60,10 +61,30 @@ class ChooseJobController extends GetxController {
 
   Future<dynamic> loadWorkingItemImages(String idWorkingItem) async {
     try {
-      final result = await _apiService.loadWorkingItemImagesHistory(idWorkingItem);
+      final result =
+          await _apiService.loadWorkingItemImagesHistory(idWorkingItem);
       print(result);
     } catch (error) {
       print(error);
+    }
+  }
+
+  Future<void> onRefreshData() async {
+    await _fetchJobs();
+  }
+
+  void onSearchChanged(String value) {
+    _searchText = value;
+    if (_searchText.isEmpty) {
+      listJob.value = _listJobResult;
+    } else {
+      listJob.value = _listJobResult
+          .where((element) =>
+              element.itemName
+                  ?.toLowerCase()
+                  .startsWith(_searchText.toLowerCase()) ==
+              true)
+          .toList();
     }
   }
 }

@@ -76,11 +76,11 @@ class HomeView extends StatelessWidget {
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ReportListView.routeName,arguments: AuthService.to.profile?.idProject);
+            Get.toNamed(ReportListView.routeName,
+                arguments: AuthService.to.profile?.idProject);
           },
           icon: Assets.images.customerIcon.path,
           title: S.current.CHOOSE_FEATURE__REPORT_THE_PROBLEM,
-          amount: 99,
         ),
         SizedBox(height: 30.h),
         _FeatureItem(
@@ -90,7 +90,6 @@ class HomeView extends StatelessWidget {
           },
           icon: Assets.images.warnIcon.path,
           title: S.current.CHOOSE_FEATURE__WARNING,
-          amount: 99,
         ),
         SizedBox(height: 30.h),
         _FeatureItem(
@@ -124,7 +123,6 @@ class HomeView extends StatelessWidget {
           },
           icon: Assets.images.customerIcon.path,
           title: 'Kiểm tra sự cố',
-          amount: 99,
         ),
       ],
     );
