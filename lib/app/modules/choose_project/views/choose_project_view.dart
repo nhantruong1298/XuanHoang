@@ -11,6 +11,7 @@ import 'package:example_nav2/app/modules/report/report_list/views/report_list_vi
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
+import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,16 +42,11 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 30.h),
-                        TextInputField(
+                        SearchInputField(
                           borderRadius: 25,
                           contentPadding: 20,
-                          suffixIcon: Icon(
-                            Icons.search,
-                            color: Color(0xFFC0C0C0),
-                            size: 22,
-                          ),
                           onChanged: (value) {
-                            controller.onSearchChanged(value ?? '');
+                            controller.onSearchChanged(value);
                           },
                         ),
                         SizedBox(height: 20.h),

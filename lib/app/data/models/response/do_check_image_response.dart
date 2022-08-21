@@ -4,7 +4,7 @@ part 'do_check_image_response.g.dart';
 @JsonSerializable()
 class DoCheckImageResponse {
   @JsonKey(name: 'ReturnId')
-  final int? returnId;
+  final String? returnId;
 
   @JsonKey(name: 'Message')
   final String? message;

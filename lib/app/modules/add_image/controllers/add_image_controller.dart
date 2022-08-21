@@ -23,6 +23,7 @@ class AddImageController extends GetxController {
   }
 
   Future<void> fetchImages() async {
+    listImage.clear();
     if (idWorkingItem != null) {
       final response =
           await _apiService.loadWorkingItemImages(idWorkingItem ?? '');

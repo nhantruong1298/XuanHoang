@@ -1,7 +1,6 @@
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
-import 'package:example_nav2/widgets/layouts/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,14 +38,14 @@ class LoginView extends GetView<LoginController> {
                       TextInputField(
                         hintText: S.current.SIGN_IN__USERNAME,
                         name: controller.USER_NAME_KEY,
-                        initValue: 'hnlam',
+                        initValue: '',
                       ),
                       SizedBox(height: 23.h),
                       TextInputField(
                         hintText: S.current.SIGN_IN__PASSWORD,
                         name: controller.PASSWORD_KEY,
                         obscureText: true,
-                        initValue: '1351986',
+                        initValue: '',
                       ),
                       SizedBox(height: 80.h),
                       Obx(() {

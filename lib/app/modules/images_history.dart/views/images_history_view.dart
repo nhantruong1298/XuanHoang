@@ -1,3 +1,5 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
@@ -10,14 +12,13 @@ import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ImagesHistoryView extends GetView<ImageHistoryController> {
   static const String path = '/images-history';
   static const String routeName =
-      '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}${ChooseJobView.path}$path';
+      '${HomeView.path}${ChooseProgressView.path}${ChooseTermView.path}${ChooseJobView.path}$path';
   const ImagesHistoryView({Key? key}) : super(key: key);
 
   @override
@@ -29,15 +30,19 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
           actions: [
-            IconButton(
-                onPressed: () async {
-                  final isUpdated = await Get.toNamed(AddImageView.routeName);
-                  if (isUpdated == true) {
-                    controller.refreshData();
-                  }
-                },
-                icon: Assets.images.cameraIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
+            (AuthService.to.accountType == AccountType.staff)
+                ? IconButton(
+                    onPressed: () async {
+                      final isUpdated = await Get.toNamed(
+                          AddImageView.routeName,
+                          arguments: controller.idWorkingItem);
+                      if (isUpdated == true) {
+                        controller.refreshData();
+                      }
+                    },
+                    icon: Assets.images.cameraIcon
+                        .svg(height: 30, fit: BoxFit.scaleDown))
+                : const SizedBox.shrink(),
             IconButton(
                 onPressed: () {
                   Get.offNamedUntil(HomeView.routeName, (route) => false);
@@ -58,10 +63,6 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
                   height: double.infinity,
                   child: Column(
                     children: [
-                      // _TitleGridView(
-                      //   date: '7/7/2022',
-                      //   name: 'NV01',
-                      // ),
                       Obx(() {
                         final images = controller.listImageData;
                         return _ImagesGridView(
@@ -156,11 +157,23 @@ class _ImageGridViewItem extends StatelessWidget {
       width: 40.h,
       height: 40.h,
       color: Colors.white,
-      child: Image(
+      child: Image.network(
+        data,
         fit: BoxFit.cover,
-        image: NetworkImage(
-          data,
-        ),
+        loadingBuilder: (context, child, loadingProgress) {
+          return (loadingProgress != null)
+              ? Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.primaryLightColor,
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.errorColor,
+                    ),
+                  ),
+                )
+              : child;
+        },
       ),
     );
   }

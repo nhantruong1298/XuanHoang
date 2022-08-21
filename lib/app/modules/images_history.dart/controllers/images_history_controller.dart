@@ -19,6 +19,7 @@ class ImageHistoryController extends GetxController {
   }
 
   Future<void> _fetchImagesHistory() async {
+    listImageData.clear();
     if (idWorkingItem != null) {
       final listHistoryResult =
           await _apiService.loadWorkingItemImagesHistory(idWorkingItem!);

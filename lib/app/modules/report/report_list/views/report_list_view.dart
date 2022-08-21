@@ -1,4 +1,6 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/models/enum/incident_status.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -41,16 +43,18 @@ class ReportListView extends GetView<ReportListController> {
             )
           ],
         ),
-        bottomNavigationBar: AppButton(
-            text: 'Thêm báo cáo',
-            onTap: () async {
-              final updated = await Get.toNamed(
-                CreateReportView.routeName,
-              );
-              if ((updated as bool?) == true) {
-                controller.refreshData();
-              }
-            }),
+        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff)
+            ? null
+            : AppButton(
+                text: 'Thêm báo cáo',
+                onTap: () async {
+                  final updated = await Get.toNamed(
+                    CreateReportView.routeName,
+                  );
+                  if ((updated as bool?) == true) {
+                    controller.refreshData();
+                  }
+                }),
         body: Stack(
           children: [
             Positioned.fill(child: BlurBackGround()),
@@ -67,6 +71,7 @@ class ReportListView extends GetView<ReportListController> {
                           final reportList = controller.reportList;
                           return Expanded(
                               child: ListView.separated(
+                                  padding: EdgeInsets.symmetric(vertical: 16),
                                   itemBuilder: (context, index) {
                                     final item = reportList[index];
                                     return _ReportItem(

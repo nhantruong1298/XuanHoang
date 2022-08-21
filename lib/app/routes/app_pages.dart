@@ -76,9 +76,7 @@ class AppPages {
                 preventDuplicates: true,
                 name: DocumentView.path,
                 page: () => DocumentView(),
-                bindings: [
-                  DocumentBinding()
-                ],
+                bindings: [DocumentBinding()],
               ),
               GetPage(
                   preventDuplicates: true,
@@ -102,8 +100,8 @@ class AppPages {
                     ),
                     GetPage(
                         preventDuplicates: true,
-                        name: ChooseCategoryView.path,
-                        page: () => ChooseCategoryView(),
+                        name: ChooseTermView.path,
+                        page: () => ChooseTermView(),
                         bindings: [
                           ChooseCategoryBinding()
                         ],
@@ -143,9 +141,7 @@ class AppPages {
                       preventDuplicates: true,
                       name: CreateReportView.path,
                       page: () => CreateReportView(),
-                      bindings: [
-                        CreateReportBinding()
-                      ],
+                      bindings: [CreateReportBinding()],
                     ),
                     GetPage(
                         preventDuplicates: true,

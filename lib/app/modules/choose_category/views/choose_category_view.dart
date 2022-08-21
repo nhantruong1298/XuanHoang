@@ -1,3 +1,7 @@
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
+import 'package:example_nav2/app/data/models/working_term.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_category/controllers/choose_category_controller.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
@@ -14,11 +18,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class ChooseCategoryView extends GetView<ChooseCategoryController> {
-  static const String path = '/choose-category';
+class ChooseTermView extends GetView<ChooseCategoryController> {
+  static const String path = '/choose-term';
   static const String routeName =
       '${HomeView.path}${ChooseProgressView.path}$path';
-  const ChooseCategoryView({Key? key}) : super(key: key);
+  const ChooseTermView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,36 +65,29 @@ class ChooseCategoryView extends GetView<ChooseCategoryController> {
                         ),
                         SizedBox(height: 20.h),
                         Obx(() {
-                          final list = controller.listCategory;
+                          final listWorkingTerm =
+                              controller.listWorkingTerm.toList();
+                          final listTermStatistic =
+                              controller.listTermStatistic.toList();
+
+                          bool isStaff =
+                              AuthService.to.accountType == AccountType.staff;
+
                           return Expanded(
                               child: RefreshIndicator(
                             onRefresh: controller.onRefreshData,
                             child: ListView.separated(
                                 itemBuilder: (context, index) {
-                                  return _StaffCategory(
-                                    onTap: () async {
-                                      final isUpdated = await Get.toNamed(
-                                          ChooseJobView.routeName,
-                                          arguments: list[index].idWorkingTerm);
-
-                                      if (isUpdated == true) {
-                                        controller.onRefreshData();
-                                      }
-                                    },
-                                    termName: list[index].termName,
-                                    onInfoPressed: () {
-                                      controller.onInfoPressed(
-                                          list[index].instructionFile);
-                                    },
-                                    instructionFile:
-                                        list[index].instructionFile,
-                                  );
+                                  return (isStaff)
+                                      ? _buildStaffTerm(listWorkingTerm, index)
+                                      : _buildCustomerTerm(
+                                          listTermStatistic, index);
                                 },
                                 separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                itemCount: list.length),
+                                    const SizedBox(height: 10),
+                                itemCount: (isStaff)
+                                    ? listWorkingTerm.length
+                                    : listTermStatistic.length),
                           ));
                         })
                       ])),
@@ -98,14 +95,50 @@ class ChooseCategoryView extends GetView<ChooseCategoryController> {
           ],
         ));
   }
+
+  Widget _buildStaffTerm(List<WorkingTerm> list, int index) {
+    return _StaffTerm(
+      onTap: () async {
+        final isUpdated = await Get.toNamed(ChooseJobView.routeName,
+            arguments: list[index].idWorkingTerm);
+
+        if (isUpdated == true) {
+          controller.onRefreshData();
+        }
+      },
+      termName: list[index].termName,
+      onInfoPressed: () {
+        controller.onInfoPressed(list[index].instructionFile);
+      },
+      instructionFile: list[index].instructionFile,
+    );
+  }
+
+  Widget _buildCustomerTerm(List<TermStatistic> list, int index) {
+    final item = list[index];
+    return _CustomerTerm(
+      termName: item.termName,
+      percentComplete: item.percentComplete,
+      percentGood: item.percentGood,
+      percentNotGood: item.percentNotGood,
+      onTap: () async {
+        final isUpdated = await Get.toNamed(ChooseJobView.routeName,
+            arguments: list[index].idWorkingTerm);
+
+        if (isUpdated == true) {
+          controller.onRefreshData();
+        }
+      },
+    );
+  }
 }
 
-class _StaffCategory extends StatelessWidget {
+class _StaffTerm extends StatelessWidget {
   final String? termName;
   final String? instructionFile;
   final VoidCallback? onTap;
   final VoidCallback? onInfoPressed;
-  const _StaffCategory({
+  const _StaffTerm({
     Key? key,
     this.termName,
     this.onTap,
@@ -152,9 +185,19 @@ class _StaffCategory extends StatelessWidget {
   }
 }
 
-class _CustomerCategory extends StatelessWidget {
-  const _CustomerCategory({
+class _CustomerTerm extends StatelessWidget {
+  final VoidCallback? onTap;
+  final String? termName;
+  final String? percentComplete;
+  final String? percentGood;
+  final String? percentNotGood;
+  const _CustomerTerm({
     Key? key,
+    this.onTap,
+    this.percentComplete,
+    this.percentGood,
+    this.percentNotGood,
+    this.termName,
   }) : super(key: key);
 
   @override
@@ -169,29 +212,29 @@ class _CustomerCategory extends StatelessWidget {
         child: Material(
           color: AppColors.primaryLightColor,
           child: InkWell(
-            onTap: () {
-              Get.toNamed(ChooseJobView.routeName);
-            },
+            onTap: onTap,
             child: Container(
-              padding: EdgeInsets.all(16),
+              padding: EdgeInsets.all(9),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Row(children: [
-                Text('Kiểm tra đầu báo khói',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 17.sp)),
                 Expanded(
-                    child: Column(
+                  child: Text('$termName',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                ),
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                      alignment: Alignment.center,
+                      width: 75.w,
+                      padding: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
                           color: AppColors.green700,
                           borderRadius: BorderRadius.circular(50)),
-                      child: Text('${65}%',
+                      child: Text('$percentComplete',
                           style: TextStyle(
                               fontSize: 20.sp,
                               fontWeight: FontWeight.w700,
@@ -199,18 +242,18 @@ class _CustomerCategory extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Container(
-                      width: 150,
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 3.h),
+                            alignment: Alignment.center,
+                            width: 75.w,
+                            padding: EdgeInsets.symmetric(vertical: 3.h),
                             decoration: BoxDecoration(
                                 color: AppColors.green400,
                                 borderRadius: BorderRadius.circular(50)),
-                            child: Text('${65}%',
+                            child: Text('$percentGood',
                                 style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
@@ -218,12 +261,13 @@ class _CustomerCategory extends StatelessWidget {
                           ),
                           const SizedBox(width: 5),
                           Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.w, vertical: 3.h),
+                            alignment: Alignment.center,
+                            width: 75.w,
+                            padding: EdgeInsets.symmetric(vertical: 3.h),
                             decoration: BoxDecoration(
                                 color: AppColors.errorColor,
                                 borderRadius: BorderRadius.circular(50)),
-                            child: Text('${35}%',
+                            child: Text('$percentNotGood',
                                 style: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w700,
@@ -233,7 +277,7 @@ class _CustomerCategory extends StatelessWidget {
                       ),
                     )
                   ],
-                ))
+                )
               ]),
             ),
           ),

@@ -1,4 +1,3 @@
-import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -31,7 +30,7 @@ class CheckProgressView extends GetView<CheckProgressController> {
           actions: [
             IconButton(
                 onPressed: () {
-                   Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  Get.offNamedUntil(HomeView.routeName, (route) => false);
                 },
                 icon: Assets.images.homeIcon
                     .svg(height: 30, fit: BoxFit.scaleDown)),
@@ -54,24 +53,51 @@ class CheckProgressView extends GetView<CheckProgressController> {
                         SizedBox(height: 30.h),
                         Expanded(
                             child: Container(
+                          width: double.infinity,
                           padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
                               color: AppColors.primaryLightColor,
                               borderRadius: BorderRadius.circular(
                                   AppDimensions.defaultLRadius)),
-                          child: Column(
-                            children: [
-                              _ListTitle(),
-                              const SizedBox(height: 10),
-                              Expanded(
-                                  child: ListView.separated(
-                                itemCount: 10,
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 15),
-                                itemBuilder: (context, index) => _ListItem(),
-                              ))
-                            ],
-                          ),
+                          child: Obx(() {
+                            final phaseStatistic = controller.phaseStatistic;
+
+                            if (phaseStatistic.value.idPhase != null) {
+                              return Column(
+                                children: [
+                                  const SizedBox(height: 50),
+                                  _TitleStatisticReport(
+                                    percentComplete:
+                                        phaseStatistic.value.percentComplete,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Expanded(
+                                      child: ListView.separated(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          itemCount: phaseStatistic.value
+                                                  .termStatistic?.length ??
+                                              0,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(height: 15),
+                                          itemBuilder: (context, index) {
+                                            final term = phaseStatistic
+                                                .value.termStatistic![index];
+                                            return _TermStatisticReport(
+                                              percentComplete:
+                                                  term.percentComplete,
+                                              percentGood: term.percentGood,
+                                              percentNotGood:
+                                                  term.percentNotGood,
+                                              termName: term.termName,
+                                            );
+                                          }))
+                                ],
+                              );
+                            }
+
+                            return const SizedBox.shrink();
+                          }),
                         )),
                         const SizedBox(height: 20),
                         AppButton(
@@ -87,10 +113,18 @@ class CheckProgressView extends GetView<CheckProgressController> {
   }
 }
 
-class _ListItem extends StatelessWidget {
-  const _ListItem({
-    Key? key,
-  }) : super(key: key);
+class _TermStatisticReport extends StatelessWidget {
+  final String? termName;
+  final String? percentComplete;
+  final String? percentGood;
+  final String? percentNotGood;
+  const _TermStatisticReport(
+      {Key? key,
+      this.percentComplete,
+      this.percentGood,
+      this.percentNotGood,
+      this.termName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +133,15 @@ class _ListItem extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text('Hạn mục 1: ',
-                style: TextStyle(
-                  color: AppColors.textColor,
-                  fontSize: 20.sp,
-                )),
+            Flexible(
+              child: Text('$termName : ',
+                  style: TextStyle(
+                    color: AppColors.textColor,
+                    fontSize: 20.sp,
+                  )),
+            ),
             Text(
-              '20%',
+              '$percentComplete',
               style: TextStyle(
                   color: AppColors.green700,
                   fontSize: 20.sp,
@@ -115,15 +151,16 @@ class _ListItem extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(width: 30),
             Text('Đạt: ',
                 style: TextStyle(
                   color: AppColors.textColor,
                   fontSize: 20.sp,
                 )),
             Text(
-              '20%',
+              '$percentGood',
               style: TextStyle(
                   color: AppColors.green700,
                   fontSize: 20.sp,
@@ -140,7 +177,7 @@ class _ListItem extends StatelessWidget {
                   fontSize: 20.sp,
                 )),
             Text(
-              '35%',
+              '$percentNotGood',
               style: TextStyle(
                   color: AppColors.errorColor,
                   fontSize: 20.sp,
@@ -153,9 +190,11 @@ class _ListItem extends StatelessWidget {
   }
 }
 
-class _ListTitle extends StatelessWidget {
-  const _ListTitle({
+class _TitleStatisticReport extends StatelessWidget {
+  final String? percentComplete;
+  const _TitleStatisticReport({
     Key? key,
+    this.percentComplete,
   }) : super(key: key);
 
   @override
@@ -164,14 +203,14 @@ class _ListTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Hoàn thành ',
+          'Hoàn thành: ',
           style: TextStyle(
             fontSize: 25.sp,
             fontWeight: FontWeight.w700,
           ),
         ),
         Text(
-          '60%',
+          percentComplete ?? '',
           style: TextStyle(
               fontSize: 25.sp,
               fontWeight: FontWeight.w700,

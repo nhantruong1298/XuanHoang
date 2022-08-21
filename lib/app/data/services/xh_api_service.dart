@@ -15,6 +15,7 @@ import 'package:example_nav2/app/data/models/response/edit_working_item_response
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
 import 'package:example_nav2/app/data/models/response/project_incident_response.dart';
+import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
@@ -133,5 +134,11 @@ abstract class XHApiService {
   Future<void> workingTermReport(
     @Query('idWorkingTerm') String idWorkingTerm,
     @Query('customerName') String customerName,
+  );
+
+  @GET("/api/Projects/statistic-report")
+  Future<List<ProjectStatistic>> loadProjectStatisticReport(
+    @Query('idProject') String idProject,
+    @Query('idPhase') String idPhase,
   );
 }

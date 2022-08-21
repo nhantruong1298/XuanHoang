@@ -26,7 +26,7 @@ import 'package:get/get.dart';
 
 class ChooseJobView extends GetView<ChooseJobController> {
   static const String routeName =
-      '${HomeView.path}${ChooseProgressView.path}${ChooseCategoryView.path}$path';
+      '${HomeView.path}${ChooseProgressView.path}${ChooseTermView.path}$path';
   static const String path = '/choose-job';
   const ChooseJobView({Key? key}) : super(key: key);
 
@@ -53,11 +53,11 @@ class ChooseJobView extends GetView<ChooseJobController> {
         bottomNavigationBar: (AuthService.to.accountType == AccountType.staff)
             ? AppButton(
                 text: 'Gửi báo cáo',
-                onTap: () async{
-                  final customerName = await showRemarkDialog(context: context,
-                  title: 'Tên khách hàng',
-                  buttonText: 'Xác nhận'
-                  );
+                onTap: () async {
+                  final customerName = await showRemarkDialog(
+                      context: context,
+                      title: 'Tên khách hàng',
+                      buttonText: 'Xác nhận');
                   controller.sendReport(customerName);
                 },
               )
@@ -129,7 +129,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
             note);
       },
       onFailedTap: () async {
-        final note = await showRemarkDialog(context :context);
+        final note = await showRemarkDialog(context: context);
         controller.doCheck(
             item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed), note);
       },

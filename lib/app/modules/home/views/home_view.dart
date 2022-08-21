@@ -39,8 +39,11 @@ class HomeView extends StatelessWidget {
                   children: [
                     SizedBox(height: 50.h),
                     Heading1Text(S.current.CHOOSE_FEATURE__TITLE),
-                    SizedBox(height: 200.h),
-                    Expanded(child: _buildMenu())
+                    Expanded(
+                        child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [_buildMenu()],
+                    ))
                   ]),
             ),
           ),

@@ -15,6 +15,7 @@ import 'package:example_nav2/app/data/models/response/document_project_response.
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
+import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
@@ -290,6 +291,20 @@ class ApiService extends GetxService {
       await _xhApiService.workingTermReport(idWorkingTerm, customerName);
     } catch (error) {
       rethrow;
+    }
+  }
+
+  Future<List<ProjectStatistic>> loadProjectStatisticReport(
+    String idProject,
+    String idPhase,
+  ) async {
+    try {
+      final response =
+          await _xhApiService.loadProjectStatisticReport(idProject, idPhase);
+      return response;
+    } catch (error) {
+      print(error);
+      return [];
     }
   }
 }

@@ -9,7 +9,7 @@ part of 'do_check_image_response.dart';
 DoCheckImageResponse _$DoCheckImageResponseFromJson(
         Map<String, dynamic> json) =>
     DoCheckImageResponse(
-      returnId: json['ReturnId'] as int?,
+      returnId: json['ReturnId'] as String?,
       message: json['Message'] as String?,
     );
 
