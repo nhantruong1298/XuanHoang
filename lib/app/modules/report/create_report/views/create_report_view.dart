@@ -193,12 +193,12 @@ class _ChooseImages extends StatelessWidget {
             onTap: onItemTap,
             child: Container(
               height: 145.h,
-              padding: EdgeInsets.all(45),
+              padding: EdgeInsets.all(35),
               decoration: BoxDecoration(
                   border: Border.all(
                       width: 1.5, color: AppColors.primaryLightColor)),
               child:
-                  Assets.images.cameraIcon.svg(height: 47, fit: BoxFit.cover),
+                  Assets.images.cameraIcon.svg(height: 47, fit: BoxFit.contain),
             ),
           ),
         )));

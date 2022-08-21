@@ -35,6 +35,7 @@ class SearchInputField extends StatelessWidget {
       borderRadius: BorderRadius.circular(borderRadius),
       elevation: 5,
       child: TextFormField(
+        keyboardType: TextInputType.text,
         minLines: minLines,
         maxLines: maxLines,
         onChanged: (value) {
