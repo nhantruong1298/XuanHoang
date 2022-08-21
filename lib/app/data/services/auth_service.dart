@@ -13,8 +13,8 @@ class AuthService extends GetxService {
 
   String? get accountType {
     if (_profile != null) {
-      final type = AccountType.items
-          .firstWhereOrNull((type) => type == _profile?.idRole);
+      final type =
+          AccountType.items.firstWhereOrNull((type) => type == _profile?.mode);
       return type;
     }
     return null;

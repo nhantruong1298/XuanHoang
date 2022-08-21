@@ -70,8 +70,9 @@ class ChooseTermView extends GetView<ChooseCategoryController> {
                           final listTermStatistic =
                               controller.listTermStatistic.toList();
 
-                          bool isStaff =
-                              AuthService.to.accountType == AccountType.staff;
+                          bool isStaff = AuthService.to.accountType ==
+                                  AccountType.staff ||
+                              AuthService.to.accountType == AccountType.admin;
 
                           return Expanded(
                               child: RefreshIndicator(

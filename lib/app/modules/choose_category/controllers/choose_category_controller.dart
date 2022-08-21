@@ -31,7 +31,8 @@ class ChooseCategoryController extends GetxController {
 
   Future<void> _fetchTerms() async {
     if (idPhase != null) {
-      if (AuthService.to.accountType == AccountType.staff) {
+      if (AuthService.to.accountType == AccountType.staff || 
+      AuthService.to.accountType == AccountType.admin) {
         _listWorkingTermResult =
             await _apiService.getWorkingTermsByPhaseId(idPhase ?? '');
       } else {
@@ -66,6 +67,7 @@ class ChooseCategoryController extends GetxController {
 
     switch (AuthService.to.accountType) {
       case AccountType.staff:
+      case AccountType.admin:
         {
           if (_searchText.isEmpty) {
             listWorkingTerm.value = _listWorkingTermResult;

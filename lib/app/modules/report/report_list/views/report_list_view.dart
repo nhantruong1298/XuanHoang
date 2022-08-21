@@ -43,18 +43,19 @@ class ReportListView extends GetView<ReportListController> {
             )
           ],
         ),
-        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff)
-            ? null
-            : AppButton(
-                text: 'Thêm báo cáo',
-                onTap: () async {
-                  final updated = await Get.toNamed(
-                    CreateReportView.routeName,
-                  );
-                  if ((updated as bool?) == true) {
-                    controller.refreshData();
-                  }
-                }),
+        bottomNavigationBar:
+            (AuthService.to.accountType != AccountType.customer)
+                ? null
+                : AppButton(
+                    text: 'Thêm báo cáo',
+                    onTap: () async {
+                      final updated = await Get.toNamed(
+                        CreateReportView.routeName,
+                      );
+                      if ((updated as bool?) == true) {
+                        controller.refreshData();
+                      }
+                    }),
         body: Stack(
           children: [
             Positioned.fill(child: BlurBackGround()),

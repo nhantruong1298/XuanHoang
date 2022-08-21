@@ -50,7 +50,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
             )
           ],
         ),
-        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff)
+        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff || AuthService.to.accountType == AccountType.admin)
             ? AppButton(
                 text: 'Gửi báo cáo',
                 onTap: () async {

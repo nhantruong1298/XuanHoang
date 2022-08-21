@@ -8,7 +8,11 @@ class Profile {
   @JsonKey(name: 'IdLogin')
   final String? idLogin;
   @JsonKey(name: 'Mode')
+  final String? mode;
+
+  @JsonKey(name: 'IdRole')
   final String? idRole;
+
   @JsonKey(name: 'IdProject')
   final String? idProject;
 
@@ -19,8 +23,9 @@ class Profile {
   Profile({
     this.fullName,
     this.idLogin,
-    this.idRole,
+    this.mode,
     this.idProject,
+    this.idRole
   });
 
   Map<String, dynamic> toJson() => _$ProfileToJson(this);

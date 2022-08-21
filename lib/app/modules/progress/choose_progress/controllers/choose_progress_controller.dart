@@ -44,7 +44,8 @@ class ChooseProgressController extends GetxController {
   }
 
   void onProgressItemPressed(Progress item) {
-    if (AuthService.to.accountType == AccountType.staff) {
+    final accountType = AuthService.to.accountType;
+    if (accountType == AccountType.staff || accountType == AccountType.admin) {
       Get.toNamed(ChooseTermView.routeName, arguments: item.idPhase);
     } else {
       Get.toNamed(CheckProgressView.routeName, arguments: item.idPhase);

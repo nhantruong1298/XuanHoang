@@ -25,7 +25,7 @@ class CheckProgressController extends GetxController {
   }
 
   Future<void> _fetchStatisticReport() async {
-    if (AuthService.to.accountType != AccountType.staff) {
+    if (AuthService.to.accountType != AccountType.staff && AuthService.to.accountType != AccountType.admin) {
       final response = await _apiService.loadProjectStatisticReport(
           idProject ?? '', idPhase ?? '');
 
