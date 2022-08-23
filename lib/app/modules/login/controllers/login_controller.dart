@@ -12,6 +12,7 @@ class LoginController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
   final String USER_NAME_KEY = 'userName';
   final String PASSWORD_KEY = 'password';
+  RxBool obscurePassword = true.obs;
 
   RxBool isLoading = false.obs;
   final ApiService _apiService;
@@ -44,5 +45,9 @@ class LoginController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void onShowPasswordPressed() {
+     obscurePassword.value = !obscurePassword.value;
   }
 }

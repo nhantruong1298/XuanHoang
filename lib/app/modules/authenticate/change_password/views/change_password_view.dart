@@ -64,6 +64,7 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                               (obscureText)
                                   ? Icons.visibility_off
                                   : Icons.visibility,
+                              size: 16,
                             ),
                           ),
                           obscureText: obscureText,
@@ -88,6 +89,7 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                               (obscureText)
                                   ? Icons.visibility_off
                                   : Icons.visibility,
+                              size: 16,
                             ),
                           ),
                           obscureText: obscureText,

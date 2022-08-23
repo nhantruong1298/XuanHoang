@@ -38,15 +38,27 @@ class LoginView extends GetView<LoginController> {
                       TextInputField(
                         hintText: S.current.SIGN_IN__USERNAME,
                         name: controller.USER_NAME_KEY,
-                        initValue: 'hnlam',
+                        initValue: '',
                       ),
                       SizedBox(height: 23.h),
-                      TextInputField(
-                        hintText: S.current.SIGN_IN__PASSWORD,
-                        name: controller.PASSWORD_KEY,
-                        obscureText: true,
-                        initValue: '11223344',
-                      ),
+                      Obx(() {
+                        final obscureText = controller.obscurePassword.value;
+                        return TextInputField(
+                          suffix: InkWell(
+                            onTap: controller.onShowPasswordPressed,
+                            child: Icon(
+                              (obscureText)
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              size: 16,
+                            ),
+                          ),
+                          hintText: S.current.SIGN_IN__PASSWORD,
+                          name: controller.PASSWORD_KEY,
+                          obscureText: obscureText,
+                          initValue: '',
+                        );
+                      }),
                       SizedBox(height: 80.h),
                       Obx(() {
                         return AppButton(
