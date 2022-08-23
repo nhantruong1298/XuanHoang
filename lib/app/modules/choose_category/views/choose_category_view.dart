@@ -26,75 +26,83 @@ class ChooseTermView extends GetView<ChooseCategoryController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            Positioned.fill(child: BlurBackGround()),
-            SafeArea(
-              child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30.h),
-                        SearchInputField(
-                          borderRadius: 25,
-                          contentPadding: 20,
-                          onChanged: (value) {
-                            controller.onSearchChanged(value);
-                          },
-                        ),
-                        SizedBox(height: 20.h),
-                        Obx(() {
-                          final listWorkingTerm =
-                              controller.listWorkingTerm.toList();
-                          final listTermStatistic =
-                              controller.listTermStatistic.toList();
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: ChooseProjectAppBar(
+            leadingIcon: Assets.images.arrowBackIcon.path,
+            title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  },
+                  icon: Assets.images.homeIcon
+                      .svg(height: 30, fit: BoxFit.scaleDown)),
+              SizedBox(
+                width: 10,
+              )
+            ],
+          ),
+          body: Stack(
+            children: [
+              Positioned.fill(child: BlurBackGround()),
+              SafeArea(
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 30.h),
+                          SearchInputField(
+                            borderRadius: 25,
+                            contentPadding: 20,
+                            onChanged: (value) {
+                              controller.onSearchChanged(value);
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                          Obx(() {
+                            final listWorkingTerm =
+                                controller.listWorkingTerm.toList();
+                            final listTermStatistic =
+                                controller.listTermStatistic.toList();
 
-                          bool isStaff = AuthService.to.accountType ==
-                                  AccountType.staff ||
-                              AuthService.to.accountType == AccountType.admin;
+                            bool isStaff = AuthService.to.accountType ==
+                                    AccountType.staff ||
+                                AuthService.to.accountType == AccountType.admin;
 
-                          return Expanded(
-                              child: RefreshIndicator(
-                            onRefresh: controller.onRefreshData,
-                            child: ListView.separated(
-                                itemBuilder: (context, index) {
-                                  return (isStaff)
-                                      ? _buildStaffTerm(listWorkingTerm, index)
-                                      : _buildCustomerTerm(
-                                          listTermStatistic, index);
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(height: 10),
-                                itemCount: (isStaff)
-                                    ? listWorkingTerm.length
-                                    : listTermStatistic.length),
-                          ));
-                        })
-                      ])),
-            ),
-          ],
-        ));
+                            return Expanded(
+                                child: RefreshIndicator(
+                              onRefresh: controller.onRefreshData,
+                              child: ListView.separated(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  itemBuilder: (context, index) {
+                                    return (isStaff)
+                                        ? _buildStaffTerm(
+                                            listWorkingTerm, index)
+                                        : _buildCustomerTerm(
+                                            listTermStatistic, index);
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 10),
+                                  itemCount: (isStaff)
+                                      ? listWorkingTerm.length
+                                      : listTermStatistic.length),
+                            ));
+                          })
+                        ])),
+              ),
+            ],
+          )),
+    );
   }
 
   Widget _buildStaffTerm(List<WorkingTerm> list, int index) {

@@ -100,10 +100,10 @@ class S {
     );
   }
 
-  /// `Bản quyện thuộc về Cty TNHH Xuân Hoàng`
+  /// `Bản quyền thuộc về Cty TNHH Xuân Hoàng`
   String get SIGN_IN__LICENSE_DESCRIPTION {
     return Intl.message(
-      'Bản quyện thuộc về Cty TNHH Xuân Hoàng',
+      'Bản quyền thuộc về Cty TNHH Xuân Hoàng',
       name: 'SIGN_IN__LICENSE_DESCRIPTION',
       desc: '',
       args: [],

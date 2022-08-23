@@ -32,80 +32,103 @@ class ChooseJobView extends GetView<ChooseJobController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_JOB__TITLE,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-        bottomNavigationBar: (AuthService.to.accountType == AccountType.staff || AuthService.to.accountType == AccountType.admin)
-            ? AppButton(
-                text: 'Gửi báo cáo',
-                onTap: () async {
-                  final customerName = await showRemarkDialog(
-                      context: context,
-                      title: 'Tên khách hàng',
-                      buttonText: 'Xác nhận');
-                  controller.sendReport(customerName);
-                },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: ChooseProjectAppBar(
+            leadingIcon: Assets.images.arrowBackIcon.path,
+            title: S.current.CHOOSE_JOB__TITLE,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  },
+                  icon: Assets.images.homeIcon
+                      .svg(height: 30, fit: BoxFit.scaleDown)),
+              SizedBox(
+                width: 10,
               )
-            : null,
-        body: Stack(
-          children: [
-            BlurBackGround(),
-            SafeArea(
-              child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30.h),
-                        SearchInputField(
-                          borderRadius: AppDimensions.defaultXLRadius,
-                          onChanged: (value) {
-                            controller.onSearchChanged(value);
-                          },
-                        ),
-                        SizedBox(height: 20.h),
-                        Obx(() {
-                          final list = controller.listJob;
-                          return Expanded(
-                              child: RefreshIndicator(
-                            onRefresh: controller.onRefreshData,
-                            child: ListView.separated(
-                                itemBuilder: (context, index) {
-                                  final item = list[index];
-                                  return (AuthService.to.accountType ==
-                                          AccountType.staff)
-                                      ? _buildStaffJob(context, item)
-                                      : _buildCustomerJob(item);
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                itemCount: list.length),
-                          ));
-                        }),
-                        SizedBox(height: 20.h),
-                      ])),
-            ),
-          ],
-        ));
+            ],
+          ),
+          bottomNavigationBar:
+              (AuthService.to.accountType == AccountType.staff ||
+                      AuthService.to.accountType == AccountType.admin)
+                  ? Obx(() {
+                      return AppButton(
+                        isLoading: controller.isLoading.value,
+                        text: 'Gửi báo cáo',
+                        onTap: () async {
+                          final customerName = await showRemarkDialog(
+                              context: context,
+                              title: 'Tên khách hàng',
+                              buttonText: 'Xác nhận');
+                          controller.sendReport(customerName);
+                        },
+                      );
+                    })
+                  : null,
+          body: Stack(
+            children: [
+              BlurBackGround(),
+              SafeArea(
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 30.h),
+                          SearchInputField(
+                            borderRadius: AppDimensions.defaultXLRadius,
+                            onChanged: (value) {
+                              controller.onSearchChanged(value);
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                          Obx(() {
+                            final list = controller.listJob;
+                            return Expanded(
+                                child: RefreshIndicator(
+                              onRefresh: controller.onRefreshData,
+                              child: ListView.separated(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  itemBuilder: (context, index) {
+                                    final item = list[index];
+                                    return (AuthService.to.accountType ==
+                                                AccountType.staff ||
+                                            AuthService.to.accountType ==
+                                                AccountType.admin)
+                                        ? _buildStaffJob(context, item)
+                                        : _buildCustomerJob(item);
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                  itemCount: list.length),
+                            ));
+                          }),
+                          SizedBox(height: 20.h),
+                        ])),
+              ),
+              Obx(() {
+                return Visibility(
+                    visible: controller.isLoading.value,
+                    child: Container(
+                      width: double.infinity,
+                      height: double.infinity,
+                      color: Colors.transparent,
+                    ));
+              })
+            ],
+          )),
+    );
   }
 
   Widget _buildCustomerJob(WorkingItem item) {

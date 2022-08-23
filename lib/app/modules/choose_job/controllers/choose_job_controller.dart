@@ -12,6 +12,7 @@ class ChooseJobController extends GetxController {
   List<WorkingItem> _listJobResult = [];
   String _searchText = '';
   ChooseJobController(this._apiService);
+  RxBool isLoading = false.obs;
   late String? termId;
 
   @override
@@ -83,13 +84,14 @@ class ChooseJobController extends GetxController {
           .where((element) =>
               element.itemName
                   ?.toLowerCase()
-                  .startsWith(_searchText.toLowerCase()) ==
+                  .contains(_searchText.toLowerCase()) ==
               true)
           .toList();
     }
   }
 
   void sendReport(String customerName) async {
+    isLoading.value = true;
     try {
       await _apiService.workingTermReport(termId ?? '', customerName);
       showConfirmDialog(
@@ -107,5 +109,6 @@ class ChooseJobController extends GetxController {
             Get.back();
           });
     }
+    isLoading.value = false;
   }
 }

@@ -36,8 +36,8 @@ class SearchInputField extends StatelessWidget {
       elevation: 5,
       child: TextFormField(
         keyboardType: TextInputType.text,
-        minLines: minLines,
-        maxLines: maxLines,
+        minLines: minLines ?? 1,
+        maxLines: maxLines ?? 1,
         onChanged: (value) {
           onChanged?.call(value);
         },

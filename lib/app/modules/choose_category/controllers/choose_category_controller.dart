@@ -31,8 +31,8 @@ class ChooseCategoryController extends GetxController {
 
   Future<void> _fetchTerms() async {
     if (idPhase != null) {
-      if (AuthService.to.accountType == AccountType.staff || 
-      AuthService.to.accountType == AccountType.admin) {
+      if (AuthService.to.accountType == AccountType.staff ||
+          AuthService.to.accountType == AccountType.admin) {
         _listWorkingTermResult =
             await _apiService.getWorkingTermsByPhaseId(idPhase ?? '');
       } else {
@@ -76,7 +76,7 @@ class ChooseCategoryController extends GetxController {
                 .where((element) =>
                     element.termName
                         ?.toLowerCase()
-                        .startsWith(_searchText.toLowerCase()) ==
+                        .contains(_searchText.toLowerCase()) ==
                     true)
                 .toList();
           }
@@ -91,7 +91,7 @@ class ChooseCategoryController extends GetxController {
                 .where((element) =>
                     element.termName
                         ?.toLowerCase()
-                        .startsWith(_searchText.toLowerCase()) ==
+                        .contains(_searchText.toLowerCase()) ==
                     true)
                 .toList();
           }
@@ -104,7 +104,7 @@ class ChooseCategoryController extends GetxController {
     try {
       final url = _apiService.getImageFullUrl(instructionFile ?? '');
 
-      launchUrlString(url);
+      launchUrlString(url, mode: LaunchMode.externalApplication);
     } catch (error) {
       print(error);
     }

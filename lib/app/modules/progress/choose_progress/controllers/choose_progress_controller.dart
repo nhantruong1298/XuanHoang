@@ -36,7 +36,7 @@ class ChooseProgressController extends GetxController {
             .where((element) =>
                 element.name
                     ?.toLowerCase()
-                    .startsWith(searchText.toLowerCase()) ==
+                    .contains(searchText.toLowerCase()) ==
                 true)
             .toList();
       }
@@ -65,7 +65,7 @@ class ChooseProgressController extends GetxController {
           .where((element) =>
               element.name
                   ?.toLowerCase()
-                  .startsWith(searchText.toLowerCase()) ==
+                  .contains(searchText.toLowerCase()) ==
               true)
           .toList();
     }

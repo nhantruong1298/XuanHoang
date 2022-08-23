@@ -53,7 +53,7 @@ class ChooseProjectController extends GetxController {
           .where((element) =>
               element.name
                   ?.toLowerCase()
-                  .startsWith(_searchText.toLowerCase()) ==
+                  .contains(_searchText.toLowerCase()) ==
               true)
           .toList();
     }

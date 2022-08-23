@@ -1,18 +1,13 @@
 import 'package:example_nav2/app/data/models/enum/project_type.dart';
-import 'package:example_nav2/app/data/services/api_service.dart';
-import 'package:example_nav2/app/data/services/auth_service.dart';
-import 'package:example_nav2/app/modules/authenticate/change_password/views/change_password_view.dart';
 import 'package:example_nav2/app/modules/choose_project/controllers/choose_project_controller.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
-import 'package:example_nav2/app/modules/login/views/login_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
-import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,83 +21,91 @@ class ChooseProjectView extends GetView<ChooseProjectController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            const BlurBackGround(),
-            SafeArea(
-              child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30.h),
-                        SearchInputField(
-                          borderRadius: 25,
-                          contentPadding: 20,
-                          onChanged: (value) {
-                            controller.onSearchChanged(value);
-                          },
-                        ),
-                        SizedBox(height: 20.h),
-                        Obx(
-                          () {
-                            final list = controller.listProject;
-                            return Expanded(
-                              child: RefreshIndicator(
-                                onRefresh: controller.onRefreshData,
-                                child: ListView.separated(
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 10),
-                                  itemCount: list.length,
-                                  itemBuilder: (context, index) {
-                                    return _ProjectItem(
-                                        name: list[index].name,
-                                        address: list[index].address,
-                                        onTap: () {
-                                          if (controller.projectType ==
-                                              ProjectType.manual) {
-                                            Get.toNamed(
-                                                ChooseProgressView.routeName,
-                                                arguments:
-                                                    list[index].idProject);
-                                          } else if (controller.projectType ==
-                                              ProjectType.incident) {
-                                            Get.toNamed(
-                                                ReportListView.routeName,
-                                                arguments:
-                                                    list[index].idProject);
-                                          }
-                                        });
-                                  },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: ChooseProjectAppBar(
+            leadingIcon: Assets.images.arrowBackIcon.path,
+            title: 'Chọn dự án',
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  },
+                  icon: Assets.images.homeIcon
+                      .svg(height: 30, fit: BoxFit.scaleDown)),
+              SizedBox(
+                width: 10,
+              )
+            ],
+          ),
+          body: Stack(
+            children: [
+              const BlurBackGround(),
+              SafeArea(
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 30.h),
+                          SearchInputField(
+                            borderRadius: 25,
+                            contentPadding: 20,
+                            onChanged: (value) {
+                              controller.onSearchChanged(value);
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                          Obx(
+                            () {
+                              final list = controller.listProject;
+                              return Expanded(
+                                child: RefreshIndicator(
+                                  onRefresh: controller.onRefreshData,
+                                  child: ListView.separated(
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 10),
+                                    itemCount: list.length,
+                                    itemBuilder: (context, index) {
+                                      return _ProjectItem(
+                                          name: list[index].name,
+                                          address: list[index].address,
+                                          onTap: () {
+                                            if (controller.projectType ==
+                                                ProjectType.manual) {
+                                              Get.toNamed(
+                                                  ChooseProgressView.routeName,
+                                                  arguments:
+                                                      list[index].idProject);
+                                            } else if (controller.projectType ==
+                                                ProjectType.incident) {
+                                              Get.toNamed(
+                                                  ReportListView.routeName,
+                                                  arguments:
+                                                      list[index].idProject);
+                                            }
+                                          });
+                                    },
+                                  ),
                                 ),
-                              ),
-                            );
-                          },
-                        )
-                      ])),
-            ),
-          ],
-        ));
+                              );
+                            },
+                          )
+                        ])),
+              ),
+            ],
+          )),
+    );
   }
 }
 

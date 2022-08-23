@@ -151,7 +151,7 @@ class _XHApiService implements XHApiService {
         MultipartFile.fromFileSync(file.path,
             filename: file.path.split(Platform.pathSeparator).last)));
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<DoCheckImageResponse>(Options(
+        _setStreamType<dynamic>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,

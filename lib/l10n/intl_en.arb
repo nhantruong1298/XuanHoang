@@ -4,7 +4,7 @@
     "SIGN_IN__USERNAME":"Tên đăng nhập *",
     "SIGN_IN__PASSWORD":"Mật khẩu *",
     "SIGN_IN__SIGN_IN_TEXT":"Đăng nhập",
-    "SIGN_IN__LICENSE_DESCRIPTION":"Bản quyện thuộc về Cty TNHH Xuân Hoàng"
+    "SIGN_IN__LICENSE_DESCRIPTION":"Bản quyền thuộc về Cty TNHH Xuân Hoàng"
     ,"RESET_PASSWORD__RESET_PASSWORD_TEXT":"Thay đổi mật khẩu",
     "RESET_PASSWORD__CURRENT_PASSWORD":"Mật khẩu hiện tại*",
     "RESET_PASSWORD__NEW_PASSWORD":"Mật khẩu mới*",

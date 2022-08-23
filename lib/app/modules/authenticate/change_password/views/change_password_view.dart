@@ -5,6 +5,7 @@ import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_backg
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
+import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -53,26 +54,48 @@ class ChangePasswordView extends GetView<ChangePasswordController> {
                       Heading1Text(
                           S.current.RESET_PASSWORD__RESET_PASSWORD_TEXT),
                       SizedBox(height: 150.h),
-                      // TextInputField(
-                      //   hintText: S.current.RESET_PASSWORD__CURRENT_PASSWORD,
-                      // ),
                       SizedBox(height: 20.h),
-                      TextInputField(
-                        hintText: S.current.RESET_PASSWORD__NEW_PASSWORD,
-                        name: controller.NEW_PASSWORD_KEY,
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(
-                              errorText: 'Mật khẩu không được để trống'),
-                          FormBuilderValidators.minLength(6,
-                              errorText: 'Mật khẩu tối đa 6 kí tự'),
-                        ]),
-                      ),
+                      Obx(() {
+                        final obscureText = controller.obscurePassword.value;
+                        return TextInputField(
+                          suffix: InkWell(
+                            onTap: controller.onShowPasswordPressed,
+                            child: Icon(
+                              (obscureText)
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
+                          obscureText: obscureText,
+                          hintText: S.current.RESET_PASSWORD__NEW_PASSWORD,
+                          name: controller.NEW_PASSWORD_KEY,
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(
+                                errorText: 'Mật khẩu không được để trống'),
+                            FormBuilderValidators.minLength(6,
+                                errorText: 'Mật khẩu tối đa 6 kí tự'),
+                          ]),
+                        );
+                      }),
                       SizedBox(height: 20.h),
-                      TextInputField(
-                        hintText:
-                            S.current.RESET_PASSWORD__RE_ENTER_NEW_PASSWORD,
-                        name: controller.RETRY_NEW_PASSWORD_KEY,
-                      ),
+                      Obx(() {
+                        final obscureText =
+                            controller.obscureRetryPassword.value;
+                        return TextInputField(
+                          suffix: InkWell(
+                            onTap: controller.onShowRetryPasswordPressed,
+                            child: Icon(
+                              (obscureText)
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
+                          obscureText: obscureText,
+                          hintText:
+                              S.current.RESET_PASSWORD__RE_ENTER_NEW_PASSWORD,
+                          name: controller.RETRY_NEW_PASSWORD_KEY,
+                        );
+                      }),
                       SizedBox(height: 80.h),
                       AppButton(
                         text: S.current.RESET_PASSWORD__RESET_PASSWORD_TEXT,

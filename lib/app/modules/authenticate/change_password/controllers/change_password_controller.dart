@@ -13,6 +13,8 @@ class ChangePasswordController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
   final String NEW_PASSWORD_KEY = 'newPassword';
   final String RETRY_NEW_PASSWORD_KEY = 'retryNewPassword';
+  RxBool obscurePassword = true.obs;
+  RxBool obscureRetryPassword = true.obs;
   ChangePasswordController(this._apiService);
 
   @override
@@ -57,5 +59,13 @@ class ChangePasswordController extends GetxController {
     } catch (error) {
       print(error);
     }
+  }
+
+  void onShowPasswordPressed() {
+    obscurePassword.value = !obscurePassword.value;
+  }
+
+  void onShowRetryPasswordPressed() {
+    obscureRetryPassword.value = !obscureRetryPassword.value;
   }
 }

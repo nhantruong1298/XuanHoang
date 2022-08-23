@@ -75,7 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nhập lại mật khẩu mới*"),
         "SIGN_IN__HELLO": MessageLookupByLibrary.simpleMessage("Xin chào"),
         "SIGN_IN__LICENSE_DESCRIPTION": MessageLookupByLibrary.simpleMessage(
-            "Bản quyện thuộc về Cty TNHH Xuân Hoàng"),
+            "Bản quyền thuộc về Cty TNHH Xuân Hoàng"),
         "SIGN_IN__PASSWORD": MessageLookupByLibrary.simpleMessage("Mật khẩu *"),
         "SIGN_IN__PLEASE_LOGIN":
             MessageLookupByLibrary.simpleMessage("Mời đăng nhập vào hệ thống"),

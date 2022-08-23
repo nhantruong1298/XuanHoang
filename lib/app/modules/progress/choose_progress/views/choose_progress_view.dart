@@ -7,6 +7,7 @@ import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/resources/app_formatter.dart';
+import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,76 +20,81 @@ class ChooseProgressView extends GetView<ChooseProgressController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_PROGRESS__CHOOSE_PROGRESS_TEXT,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Get.offNamedUntil(HomeView.routeName, (route) => false);
-                },
-                icon: Assets.images.homeIcon
-                    .svg(height: 30, fit: BoxFit.scaleDown)),
-            SizedBox(
-              width: 10,
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            BlurBackGround(),
-            SafeArea(
-              child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 30.h),
-                        TextInputField(
-                          borderRadius: 25,
-                          contentPadding: 20,
-                          suffixIcon: Assets.images.searchIcon.svg(
-                              height: 22, width: 22, fit: BoxFit.scaleDown),
-                          onChanged: (value) {
-                            controller.onSearchChanged(value ?? '');
-                          },
-                        ),
-                        SizedBox(height: 20.h),
-                        Obx(() {
-                          final listProgress = controller.listProgress;
-                          return Expanded(
-                            child: RefreshIndicator(
-                              onRefresh: controller.onRefresh,
-                              child: ListView.separated(
-                                separatorBuilder: (context, index) =>
-                                    const SizedBox(
-                                  height: 10,
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: ChooseProjectAppBar(
+            leadingIcon: Assets.images.arrowBackIcon.path,
+            title: S.current.CHOOSE_PROGRESS__CHOOSE_PROGRESS_TEXT,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+                  },
+                  icon: Assets.images.homeIcon
+                      .svg(height: 30, fit: BoxFit.scaleDown)),
+              SizedBox(
+                width: 10,
+              )
+            ],
+          ),
+          body: Stack(
+            children: [
+              BlurBackGround(),
+              SafeArea(
+                child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 30.h),
+                          SearchInputField(
+                            borderRadius: 25,
+                            contentPadding: 20,
+                            onChanged: (value) {
+                              controller.onSearchChanged(value);
+                            },
+                          ),
+                          SizedBox(height: 20.h),
+                          Obx(() {
+                            final listProgress = controller.listProgress;
+                            return Expanded(
+                              child: RefreshIndicator(
+                                onRefresh: controller.onRefresh,
+                                child: ListView.separated(
+                                  keyboardDismissBehavior:
+                                      ScrollViewKeyboardDismissBehavior.onDrag,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    height: 10,
+                                  ),
+                                  itemCount: listProgress.length,
+                                  itemBuilder: (context, index) {
+                                    final item = listProgress[index];
+                                    return _ProgressItem(
+                                      onTap: () {
+                                        controller.onProgressItemPressed(item);
+                                      },
+                                      fromDate: item.fromDate,
+                                      toDate: item.toDate,
+                                      title: item.name,
+                                    );
+                                  },
                                 ),
-                                itemCount: listProgress.length,
-                                itemBuilder: (context, index) {
-                                  final item = listProgress[index];
-                                  return _ProgressItem(
-                                    onTap: () {
-                                      controller.onProgressItemPressed(item);
-                                    },
-                                    fromDate: item.fromDate,
-                                    toDate: item.toDate,
-                                    title: item.name,
-                                  );
-                                },
                               ),
-                            ),
-                          );
-                        })
-                      ])),
-            ),
-          ],
-        ));
+                            );
+                          })
+                        ])),
+              ),
+            ],
+          )),
+    );
   }
 }
 

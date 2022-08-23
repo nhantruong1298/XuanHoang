@@ -72,6 +72,7 @@ class ReportListView extends GetView<ReportListController> {
                           final reportList = controller.reportList;
                           return Expanded(
                               child: ListView.separated(
+                                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                                   padding: EdgeInsets.symmetric(vertical: 16),
                                   itemBuilder: (context, index) {
                                     final item = reportList[index];

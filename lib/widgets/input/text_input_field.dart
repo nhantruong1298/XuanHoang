@@ -18,30 +18,32 @@ class TextInputField extends StatelessWidget {
   final String obscuringCharacter;
   final bool obscureText;
   final String? initValue;
+  final Widget? suffix;
   final Function(String?)? onChanged;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-  TextInputField({
-    Key? key,
-    this.hintText,
-    this.borderRadius = 10,
-    this.contentPadding = 20,
-    this.suffixIcon,
-    this.maxLines = 1,
-    this.minLines = 1,
-    this.fillColor,
-    this.focusColor,
-    this.focusBorderColor,
-    this.borderColor,
-    this.elevation,
-    this.name = '',
-    this.obscuringCharacter = '•',
-    this.obscureText = false,
-    this.initValue,
-    this.onChanged,
-    this.controller,
-    this.validator,
-  }) : super(key: key);
+  TextInputField(
+      {Key? key,
+      this.hintText,
+      this.borderRadius = 10,
+      this.contentPadding = 20,
+      this.suffixIcon,
+      this.maxLines = 1,
+      this.minLines = 1,
+      this.fillColor,
+      this.focusColor,
+      this.focusBorderColor,
+      this.borderColor,
+      this.elevation,
+      this.name = '',
+      this.obscuringCharacter = '•',
+      this.obscureText = false,
+      this.initValue,
+      this.onChanged,
+      this.controller,
+      this.validator,
+      this.suffix})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +71,7 @@ class TextInputField extends StatelessWidget {
               obscuringCharacter: obscuringCharacter,
               obscureText: obscureText,
               decoration: InputDecoration(
+                  suffix: suffix,
                   errorBorder: InputBorder.none,
                   //errorText: '',
                   errorStyle: TextStyle(
