@@ -120,21 +120,21 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+  Future<List<WorkingItemImageResponse>> loadWorkingItemImages(
       idWorkingItem) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingItem': idWorkingItem};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
-        _setStreamType<List<ImageHistoryResponse>>(
+        _setStreamType<List<WorkingItemImageResponse>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
                 .compose(_dio.options, '/api/working-items/images',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
         .map((dynamic i) =>
-            ImageHistoryResponse.fromJson(i as Map<String, dynamic>))
+            WorkingItemImageResponse.fromJson(i as Map<String, dynamic>))
         .toList();
     return value;
   }
@@ -151,7 +151,7 @@ class _XHApiService implements XHApiService {
         MultipartFile.fromFileSync(file.path,
             filename: file.path.split(Platform.pathSeparator).last)));
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<dynamic>(Options(
+        _setStreamType<DoCheckImageResponse>(Options(
                 method: 'POST',
                 headers: _headers,
                 extra: _extra,
@@ -421,19 +421,26 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<void> workingTermReport(idWorkingTerm, customerName) async {
+  Future<void> workingTermReport(idWorkingTerm, customerName, file) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'idWorkingTerm': idWorkingTerm,
       r'customerName': customerName
     };
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    await _dio.fetch<void>(_setStreamType<void>(
-        Options(method: 'POST', headers: _headers, extra: _extra)
-            .compose(_dio.options, '/api/working-terms/report',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final _data = FormData();
+    _data.files.add(MapEntry(
+        'File',
+        MultipartFile.fromFileSync(file.path,
+            filename: file.path.split(Platform.pathSeparator).last)));
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+            method: 'POST',
+            headers: _headers,
+            extra: _extra,
+            contentType: 'multipart/form-data')
+        .compose(_dio.options, '/api/working-terms/report',
+            queryParameters: queryParameters, data: _data)
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     return null;
   }
 

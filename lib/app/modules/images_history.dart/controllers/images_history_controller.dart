@@ -1,11 +1,11 @@
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/modules/images_history.dart/image_history_group.dart';
 import 'package:get/get.dart';
 
 class ImageHistoryController extends GetxController {
   final ApiService _apiService;
-  final listHistory = <ImageHistoryResponse>[].obs;
-  final listImageData = <String>[].obs;
+  final listHistory = <ImageHistoryGroup>[].obs;
   late final String? idWorkingItem;
   ImageHistoryController(this._apiService);
 
@@ -19,24 +19,29 @@ class ImageHistoryController extends GetxController {
   }
 
   Future<void> _fetchImagesHistory() async {
-    listImageData.clear();
+    listHistory.clear();
     if (idWorkingItem != null) {
-      final listHistoryResult =
+      final listHistoryResponse =
           await _apiService.loadWorkingItemImagesHistory(idWorkingItem!);
 
-      if (listHistoryResult?.isNotEmpty == true) {
-        listHistory.value = listHistoryResult!;
+      final List<ImageHistoryGroup> result = [];
 
-        listHistoryResult.forEach((item) async {
-          final loadFileResult =
-              _apiService.getImageFullUrl(item.picture ?? '');
-          try {
-            listImageData.add(loadFileResult);
-          } catch (error) {
-            print(error);
-          }
+      if (listHistoryResponse?.isNotEmpty == true) {
+        listHistoryResponse!.forEach((history) async {
+          final pictures = history.pictures ?? [];
+          final picturesFullPath = <String>[];
+
+          pictures.forEach((picture) {
+            picturesFullPath
+                .add(_apiService.getImageFullUrl(picture.item ?? ''));
+          });
+
+          result.add(ImageHistoryGroup(
+              fullName: history.fullName ?? '', listImage: picturesFullPath));
         });
       }
+
+      listHistory.value = result;
     }
   }
 

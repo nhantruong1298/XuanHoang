@@ -20,6 +20,7 @@ import 'package:example_nav2/app/data/models/response/report_detail_response.dar
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
+import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
 import 'package:example_nav2/app/data/models/token.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
@@ -118,7 +119,7 @@ class ApiService extends GetxService {
     return result;
   }
 
-  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+  Future<List<WorkingItemImageResponse>> loadWorkingItemImages(
       String idWorkingItem) async {
     try {
       final result = await _xhApiService.loadWorkingItemImages(idWorkingItem);
@@ -284,11 +285,9 @@ class ApiService extends GetxService {
   }
 
   Future<void> workingTermReport(
-    String idWorkingTerm,
-    String customerName,
-  ) async {
+      String idWorkingTerm, String customerName, File file) async {
     try {
-      await _xhApiService.workingTermReport(idWorkingTerm, customerName);
+      await _xhApiService.workingTermReport(idWorkingTerm, customerName, file);
     } catch (error) {
       rethrow;
     }

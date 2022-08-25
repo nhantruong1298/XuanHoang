@@ -2,6 +2,7 @@ import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/modules/create_signature/signature_data.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:get/get.dart' hide Progress;
 import 'package:uuid/uuid.dart';
@@ -90,10 +91,12 @@ class ChooseJobController extends GetxController {
     }
   }
 
-  void sendReport(String customerName) async {
+  void sendReport(SignatureData data) async {
     isLoading.value = true;
     try {
-      await _apiService.workingTermReport(termId ?? '', customerName);
+      await _apiService.workingTermReport(
+          termId ?? '', data.customerName, data.image);
+
       showConfirmDialog(
           title: 'Gửi báo cáo thành công',
           textConfirm: 'Xác nhận',
@@ -102,8 +105,9 @@ class ChooseJobController extends GetxController {
             Get.back(result: true);
           });
     } catch (error) {
+      print(error);
       showConfirmDialog(
-          title: error.toString(),
+          title: 'error',
           textConfirm: 'Xác nhận',
           onConfirm: () {
             Get.back();

@@ -8,6 +8,8 @@ import 'package:example_nav2/app/modules/choose_job/controllers/choose_job_contr
 import 'package:example_nav2/app/modules/choose_job/widgets/remark_dialog.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/create_signature/signature_data.dart';
+import 'package:example_nav2/app/modules/create_signature/views/create_signature_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
@@ -62,11 +64,13 @@ class ChooseJobView extends GetView<ChooseJobController> {
                         isLoading: controller.isLoading.value,
                         text: 'Gửi báo cáo',
                         onTap: () async {
-                          final customerName = await showRemarkDialog(
-                              context: context,
-                              title: 'Tên khách hàng',
-                              buttonText: 'Xác nhận');
-                          controller.sendReport(customerName);
+                          final result = await Get.to(CreateSignatureView());
+
+                          if(result != null){
+                             controller.sendReport(result as SignatureData);
+                          }
+                         
+                          //
                         },
                       );
                     })
@@ -403,6 +407,12 @@ class _StaffJob extends StatelessWidget {
                   backgroundColor: AppColors.primaryLightColor,
                   child: Assets.images.cameraIcon
                       .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
+                ),
+                SizedBox(
+                  width: .7,
+                  child: Divider(
+                    color: AppColors.greyBorderColor,
+                  ),
                 ),
                 CustomSlidableAction(
                     onPressed: (_) => onImageTap!(),

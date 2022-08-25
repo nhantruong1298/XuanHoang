@@ -30,7 +30,8 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
           actions: [
-            (AuthService.to.accountType == AccountType.staff || AuthService.to.accountType == AccountType.admin)
+            (AuthService.to.accountType == AccountType.staff ||
+                    AuthService.to.accountType == AccountType.admin)
                 ? IconButton(
                     onPressed: () async {
                       final isUpdated = await Get.toNamed(
@@ -61,19 +62,32 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
               child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  child: Column(
-                    children: [
-                      Obx(() {
-                        final images = controller.listImageData;
-                        return _ImagesGridView(
-                          images: List.generate(
-                            images.length,
-                            (index) => _ImageGridViewItem(data: images[index]),
-                          ),
-                        );
-                      }),
-                    ],
-                  )),
+                  child: Obx(() {
+                    final listHistory = controller.listHistory;
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: List.generate(listHistory.length, (index) {
+                          final listImage = listHistory[index].listImage;
+                          return (listImage.isNotEmpty)
+                              ? Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    _TitleGridView(
+                                      name: listHistory[index].fullName,
+                                    ),
+                                    _ImagesGridView(
+                                        images: List.generate(
+                                      listImage.length,
+                                      (index) => _ImageGridViewItem(
+                                          data: listImage[index]),
+                                    ))
+                                  ],
+                                )
+                              : const SizedBox.shrink();
+                        }),
+                      ),
+                    );
+                  })),
             ),
           ],
         ));

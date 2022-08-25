@@ -39,7 +39,8 @@ class AddImageController extends GetxController {
 
   Future<void> pickImage(ImageSource source) async {
     try {
-      final XFile? xFile = await _picker.pickImage(source: source);
+      final XFile? xFile =
+          await _picker.pickImage(source: source, imageQuality: 100);
 
       if (xFile != null) {
         final response = await _apiService.uploadDocheckImage(

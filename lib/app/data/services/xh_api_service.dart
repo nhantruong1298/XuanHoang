@@ -20,6 +20,7 @@ import 'package:example_nav2/app/data/models/response/report_detail_response.dar
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
+import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:retrofit/retrofit.dart';
@@ -54,7 +55,7 @@ abstract class XHApiService {
   Future<DoCheckResponse> doCheckPost(@Body() DoCheckRequest request);
 
   @GET("/api/working-items/images")
-  Future<List<ImageHistoryResponse>> loadWorkingItemImages(
+  Future<List<WorkingItemImageResponse>> loadWorkingItemImages(
       @Query('idWorkingItem') String idWorkingItem);
 
   @POST("/api/working-items/docheck/images")
@@ -131,9 +132,11 @@ abstract class XHApiService {
   });
 
   @POST("/api/working-terms/report")
+  @MultiPart()
   Future<void> workingTermReport(
     @Query('idWorkingTerm') String idWorkingTerm,
     @Query('customerName') String customerName,
+    @Part(name: 'File') File file,
   );
 
   @GET("/api/Projects/statistic-report")
