@@ -10,6 +10,7 @@ import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WarningView extends GetView<WarningController> {
   static const String routeName = '${HomeView.path}$path';
@@ -60,7 +61,9 @@ class WarningView extends GetView<WarningController> {
                                 itemBuilder: (context, index) {
                                   final item = listWarning[index];
                                   return _WarningItem(
-                                    onTap: () {},
+                                    onTap: () {
+                                      controller.onWarningItemPressed(item);
+                                    },
                                     name: item.detailName,
                                   );
                                 },

@@ -76,6 +76,7 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
                                   children: [
                                     _TitleGridView(
                                       name: listHistory[index].fullName,
+                                      date: listHistory[index].fullName,
                                     ),
                                     _ImagesGridView(
                                         images: List.generate(

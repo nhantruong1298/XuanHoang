@@ -2,6 +2,7 @@ import 'package:example_nav2/app/data/models/response/document_project_response.
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:get/get.dart' hide Progress;
+import 'package:url_launcher/url_launcher_string.dart';
 
 class DocumentController extends GetxController {
   final ApiService _apiService;
@@ -25,5 +26,10 @@ class DocumentController extends GetxController {
 
   Future<void> onRefreshData() async {
     await _fetchDocument();
+  }
+
+  void onDocumentItemPressed(DocumentProjectResponse item) {
+    launchUrlString(_apiService.getImageFullUrl(item.documentPath ?? ''),
+        mode: LaunchMode.externalApplication);
   }
 }

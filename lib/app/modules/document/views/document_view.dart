@@ -67,6 +67,9 @@ class DocumentView extends GetView<DocumentController> {
                                     name: item.documentName,
                                     createDate: item.createDate,
                                     expiredDate: item.expireDate,
+                                    onTap: () {
+                                      controller.onDocumentItemPressed(item);
+                                    },
                                   );
                                 },
                               ),
@@ -86,15 +89,17 @@ class _DocumentItem extends StatelessWidget {
     this.name,
     this.createDate,
     this.expiredDate,
+    this.onTap,
   }) : super(key: key);
   final String? name;
   final DateTime? createDate;
   final DateTime? expiredDate;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return AppListTile(
-      onTap: () {},
+      onTap: this.onTap,
       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       borderRadius: BorderRadius.circular(AppDimensions.defaultRadius),
       title: Text(
