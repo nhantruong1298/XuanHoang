@@ -1,4 +1,4 @@
-import 'package:example_nav2/app/data/models/response/image_history_response.dart';
+import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/modules/images_history.dart/image_history_group.dart';
 import 'package:get/get.dart';
@@ -8,13 +8,14 @@ class ImageHistoryController extends GetxController {
   final listHistory = <ImageHistoryGroup>[].obs;
   late final String? idWorkingItem;
   ImageHistoryController(this._apiService);
-
+  late WorkingItem workingItem;
   get accessToken => _apiService.accessToken;
 
   @override
   void onInit() {
     super.onInit();
-    idWorkingItem = Get.arguments as String?;
+    workingItem = Get.arguments as WorkingItem;
+    idWorkingItem = workingItem.idWorkingItem;
     _fetchImagesHistory();
   }
 

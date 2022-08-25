@@ -31,8 +31,9 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
           actions: [
-            (AuthService.to.accountType == AccountType.staff ||
-                    AuthService.to.accountType == AccountType.admin)
+            ((AuthService.to.accountType == AccountType.staff ||
+                        AuthService.to.accountType == AccountType.admin) &&
+                    controller.workingItem.idWorkingItemStatus != null)
                 ? IconButton(
                     onPressed: () async {
                       final isUpdated = await Get.toNamed(

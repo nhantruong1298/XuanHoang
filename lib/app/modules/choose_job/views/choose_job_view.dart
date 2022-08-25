@@ -152,7 +152,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
       idWorkingItem: item.idWorkingItem,
       idWorkingItemStatus: item.idWorkingItemStatus,
       onImageTap: () {
-        Get.toNamed(ImagesHistoryView.routeName, arguments: item.idWorkingItem);
+        Get.toNamed(ImagesHistoryView.routeName, arguments: item);
       },
     );
   }
@@ -171,7 +171,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
             item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed), note);
       },
       onImageTap: () {
-        Get.toNamed(ImagesHistoryView.routeName, arguments: item.idWorkingItem);
+        Get.toNamed(ImagesHistoryView.routeName, arguments: item);
       },
       onCameraTap: () {
         Get.toNamed(AddImageView.routeName, arguments: item.idWorkingItem);
@@ -413,8 +413,12 @@ class _StaffJob extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 CustomSlidableAction(
-                  onPressed: (_) => onCameraTap!(),
-                  backgroundColor: AppColors.primaryLightColor,
+                  onPressed: idWorkingItemStatus != null
+                      ? (_) => onCameraTap!()
+                      : null,
+                  backgroundColor: idWorkingItemStatus != null
+                      ? AppColors.primaryLightColor
+                      : AppColors.greyBorderColor,
                   child: Assets.images.cameraIcon
                       .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
                 ),
