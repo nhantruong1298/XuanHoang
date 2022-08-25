@@ -3,6 +3,7 @@ import 'package:example_nav2/app/data/models/response/project_statistic_report_r
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_category/controllers/choose_category_controller.dart';
+import 'package:example_nav2/app/modules/choose_job/views/choose_job_argument.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
@@ -109,7 +110,9 @@ class ChooseTermView extends GetView<ChooseCategoryController> {
     return _StaffTerm(
       onTap: () async {
         final isUpdated = await Get.toNamed(ChooseJobView.routeName,
-            arguments: list[index].idWorkingTerm);
+            arguments: ChooseJobArgument(
+                idWorkingTerm: list[index].idWorkingTerm ?? '',
+                instructionFile: list[index].instructionFile));
 
         if (isUpdated == true) {
           controller.onRefreshData();
@@ -132,7 +135,9 @@ class ChooseTermView extends GetView<ChooseCategoryController> {
       percentNotGood: item.percentNotGood,
       onTap: () async {
         final isUpdated = await Get.toNamed(ChooseJobView.routeName,
-            arguments: list[index].idWorkingTerm);
+            arguments: ChooseJobArgument(
+              idWorkingTerm: list[index].idWorkingTerm ?? '',
+            ));
 
         if (isUpdated == true) {
           controller.onRefreshData();
@@ -183,7 +188,10 @@ class _StaffTerm extends StatelessWidget {
                               color: Color(0xFF0081C9),
                               height: 27,
                               fit: BoxFit.scaleDown))
-                      : const SizedBox.shrink()
+                      : const SizedBox(
+                          width: 27,
+                          height: 27,
+                        )
                 ],
               ),
             ),

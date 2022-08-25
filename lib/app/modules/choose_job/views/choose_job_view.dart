@@ -45,6 +45,16 @@ class ChooseJobView extends GetView<ChooseJobController> {
             leadingIcon: Assets.images.arrowBackIcon.path,
             title: S.current.CHOOSE_JOB__TITLE,
             actions: [
+              (AuthService.to.accountType != AccountType.customer)
+                  ? IconButton(
+                      onPressed: () {
+                        controller.onInstructionFilePressed();
+                      },
+                      icon: Assets.images.infoIcon.svg(
+                          color: AppColors.primaryDarkColor,
+                          height: 27,
+                          fit: BoxFit.scaleDown))
+                  : const SizedBox.shrink(),
               IconButton(
                   onPressed: () {
                     Get.offNamedUntil(HomeView.routeName, (route) => false);

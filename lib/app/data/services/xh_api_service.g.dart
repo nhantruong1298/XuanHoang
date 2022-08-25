@@ -429,7 +429,7 @@ class _XHApiService implements XHApiService {
         'File',
         MultipartFile.fromFileSync(file.path,
             filename: file.path.split(Platform.pathSeparator).last)));
-    await _dio.fetch<void>(_setStreamType<void>(Options(
+    final result = await _dio.fetch<void>(_setStreamType<void>(Options(
             method: 'POST',
             headers: _headers,
             extra: _extra,

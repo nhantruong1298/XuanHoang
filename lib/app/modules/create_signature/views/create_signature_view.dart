@@ -26,7 +26,7 @@ class _CreateSignatureViewState extends State<CreateSignatureView> {
   final SignatureController _controller = SignatureController(
     penStrokeWidth: 2,
     penColor: AppColors.primaryDarkColor,
-    exportBackgroundColor: Colors.blue,
+    exportBackgroundColor: AppColors.primaryLightColor,
   );
 
   TextEditingController _textController = TextEditingController(text: '');
@@ -51,7 +51,6 @@ class _CreateSignatureViewState extends State<CreateSignatureView> {
               width: double.infinity,
               height: double.infinity,
               child: Column(children: [
-                SizedBox(height: 20.h),
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
@@ -146,10 +145,8 @@ class _CreateSignatureViewState extends State<CreateSignatureView> {
       return;
     }
 
-    // File file = File.fromRawPath(unit8List);
-
     final tempDir = await getTemporaryDirectory();
-    File file = await File('${tempDir.path}/image.png').create();
+    File file = await File('${tempDir.path}/signature.png').create();
     file.writeAsBytesSync(unit8List);
     final customerName = _textController.text;
 

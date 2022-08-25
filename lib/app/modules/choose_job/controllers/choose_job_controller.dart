@@ -2,9 +2,11 @@ import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/modules/choose_job/views/choose_job_argument.dart';
 import 'package:example_nav2/app/modules/create_signature/signature_data.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:get/get.dart' hide Progress;
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uuid/uuid.dart';
 
 class ChooseJobController extends GetxController {
@@ -15,11 +17,14 @@ class ChooseJobController extends GetxController {
   ChooseJobController(this._apiService);
   RxBool isLoading = false.obs;
   late String? termId;
+  late String? instructionFile;
 
   @override
   void onInit() {
     super.onInit();
-    termId = Get.arguments as String?;
+    final argument = Get.arguments as ChooseJobArgument;
+    termId = argument.idWorkingTerm;
+    instructionFile = argument.instructionFile;
     _fetchJobs();
   }
 
@@ -105,14 +110,23 @@ class ChooseJobController extends GetxController {
             Get.back(result: true);
           });
     } catch (error) {
-      print(error);
       showConfirmDialog(
-          title: 'error',
+          title: 'Lỗi khi gửi báo cáo',
           textConfirm: 'Xác nhận',
           onConfirm: () {
             Get.back();
           });
     }
     isLoading.value = false;
+  }
+
+  void onInstructionFilePressed() {
+try {
+      final url = _apiService.getImageFullUrl(instructionFile ?? '');
+
+      launchUrlString(url, mode: LaunchMode.externalApplication);
+    } catch (error) {
+      print(error);
+    }
   }
 }

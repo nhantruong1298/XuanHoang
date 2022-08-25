@@ -25,14 +25,6 @@ class EditReportController extends GetxController {
     reportDetail?.value = Get.arguments as ReportDetailResponse?;
     incidentStatus.value = reportDetail?.value?.idIncidentStatus ?? '';
     replyContent = reportDetail?.value?.replyContent ?? '';
-    loadImageData(reportDetail?.value?.pictures ?? []);
-  }
-
-  void loadImageData(List<ReportDetailPicture> list) {
-    list.forEach((item) {
-      imagesData
-          .add(ImageData(path: _apiService.getImageFullUrl(item.path ?? '')));
-    });
   }
 
   Future<void> editReport() async {

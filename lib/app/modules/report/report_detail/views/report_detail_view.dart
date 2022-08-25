@@ -1,5 +1,3 @@
-import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
-import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -44,28 +42,39 @@ class ReportDetailView extends GetView<ReportDetailController> {
               child: Container(
                   width: double.infinity,
                   height: double.infinity,
-                  child: Obx(() {
-                    final reportDetail = controller.reportDetail.value;
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 20.h),
-                          _ReportTitle(
-                            title: reportDetail.incidentName,
-                          ),
-                          SizedBox(height: 25.h),
-                          _ReportContent(
-                            replyContent: reportDetail.replyContent,
-                            userName: reportDetail.fullName,
-                          ),
-                          const Spacer(),
-                          Obx(() {
-                            final images = controller.listImageData;
-                            return _ReportImages(images: images.toList());
-                          }),
-                          _BottomButton(),
-                        ]);
-                  })),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Obx(() {
+                          final reportList = controller.reportList;
+
+                          return PageView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            controller: controller.pageController,
+                            children: List.generate(reportList.length, (index) {
+                              final reportDetail = reportList[index];
+                              return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 20.h),
+                                    _ReportTitle(
+                                      title: reportDetail.title,
+                                    ),
+                                    SizedBox(height: 25.h),
+                                    _ReportContent(
+                                      replyContent: reportDetail.replyContent,
+                                      userName: reportDetail.userName,
+                                    ),
+                                    const Spacer(),
+                                    _ReportImages(images: reportDetail.images),
+                                  ]);
+                            }),
+                          );
+                        }),
+                      ),
+                      _BottomButton(),
+                    ],
+                  )),
             ),
             Obx(() {
               final isLoading = controller.isLoading;
@@ -191,7 +200,7 @@ class _BottomButton extends GetView<ReportDetailController> {
       Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: controller.onPreviousPage,
           child: Container(
             width: 65.w,
             height: 65.h,
@@ -203,7 +212,7 @@ class _BottomButton extends GetView<ReportDetailController> {
       Expanded(
         child: AppButton(
           onTap: () async {
-            final detail = controller.reportDetail.value;
+            final detail = controller.listResponse.first;
             final result =
                 await Get.toNamed(EditReportView.routeName, arguments: detail);
             if ((result as bool?) == true) {
@@ -216,7 +225,7 @@ class _BottomButton extends GetView<ReportDetailController> {
       Material(
         color: Colors.transparent,
         child: InkWell(
-          onTap: () {},
+          onTap: controller.onNextPage,
           child: Container(
             padding: EdgeInsets.all(10),
             width: 65.w,

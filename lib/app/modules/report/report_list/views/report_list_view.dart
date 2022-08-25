@@ -71,29 +71,33 @@ class ReportListView extends GetView<ReportListController> {
                         Obx(() {
                           final reportList = controller.reportList;
                           return Expanded(
-                              child: ListView.separated(
-                                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  itemBuilder: (context, index) {
-                                    final item = reportList[index];
-                                    return _ReportItem(
-                                      onTap: () {
-                                        Get.toNamed(ReportDetailView.routeName,
-                                            arguments: item.idIncident ?? '');
-                                      },
-                                      onClosePressed: (_) {
-                                        controller
-                                            .closeReport(item.idIncident ?? '');
-                                      },
-                                      incidentName: item.incidentName,
-                                      idIncidentStatus: item.idIncidentStatus,
-                                    );
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                  itemCount: reportList.length));
+                              child: RefreshIndicator(
+                            onRefresh: controller.onRefreshData,
+                            child: ListView.separated(
+                                keyboardDismissBehavior:
+                                    ScrollViewKeyboardDismissBehavior.onDrag,
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                itemBuilder: (context, index) {
+                                  final item = reportList[index];
+                                  return _ReportItem(
+                                    onTap: () {
+                                      Get.toNamed(ReportDetailView.routeName,
+                                          arguments: item.idIncident ?? '');
+                                    },
+                                    onClosePressed: (_) {
+                                      controller
+                                          .closeReport(item.idIncident ?? '',item.incidentName);
+                                    },
+                                    incidentName: item.incidentName,
+                                    idIncidentStatus: item.idIncidentStatus,
+                                  );
+                                },
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                itemCount: reportList.length),
+                          ));
                         })
                       ])),
             ),
