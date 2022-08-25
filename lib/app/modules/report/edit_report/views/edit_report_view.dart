@@ -196,9 +196,11 @@ class _ChooseImages extends GetView<EditReportController> {
           decoration: BoxDecoration(
               border:
                   Border.all(width: 1.5, color: AppColors.primaryLightColor)),
-          padding: EdgeInsets.all(45),
-          child:
-              Assets.images.cameraIcon.svg(height: 47, fit: BoxFit.scaleDown),
+          child: Assets.images.cameraIcon.svg(
+            height: 45.h,
+            width: 45.h,
+            fit: BoxFit.scaleDown,
+          ),
         ),
       ),
     ));
