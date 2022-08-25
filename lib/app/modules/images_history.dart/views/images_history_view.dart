@@ -7,6 +7,7 @@ import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_backg
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/controllers/images_history_controller.dart';
+import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
@@ -167,27 +168,34 @@ class _ImageGridViewItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 40.h,
-      height: 40.h,
-      color: Colors.white,
-      child: Image.network(
-        data,
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          return (loadingProgress != null)
-              ? Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  color: AppColors.primaryLightColor,
-                  child: Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.errorColor,
+    return GestureDetector(
+      onTap: () {
+        Get.to(ImageView(
+          imageUrl: data,
+        ));
+      },
+      child: Container(
+        width: 40.h,
+        height: 40.h,
+        color: Colors.white,
+        child: Image.network(
+          data,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            return (loadingProgress != null)
+                ? Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    color: AppColors.primaryLightColor,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.errorColor,
+                      ),
                     ),
-                  ),
-                )
-              : child;
-        },
+                  )
+                : child;
+          },
+        ),
       ),
     );
   }

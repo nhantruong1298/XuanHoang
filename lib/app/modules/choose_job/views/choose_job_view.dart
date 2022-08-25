@@ -66,10 +66,10 @@ class ChooseJobView extends GetView<ChooseJobController> {
                         onTap: () async {
                           final result = await Get.to(CreateSignatureView());
 
-                          if(result != null){
-                             controller.sendReport(result as SignatureData);
+                          if (result != null) {
+                            controller.sendReport(result as SignatureData);
                           }
-                         
+
                           //
                         },
                       );
