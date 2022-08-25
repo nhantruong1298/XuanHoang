@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:image/image.dart' as img;
 
 class AddImageController extends GetxController {
   final ApiService _apiService;
@@ -39,12 +42,29 @@ class AddImageController extends GetxController {
 
   Future<void> pickImage(ImageSource source) async {
     try {
-      final XFile? xFile =
-          await _picker.pickImage(source: source, imageQuality: 100);
+      final XFile? xFile = await _picker.pickImage(
+        source: source,
+      );
 
       if (xFile != null) {
+        final file = File(xFile.path);
+        final imageTemp = img.decodeImage(file.readAsBytesSync());
+        final resizedImg = img.copyResize(
+          imageTemp!,
+          height: 720,
+          interpolation: img.Interpolation.average,
+        );
         final response = await _apiService.uploadDocheckImage(
-            idWorkingItem ?? '', File(xFile.path));
+          idWorkingItem ?? '',
+          dio.FormData.fromMap(
+            {
+              'File': dio.MultipartFile.fromBytes(
+                img.encodePng(resizedImg),
+                filename: xFile.name,
+              ),
+            },
+          ),
+        );
 
         if (response.message == 'Success') {
           isUpdated = true;

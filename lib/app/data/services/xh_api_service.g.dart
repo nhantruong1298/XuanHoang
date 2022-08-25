@@ -141,15 +141,11 @@ class _XHApiService implements XHApiService {
 
   @override
   Future<DoCheckImageResponse> uploadDocheckImage(
-      {required idWorkingItem, required file}) async {
+      {required idWorkingItem, required formData}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingItem': idWorkingItem};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-        'File',
-        MultipartFile.fromFileSync(file.path,
-            filename: file.path.split(Platform.pathSeparator).last)));
+    final _data = formData;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<DoCheckImageResponse>(Options(
                 method: 'POST',

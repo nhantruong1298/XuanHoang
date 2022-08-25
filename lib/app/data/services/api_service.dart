@@ -26,6 +26,7 @@ import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/xh_api_service.dart';
 import 'package:get/get.dart' hide Response, Progress;
+import 'package:dio/dio.dart' as dio;
 
 class ApiService extends GetxService {
   static ApiService get to => Get.find();
@@ -132,10 +133,12 @@ class ApiService extends GetxService {
   }
 
   Future<DoCheckImageResponse> uploadDocheckImage(
-      String idWorkingItem, File file) async {
+      String idWorkingItem, dio.FormData formData) async {
     try {
       final result = await _xhApiService.uploadDocheckImage(
-          idWorkingItem: idWorkingItem, file: file);
+        idWorkingItem: idWorkingItem,
+        formData: formData,
+      );
 
       return result;
     } catch (error) {

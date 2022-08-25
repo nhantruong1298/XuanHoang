@@ -60,10 +60,9 @@ abstract class XHApiService {
 
   @POST("/api/working-items/docheck/images")
   @MultiPart()
-  Future<DoCheckImageResponse> uploadDocheckImage({
-    @Query('idWorkingItem') required String idWorkingItem,
-    @Part(name: 'File') required File file,
-  });
+  Future<DoCheckImageResponse> uploadDocheckImage(
+      {@Query('idWorkingItem') required String idWorkingItem,
+      @Body() required FormData formData});
 
   @POST("/api/Auth/Login")
   Future<LoginResponse> login(@Body() LoginRequest request);
