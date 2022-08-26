@@ -206,7 +206,7 @@ class ApiService extends GetxService {
       final response = await _xhApiService.updateReportDetail(
           idIncident: request.idIncident,
           idIncidentStatus: request.idIncidentStatus,
-          replyContent: request.idIncidentStatus,
+          replyContent: request.replyContent,
           files: files);
       return response;
     } catch (error) {

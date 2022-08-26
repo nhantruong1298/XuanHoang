@@ -61,6 +61,21 @@ class AddImageView extends GetView<AddImageController> {
                     ],
                   )),
             ),
+            Obx(() {
+              return Visibility(
+                visible: controller.isLoading.value,
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: AppColors.primaryDarkColor.withOpacity(.5),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.errorColor,
+                    ),
+                  ),
+                ),
+              );
+            })
           ],
         ));
   }
@@ -89,8 +104,10 @@ class _ChooseImageButton extends GetView<AddImageController> {
       child: Material(
         color: Color(0xFFD9D9D9),
         child: InkWell(
-          onTap: () async {
-            await showBottomSheet();
+          onTap: () {
+            if (!controller.isLoading.value) {
+              showBottomSheet();
+            }
           },
           child: Container(
             padding: EdgeInsets.all(10),
@@ -106,7 +123,7 @@ class _ChooseImageButton extends GetView<AddImageController> {
   }
 
   Future<void> showBottomSheet() async {
-    Get.bottomSheet(
+    final result = await Get.bottomSheet<ImageSource?>(
         ClipRRect(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(15),
@@ -119,9 +136,8 @@ class _ChooseImageButton extends GetView<AddImageController> {
               Material(
                 color: AppColors.primaryLightColor,
                 child: InkWell(
-                  onTap: () async {
-                    Get.back();
-                    await controller.pickImage(ImageSource.gallery);
+                  onTap: () {
+                    Get.back(result: ImageSource.gallery);
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -143,9 +159,8 @@ class _ChooseImageButton extends GetView<AddImageController> {
               Material(
                 color: AppColors.primaryLightColor,
                 child: InkWell(
-                  onTap: () async {
-                    Get.back();
-                    await controller.pickImage(ImageSource.camera);
+                  onTap: () {
+                    Get.back(result: ImageSource.camera);
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -174,6 +189,10 @@ class _ChooseImageButton extends GetView<AddImageController> {
           topLeft: Radius.circular(15),
           topRight: Radius.circular(15),
         )));
+
+    if (result != null) {
+      controller.pickImage(result);
+    }
   }
 }
 
@@ -229,6 +248,7 @@ class ImageGridViewItem extends StatelessWidget {
                   )
                 : child;
           },
+          filterQuality: FilterQuality.high,
         ),
       ),
     );

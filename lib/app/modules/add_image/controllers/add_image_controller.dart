@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
@@ -16,6 +14,7 @@ class AddImageController extends GetxController {
   late String? idWorkingItem;
   AddImageController(this._apiService);
   bool isUpdated = false;
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
@@ -42,6 +41,7 @@ class AddImageController extends GetxController {
 
   Future<void> pickImage(ImageSource source) async {
     try {
+      isLoading.value = true;
       final XFile? xFile = await _picker.pickImage(
         source: source,
       );
@@ -78,7 +78,11 @@ class AddImageController extends GetxController {
         }
       }
     } catch (error) {
-      print(error);
+      isLoading.value = false;
+      showSnackbar(
+          message: 'Thêm ảnh thất bại', backgroundColor: AppColors.errorColor);
     }
+
+    isLoading.value = false;
   }
 }

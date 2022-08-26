@@ -1,6 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:example_nav2/app/data/models/constant/incident_status_item.dart';
-import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/data/models/image_data.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
@@ -27,74 +26,80 @@ class EditReportView extends GetView<EditReportController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: ChooseProjectAppBar(
-          leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.EDIT_REPORT__REPLY,
-          actions: _buildHeaderActions,
-        ),
-        bottomNavigationBar: AppButton(
-          onTap: () {
-            controller.editReport();
-          },
-          text: S.current.EDIT_REPORT__SEND,
-        ),
-        body: Stack(
-          children: [
-            BlurBackGround(),
-            SafeArea(
-              child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Obx(
-                    () {
-                      final reportDetail = controller.reportDetail?.value;
-                      final idIncidentStatus = controller.incidentStatus.value;
-                      final imagesData = controller.imagesData;
-                      return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 20.h),
-                            _ReportTitle(
-                              title: reportDetail?.incidentName,
-                            ),
-                            SizedBox(height: 12.h),
-                            _buildReplyTextField(controller.replyContent!),
-                            SizedBox(height: 7.h),
-                            _DropDownMenu(
-                              value: (idIncidentStatus.isNotEmpty)
-                                  ? idIncidentStatus
-                                  : IncidentStatus.waiting,
-                              onChanged: (idIncidentStatus) {
-                                controller.onIdIncidentStatusChanged(
-                                    idIncidentStatus);
-                              },
-                            ),
-                            SizedBox(height: 7.h),
-                            _ChooseImages(
-                              imagesData: imagesData.toList(),
-                            ),
-                          ]);
-                    },
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          extendBodyBehindAppBar: true,
+          appBar: ChooseProjectAppBar(
+            leadingIcon: Assets.images.arrowBackIcon.path,
+            title: S.current.EDIT_REPORT__REPLY,
+            actions: _buildHeaderActions,
+          ),
+          bottomNavigationBar: const SizedBox.shrink(),
+          body: Stack(
+            children: [
+              BlurBackGround(),
+              SafeArea(
+                child: SizedBox(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Obx(
+                      () {
+                        final reportDetail = controller.reportDetail;
+                        final imagesData = controller.imagesData;
+                        final status = controller.idIncidentStatus.value;
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 20.h),
+                              _ReportTitle(
+                                title: reportDetail?.incidentName,
+                              ),
+                              SizedBox(height: 12.h),
+                              _buildReplyTextField(controller.replyContent),
+                              SizedBox(height: 7.h),
+                              _DropDownMenu(
+                                value: status.isEmpty ? null : status ,
+                                onChanged: (idIncidentStatus) {
+                                  controller.onIdIncidentStatusChanged(
+                                      idIncidentStatus);
+                                },
+                              ),
+                              SizedBox(height: 7.h),
+                              _ChooseImages(
+                                imagesData: imagesData.toList(),
+                              ),
+                              AppButton(
+                                onTap: () {
+                                  if (!controller.isLoading.value) {
+                                    controller.editReport();
+                                  }
+                                },
+                                text: S.current.EDIT_REPORT__SEND,
+                              )
+                            ]);
+                      },
+                    )),
+              ),
+              Obx(() {
+                return Visibility(
+                  visible: controller.isLoading.value,
+                  child: Positioned.fill(
+                      child: Container(
+                    color: AppColors.primaryDarkColor.withOpacity(.6),
+                    child: Center(
+                        child: CircularProgressIndicator(
+                      color: AppColors.errorColor,
+                    )),
                   )),
-            ),
-            Obx(() {
-              return Visibility(
-                visible: controller.isLoading.value,
-                child: Positioned.fill(
-                    child: Container(
-                  color: AppColors.primaryDarkColor.withOpacity(.6),
-                  child: Center(
-                      child: CircularProgressIndicator(
-                    color: AppColors.errorColor,
-                  )),
-                )),
-              );
-            })
-          ],
-        ));
+                );
+              })
+            ],
+          )),
+    );
   }
 
   Widget _buildReplyTextField(String initText) {
@@ -108,7 +113,7 @@ class EditReportView extends GetView<EditReportController> {
           minLines: 30,
           maxLines: 30,
           onChanged: (value) {
-            controller.onReplyContentChanged(value);
+            controller.onReplyContentChanged(value ?? '');
           },
         ),
       ),
@@ -217,12 +222,12 @@ class _DropDownMenu extends StatelessWidget {
     final label = IncidentStatusItem.items
             .firstWhereOrNull((element) => element.key == value)
             ?.label ??
-        '';
+        'Chọn trạng thái';
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: DropdownButtonHideUnderline(
         child: DropdownButton2(
-          value: value,
+          // value: null,
           items: List.generate(
             IncidentStatusItem.items.length,
             (index) {
