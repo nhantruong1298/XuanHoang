@@ -41,10 +41,10 @@ class ReportDetailController extends GetxController {
       listResponse.forEach((response) {
         final List<String> images = [];
         final result = ReportDetailResult(
-          replyContent: response.replyContent,
-          title: response.incidentName,
-          userName: response.fullName,
-        );
+            replyContent: response.replyContent,
+            title: response.incidentName,
+            userName: response.fullName,
+            idIncidentStatus: response.idIncidentStatus);
 
         if (response.pictures?.isNotEmpty == true) {
           response.pictures!.forEach((picture) {
@@ -70,12 +70,12 @@ class ReportDetailController extends GetxController {
   }
 
   void onNextPage() {
-    pageController.nextPage(
+    pageController.previousPage(
         duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 
   void onPreviousPage() {
-    pageController.previousPage(
+    pageController.nextPage(
         duration: Duration(milliseconds: 300), curve: Curves.easeIn);
   }
 }

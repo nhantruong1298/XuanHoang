@@ -16,6 +16,9 @@ ImageHistoryResponse _$ImageHistoryResponseFromJson(
       pictures: (json['Pictures'] as List<dynamic>?)
           ?.map((e) => PictureResponse.fromJson(e as Map<String, dynamic>))
           .toList(),
+      createDate: json['CreateDate'] == null
+          ? null
+          : DateTime.parse(json['CreateDate'] as String),
     );
 
 Map<String, dynamic> _$ImageHistoryResponseToJson(
@@ -26,6 +29,7 @@ Map<String, dynamic> _$ImageHistoryResponseToJson(
       'IdWorkingItemStatus': instance.idWorkingItemStatus,
       'Picture': instance.picture,
       'FullName': instance.fullName,
+      'CreateDate': instance.createDate?.toIso8601String(),
     };
 
 PictureResponse _$PictureResponseFromJson(Map<String, dynamic> json) =>

@@ -17,7 +17,9 @@ WarningProjectResponse _$WarningProjectResponseFromJson(
       documentName: json['DocumentName'] as String?,
       detailName: json['DetailName'] as String?,
       documentPath: json['DocumentPath'] as String?,
-      expireDate: json['ExpireDate'] as String?,
+      expireDate: json['ExpireDate'] == null
+          ? null
+          : DateTime.parse(json['ExpireDate'] as String),
     );
 
 Map<String, dynamic> _$WarningProjectResponseToJson(
@@ -31,5 +33,5 @@ Map<String, dynamic> _$WarningProjectResponseToJson(
       'DocumentName': instance.documentName,
       'DetailName': instance.detailName,
       'DocumentPath': instance.documentPath,
-      'ExpireDate': instance.expireDate,
+      'ExpireDate': instance.expireDate?.toIso8601String(),
     };

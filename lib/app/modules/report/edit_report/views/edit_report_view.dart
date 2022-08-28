@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:example_nav2/app/data/models/constant/incident_status_item.dart';
-import 'package:example_nav2/app/data/models/image_data.dart';
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/controllers/edit_report_controller.dart';
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
@@ -23,6 +27,8 @@ class EditReportView extends GetView<EditReportController> {
       '${HomeView.path}${ReportListView.path}${ReportDetailView.path}$path';
   static const String path = '/edit-report';
   const EditReportView({Key? key}) : super(key: key);
+
+  bool get isCustomer => AuthService.to.accountType == AccountType.customer;
 
   @override
   Widget build(BuildContext context) {
@@ -56,18 +62,21 @@ class EditReportView extends GetView<EditReportController> {
                             children: [
                               SizedBox(height: 20.h),
                               _ReportTitle(
-                                title: reportDetail?.incidentName,
-                              ),
+                                  title: reportDetail?.incidentName,
+                                  status: controller
+                                      .reportDetail?.idIncidentStatus),
                               SizedBox(height: 12.h),
                               _buildReplyTextField(controller.replyContent),
                               SizedBox(height: 7.h),
-                              _DropDownMenu(
-                                value: status.isEmpty ? null : status ,
-                                onChanged: (idIncidentStatus) {
-                                  controller.onIdIncidentStatusChanged(
-                                      idIncidentStatus);
-                                },
-                              ),
+                              (isCustomer)
+                                  ? const SizedBox.shrink()
+                                  : _DropDownMenu(
+                                      value: status.isEmpty ? null : status,
+                                      onChanged: (idIncidentStatus) {
+                                        controller.onIdIncidentStatusChanged(
+                                            idIncidentStatus);
+                                      },
+                                    ),
                               SizedBox(height: 7.h),
                               _ChooseImages(
                                 imagesData: imagesData.toList(),
@@ -135,7 +144,7 @@ class EditReportView extends GetView<EditReportController> {
 }
 
 class _ChooseImages extends GetView<EditReportController> {
-  final List<ImageData> imagesData;
+  final List<File> imagesData;
   const _ChooseImages({Key? key, this.imagesData = const []}) : super(key: key);
 
   @override
@@ -150,34 +159,40 @@ class _ChooseImages extends GetView<EditReportController> {
     final result = List.generate(
         imagesData.length,
         (index) => Expanded(
-                child: Container(
-              height: 145.h,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 1.5, color: AppColors.primaryLightColor)),
-              child: (imagesData[index].isLocalFile)
-                  ? Image.file(
-                      imagesData[index].file!,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.network(
-                      imagesData[index].path!,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        return (loadingProgress != null)
-                            ? Container(
-                                width: double.infinity,
-                                height: double.infinity,
-                                color: AppColors.primaryLightColor,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    color: AppColors.errorColor,
-                                  ),
-                                ),
-                              )
-                            : child;
-                      },
+                child: Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.to(ImageView(
+                      file: imagesData[index],
+                    ));
+                  },
+                  child: Container(
+                      height: 145.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 1.5, color: AppColors.primaryLightColor)),
+                      child: Image.file(
+                        imagesData[index],
+                        fit: BoxFit.cover,
+                      )),
+                ),
+                Positioned(
+                  child: InkWell(
+                    onTap: () {
+                      controller.onRemoveImage(index);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Assets.images.removeIcon
+                          .svg(width: 25, height: 25, fit: BoxFit.scaleDown),
                     ),
+                  ),
+                  right: 0,
+                  top: 0,
+                ),
+              ],
             )));
 
     while (result.length < 3) {
@@ -265,7 +280,18 @@ class _DropDownMenu extends StatelessWidget {
 
 class _ReportTitle extends StatelessWidget {
   final String? title;
-  const _ReportTitle({Key? key, this.title}) : super(key: key);
+  final String? status;
+  const _ReportTitle({
+    Key? key,
+    this.title,
+    this.status,
+  }) : super(key: key);
+  Color get statusColor {
+    return IncidentStatusItem.items
+            .firstWhereOrNull((item) => item.key == status)
+            ?.color ??
+        AppColors.primaryDarkColor;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -275,8 +301,7 @@ class _ReportTitle extends StatelessWidget {
         Container(
           width: 17,
           height: 17,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Color(0xFF007D00)),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: statusColor),
           margin: EdgeInsets.only(right: 15, top: 5),
         ),
         Expanded(

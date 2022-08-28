@@ -1,3 +1,4 @@
+import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -49,6 +50,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           final reportList = controller.reportList;
 
                           return PageView(
+                            reverse: true,
                             physics: const NeverScrollableScrollPhysics(),
                             controller: controller.pageController,
                             children: List.generate(reportList.length, (index) {
@@ -58,8 +60,9 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                   children: [
                                     SizedBox(height: 20.h),
                                     _ReportTitle(
-                                      title: reportDetail.title,
-                                    ),
+                                        title: reportDetail.title,
+                                        idIncidentStatus:
+                                            reportDetail.idIncidentStatus),
                                     SizedBox(height: 25.h),
                                     _ReportContent(
                                       replyContent: reportDetail.replyContent,
@@ -100,7 +103,26 @@ class ReportDetailView extends GetView<ReportDetailController> {
 
 class _ReportTitle extends StatelessWidget {
   final String? title;
-  const _ReportTitle({Key? key, required this.title}) : super(key: key);
+  final String? idIncidentStatus;
+  const _ReportTitle({
+    Key? key,
+    required this.title,
+    this.idIncidentStatus,
+  }) : super(key: key);
+
+  Color get statusColor {
+    switch (idIncidentStatus) {
+      // case IncidentStatus.close:
+      //   return 'Đóng';
+      case IncidentStatus.done:
+        return AppColors.green700;
+      case IncidentStatus.processing:
+        return AppColors.blueColor;
+      case IncidentStatus.waiting:
+        return AppColors.greyBorderColor;
+    }
+    return AppColors.textColor;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +132,7 @@ class _ReportTitle extends StatelessWidget {
         Container(
           width: 17,
           height: 17,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, color: Color(0xFF007D00)),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: statusColor),
           margin: EdgeInsets.only(right: 15, top: 5),
         ),
         Expanded(

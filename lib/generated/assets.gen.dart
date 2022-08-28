@@ -72,6 +72,10 @@ class $AssetsImagesGen {
   SvgGenImage get progressIcon =>
       const SvgGenImage('assets/images/progress-icon.svg');
 
+  /// File path: assets/images/remove-icon.svg
+  SvgGenImage get removeIcon =>
+      const SvgGenImage('assets/images/remove-icon.svg');
+
   /// File path: assets/images/right-icon.svg
   SvgGenImage get rightIcon =>
       const SvgGenImage('assets/images/right-icon.svg');

@@ -2,14 +2,14 @@ import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void showConfirmDialog(
+Future<dynamic> showConfirmDialog(
     {String? title,
     String? textConfirm,
     String? textCancel,
     Function()? onCancel,
     Function()? onConfirm,
     Widget? content}) {
-  Get.defaultDialog(
+  return Get.defaultDialog(
     titlePadding: EdgeInsets.all(16),
     contentPadding: EdgeInsets.all(16),
     barrierDismissible: false,

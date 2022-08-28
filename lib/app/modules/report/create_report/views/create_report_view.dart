@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/report/create_report/controllers/create_report_controller.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
@@ -101,12 +101,7 @@ class CreateReportView extends GetView<CreateReportController> {
                             () {
                               final images = controller.images;
                               return _ChooseImages(
-                                images: images.value,
-                                onItemTap: () async {
-                                  final photoSource =
-                                      await chooseImageBottomSheet();
-                                  controller.onChooseImage(photoSource);
-                                },
+                                imagesData: images.value,
                               );
                             },
                           )
@@ -131,14 +126,9 @@ class CreateReportView extends GetView<CreateReportController> {
   }
 }
 
-class _ChooseImages extends StatelessWidget {
-  final List<File> images;
-  final VoidCallback onItemTap;
-  const _ChooseImages({
-    Key? key,
-    this.images = const [],
-    required this.onItemTap,
-  }) : super(key: key);
+class _ChooseImages extends GetView<CreateReportController> {
+  final List<File> imagesData;
+  const _ChooseImages({Key? key, this.imagesData = const []}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -149,62 +139,73 @@ class _ChooseImages extends StatelessWidget {
   }
 
   List<Widget> _buildItems() {
-    List<Widget> result = [];
-    if (images.length >= 3) {
-      final items = images.skip(images.length - 3).toList();
-      result = List.generate(
-          items.length,
-          (index) => Expanded(
-                  child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onItemTap,
+    final result = List.generate(
+        imagesData.length,
+        (index) => Expanded(
+                child: Stack(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Get.to(ImageView(
+                      file: imagesData[index],
+                    ));
+                  },
                   child: Container(
-                    height: 145.h,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.5, color: AppColors.primaryLightColor)),
-                    child: Image.file(items[index], fit: BoxFit.cover),
-                  ),
+                      height: 145.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 1.5, color: AppColors.primaryLightColor)),
+                      child: Image.file(
+                        imagesData[index],
+                        fit: BoxFit.cover,
+                      )),
                 ),
-              )));
-    } else {
-      result = List.generate(
-          images.length,
-          (index) => Expanded(
-                  child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onItemTap,
-                  child: Container(
-                    height: 145.h,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1.5, color: AppColors.primaryLightColor)),
-                    child: Image.file(images[index], fit: BoxFit.cover),
+                Positioned(
+                  child: InkWell(
+                    onTap: () {
+                      controller.onRemoveImage(index);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Assets.images.removeIcon
+                          .svg(width: 25, height: 25, fit: BoxFit.scaleDown),
+                    ),
                   ),
+                  right: 0,
+                  top: 0,
                 ),
-              )));
-      do {
-        result.add(Expanded(
-            child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onItemTap,
-            child: Container(
-              height: 145.h,
-              padding: EdgeInsets.all(35),
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      width: 1.5, color: AppColors.primaryLightColor)),
-              child:
-                  Assets.images.cameraIcon.svg(height: 47, fit: BoxFit.contain),
-            ),
-          ),
-        )));
-      } while (result.length < 3);
+              ],
+            )));
+
+    while (result.length < 3) {
+      result.add(_buildPickImageButton());
     }
 
     return result;
+  }
+
+  Expanded _buildPickImageButton() {
+    return Expanded(
+        child: Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () async {
+          final photoSource = await chooseImageBottomSheet();
+          controller.onChooseImage(photoSource);
+        },
+        child: Container(
+          height: 145.h,
+          decoration: BoxDecoration(
+              border:
+                  Border.all(width: 1.5, color: AppColors.primaryLightColor)),
+          child: Assets.images.cameraIcon.svg(
+            height: 45.h,
+            width: 45.h,
+            fit: BoxFit.scaleDown,
+          ),
+        ),
+      ),
+    ));
   }
 }

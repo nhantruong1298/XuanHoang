@@ -1,3 +1,4 @@
+import 'package:example_nav2/app/data/models/constant/working_item_status_type.dart';
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
@@ -10,7 +11,6 @@ import 'package:example_nav2/app/modules/images_history.dart/controllers/images_
 import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
-import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +29,7 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
         extendBodyBehindAppBar: true,
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
-          title: S.current.CHOOSE_IMAGE__LOOK_PHOTOS,
+          title: 'Lịch sử',
           actions: [
             ((AuthService.to.accountType == AccountType.staff ||
                         AuthService.to.accountType == AccountType.admin) &&
@@ -69,20 +69,20 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
                     return SingleChildScrollView(
                       child: Column(
                         children: List.generate(listHistory.length, (index) {
-                          final listImage = listHistory[index].listImage;
-                          return (listImage.isNotEmpty)
+                          final item = listHistory[index];
+                          return (item.listImage.isNotEmpty)
                               ? Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     _TitleGridView(
-                                      name: listHistory[index].fullName,
-                                      date: listHistory[index].fullName,
-                                    ),
+                                        name: item.fullName,
+                                        date: item.createDate,
+                                        status: item.idWorkingItemStatus),
                                     _ImagesGridView(
                                         images: List.generate(
-                                      listImage.length,
+                                      item.listImage.length,
                                       (index) => _ImageGridViewItem(
-                                          data: listImage[index]),
+                                          data: item.listImage[index]),
                                     ))
                                   ],
                                 )
@@ -100,7 +100,22 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
 class _TitleGridView extends StatelessWidget {
   final String? date;
   final String? name;
-  const _TitleGridView({Key? key, this.date, this.name}) : super(key: key);
+  final String status;
+  const _TitleGridView({
+    Key? key,
+    this.date,
+    this.name,
+    required this.status,
+  }) : super(key: key);
+
+  Color get statusColor {
+    final color = WorkingItemStatusType.items
+            .firstWhereOrNull((item) => item.status == this.status)
+            ?.color ??
+        AppColors.primaryLightColor;
+
+    return color;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -113,8 +128,8 @@ class _TitleGridView extends StatelessWidget {
         children: [
           Container(
             width: 14,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle, color: AppColors.errorColor),
+            decoration:
+                BoxDecoration(shape: BoxShape.circle, color: statusColor),
           ),
           const SizedBox(width: 16),
           Text(

@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:example_nav2/app/data/models/enum/incident_status.dart';
-import 'package:example_nav2/app/data/models/image_data.dart';
+import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
@@ -18,11 +18,13 @@ class EditReportController extends GetxController {
   String replyContent = '';
   int? idIncident;
   ReportDetailResponse? reportDetail;
-  final imagesData = <ImageData>[].obs;
+  final imagesData = <File>[].obs;
   final _imagePicker = ImagePicker();
 
   RxString idIncidentStatus = ''.obs;
   EditReportController(this._apiService);
+
+  bool isCustomer = AuthService.to.accountType == AccountType.customer;
 
   @override
   void onInit() {
@@ -39,16 +41,6 @@ class EditReportController extends GetxController {
     if (idIncident == null) return;
     isLoading.value = true;
     try {
-      final localImages = imagesData.where((item) => item.isLocalFile).toList();
-
-      final List<File> localFile = [];
-
-      if (localImages.isNotEmpty) {
-        localImages.forEach((element) {
-          localFile.add(element.file!);
-        });
-      }
-
       if (replyContent.isEmpty) {
         showSnackbar(
             message: 'Nội dung không được để trống',
@@ -56,7 +48,8 @@ class EditReportController extends GetxController {
         return;
       }
 
-      if (idIncidentStatus.isEmpty) {
+      //Customer can't edit incident status
+      if (idIncidentStatus.isEmpty && !isCustomer) {
         showSnackbar(
             message: 'Trạng thái không được để trống',
             backgroundColor: AppColors.errorColor);
@@ -67,8 +60,10 @@ class EditReportController extends GetxController {
         IncidentDiscussionRequest(
             idIncident: idIncident!,
             replyContent: replyContent,
-            idIncidentStatus: idIncidentStatus.value),
-        localFile,
+            idIncidentStatus: (isCustomer)
+                ? (reportDetail?.idIncidentStatus ?? '')
+                : idIncidentStatus.value),
+        imagesData,
       );
 
       if (response != null) {
@@ -107,13 +102,28 @@ class EditReportController extends GetxController {
         final image = await _imagePicker.pickImage(source: imageSource);
 
         if (image != null) {
-          imagesData.add(ImageData(file: File(image.path)));
+          imagesData.add(File(image.path));
         }
       } catch (error) {
         print(error);
       } finally {
         isLoading.value = false;
       }
+    }
+  }
+
+  void onRemoveImage(int index) async {
+    final result = await showConfirmDialog(
+        title: 'Xác nhận xoá ảnh',
+        onCancel: () {},
+        textConfirm: 'Đống ý',
+        textCancel: 'Huỷ',
+        onConfirm: () {
+          Get.back(result: index);
+        });
+
+    if (result != null) {
+      imagesData.removeAt(result as int);
     }
   }
 }

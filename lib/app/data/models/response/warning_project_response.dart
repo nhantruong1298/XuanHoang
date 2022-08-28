@@ -20,7 +20,7 @@ class WarningProjectResponse {
   @JsonKey(name: 'DocumentPath')
   final String? documentPath;
   @JsonKey(name: 'ExpireDate')
-  final String? expireDate;
+  final DateTime? expireDate;
 
   factory WarningProjectResponse.fromJson(Map<String, dynamic> json) {
     return _$WarningProjectResponseFromJson(json);

@@ -84,6 +84,7 @@ class CreateReportController extends GetxController {
 
   void onChooseImage(ImageSource? imageSource) async {
     if (imageSource != null) {
+      isLoading.value = true;
       try {
         final image = await _imagePicker.pickImage(source: imageSource);
 
@@ -92,7 +93,24 @@ class CreateReportController extends GetxController {
         }
       } catch (error) {
         print(error);
+      } finally {
+        isLoading.value = false;
       }
+    }
+  }
+
+  void onRemoveImage(int index) async {
+    final result = await showConfirmDialog(
+        title: 'Xác nhận xoá ảnh',
+        onCancel: () {},
+        textConfirm: 'Đống ý',
+        textCancel: 'Huỷ',
+        onConfirm: () {
+          Get.back(result: index);
+        });
+
+    if (result != null) {
+      images.removeAt(result as int);
     }
   }
 }

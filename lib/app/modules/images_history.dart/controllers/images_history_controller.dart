@@ -1,6 +1,7 @@
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/modules/images_history.dart/image_history_group.dart';
+import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:get/get.dart';
 
 class ImageHistoryController extends GetxController {
@@ -38,7 +39,10 @@ class ImageHistoryController extends GetxController {
           });
 
           result.add(ImageHistoryGroup(
-              fullName: history.fullName ?? '', listImage: picturesFullPath));
+              fullName: history.fullName ?? '',
+              listImage: picturesFullPath,
+              createDate: AppFormatter.formatDate(history.createDate),
+              idWorkingItemStatus: history.idWorkingItemStatus ?? ''));
         });
       }
 

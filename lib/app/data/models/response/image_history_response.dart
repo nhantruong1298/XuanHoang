@@ -18,12 +18,17 @@ class ImageHistoryResponse {
   @JsonKey(name: 'FullName')
   final String? fullName;
 
-  ImageHistoryResponse(
-      {this.idWorkingItem,
-      this.picture,
-      this.fullName,
-      this.idWorkingItemStatus,
-      this.pictures});
+  @JsonKey(name: 'CreateDate')
+  final DateTime? createDate;
+
+  ImageHistoryResponse({
+    this.idWorkingItem,
+    this.picture,
+    this.fullName,
+    this.idWorkingItemStatus,
+    this.pictures,
+    this.createDate,
+  });
 
   factory ImageHistoryResponse.fromJson(Map<String, dynamic> json) {
     return _$ImageHistoryResponseFromJson(json);

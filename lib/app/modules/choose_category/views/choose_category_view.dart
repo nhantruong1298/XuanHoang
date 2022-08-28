@@ -83,6 +83,7 @@ class ChooseTermView extends GetView<ChooseCategoryController> {
                                 child: RefreshIndicator(
                               onRefresh: controller.onRefreshData,
                               child: ListView.separated(
+                                  padding: EdgeInsets.only(bottom: 16),
                                   keyboardDismissBehavior:
                                       ScrollViewKeyboardDismissBehavior.onDrag,
                                   itemBuilder: (context, index) {
@@ -178,9 +179,17 @@ class _StaffTerm extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(termName ?? '',
-                      style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                  Expanded(
+                    child: Container(
+                      height: 50,
+                      alignment: Alignment.centerLeft,
+                      child: Text(termName ?? '',
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                    ),
+                  ),
                   (instructionFile?.isNotEmpty == true)
                       ? IconButton(
                           onPressed: onInfoPressed,
@@ -188,10 +197,7 @@ class _StaffTerm extends StatelessWidget {
                               color: Color(0xFF0081C9),
                               height: 27,
                               fit: BoxFit.scaleDown))
-                      : const SizedBox(
-                          width: 27,
-                          height: 27,
-                        )
+                      : const SizedBox.shrink()
                 ],
               ),
             ),
@@ -231,7 +237,7 @@ class _CustomerTerm extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Container(
-              padding: EdgeInsets.all(9),
+              padding: EdgeInsets.only(top: 9, right: 9, bottom: 9, left: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -239,8 +245,11 @@ class _CustomerTerm extends StatelessWidget {
                 Expanded(
                   child: Text('$termName',
                       style: TextStyle(
-                          fontWeight: FontWeight.w700, fontSize: 17.sp)),
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17.sp,
+                      )),
                 ),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [

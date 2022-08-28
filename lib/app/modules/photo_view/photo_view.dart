@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImageView extends StatelessWidget {
-  const ImageView({Key? key, required this.imageUrl}) : super(key: key);
-  final String imageUrl;
+  const ImageView({
+    Key? key,
+    this.imageUrl,
+    this.file,
+  }) : super(key: key);
+  final String? imageUrl;
+  final File? file;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,9 +19,13 @@ class ImageView extends StatelessWidget {
         child: Stack(
           children: [
             Container(
-              child: PhotoView(
-                imageProvider: NetworkImage(imageUrl),
-              ),
+              child: (imageUrl != null)
+                  ? PhotoView(
+                      imageProvider: NetworkImage(imageUrl!),
+                    )
+                  : (file != null)
+                      ? PhotoView(imageProvider: FileImage(file!))
+                      : const SizedBox.shrink(),
             ),
             Align(
               alignment: Alignment.topLeft,
