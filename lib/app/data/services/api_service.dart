@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
 import 'package:example_nav2/app/data/models/request/change_password_request.dart';
-import 'package:example_nav2/app/data/models/request/create_project_incident_request.dart';
+import 'package:example_nav2/app/data/models/request/delete_do_check_image_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
-import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
 import 'package:example_nav2/app/data/models/response/do_check_image_response.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
@@ -25,8 +24,10 @@ import 'package:example_nav2/app/data/models/token.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/xh_api_service.dart';
-import 'package:get/get.dart' hide Response, Progress;
+import 'package:flutter/material.dart';
+import 'package:get/get.dart' hide Response, Progress, FormData;
 import 'package:dio/dio.dart' as dio;
+import 'package:retrofit/retrofit.dart';
 
 class ApiService extends GetxService {
   static ApiService get to => Get.find();
@@ -200,14 +201,10 @@ class ApiService extends GetxService {
     }
   }
 
-  Future<UpdateReportResponse?> updateReportDetail(
-      IncidentDiscussionRequest request, List<File> files) async {
+  Future<UpdateReportResponse?> updateReportDetail(FormData formData) async {
     try {
-      final response = await _xhApiService.updateReportDetail(
-          idIncident: request.idIncident,
-          idIncidentStatus: request.idIncidentStatus,
-          replyContent: request.replyContent,
-          files: files);
+      final response =
+          await _xhApiService.updateReportDetail(formData: formData);
       return response;
     } catch (error) {
       print(error);
@@ -268,18 +265,11 @@ class ApiService extends GetxService {
     }
   }
 
-  Future<UpdateReportResponse?> createProjectIncident({
-    required int idProject,
-    required String incidentDescription,
-    required String incidentName,
-    required List<File> files,
-  }) async {
+  Future<UpdateReportResponse?> createProjectIncident(
+      {required FormData formData}) async {
     try {
-      final response = await _xhApiService.createProjectIncident(
-          idProject: idProject,
-          incidentDescription: incidentDescription,
-          incidentName: incidentName,
-          files: files);
+      final response =
+          await _xhApiService.createProjectIncident(formData: formData);
       return response;
     } catch (error) {
       print(error);
@@ -288,9 +278,10 @@ class ApiService extends GetxService {
   }
 
   Future<void> workingTermReport(
-      String idWorkingTerm, String customerName, File file) async {
+      String idWorkingTerm, String customerName, FormData formData) async {
     try {
-      await _xhApiService.workingTermReport(idWorkingTerm, customerName, file);
+      await _xhApiService.workingTermReport(
+          idWorkingTerm, customerName, formData);
     } catch (error) {
       rethrow;
     }
@@ -307,6 +298,38 @@ class ApiService extends GetxService {
     } catch (error) {
       print(error);
       return [];
+    }
+  }
+
+  Future<DoCheckImageResponse> deleteDoCheckImage({
+    required String? idWorkingItem,
+    required String? picture,
+    required String? description,
+    required String? idWorkingItemHistoryPicture,
+    required String? isDeleted,
+    required String? fullName,
+    required String? idWorkingItemStatus,
+    required String? isReported,
+    required String? reason,
+    required String? statusName,
+  }) async {
+    try {
+      final response = await _xhApiService.deleteDoCheckImage(
+          DeleteDoCheckImageRequest(
+              description: description,
+              idWorkingItem: idWorkingItem,
+              idWorkingItemHistoryPicture: idWorkingItemHistoryPicture,
+              isDeleted: isDeleted,
+              picture: picture,
+              fullName: fullName,
+              idWorkingItemStatus: idWorkingItemStatus,
+              isReported: isReported,
+              reason: reason,
+              statusName: statusName));
+      return response;
+    } catch (error) {
+      print(error);
+      rethrow;
     }
   }
 }

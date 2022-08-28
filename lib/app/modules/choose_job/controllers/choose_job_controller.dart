@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/modules/choose_job/views/choose_job_argument.dart';
 import 'package:example_nav2/app/modules/create_signature/signature_data.dart';
+import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:get/get.dart' hide Progress;
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:uuid/uuid.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:image/image.dart' as img;
 
 class ChooseJobController extends GetxController {
   final ApiService _apiService;
@@ -99,8 +104,18 @@ class ChooseJobController extends GetxController {
   void sendReport(SignatureData data) async {
     isLoading.value = true;
     try {
+      final resizedImage = AppFormatter.resizeImage(data.image);
+
+      final multipartFile = dio.MultipartFile.fromBytes(
+          img.encodePng(resizedImage),
+          filename: data.image.path.split(Platform.pathSeparator).last);
+
+      final mapData = <String, dynamic>{};
+
+      mapData.addAll({'File': multipartFile});
+
       await _apiService.workingTermReport(
-          termId ?? '', data.customerName, data.image);
+          termId ?? '', data.customerName, dio.FormData.fromMap(mapData));
 
       showConfirmDialog(
           title: 'Gửi báo cáo thành công',
@@ -116,12 +131,13 @@ class ChooseJobController extends GetxController {
           onConfirm: () {
             Get.back();
           });
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   void onInstructionFilePressed() {
-try {
+    try {
       final url = _apiService.getImageFullUrl(instructionFile ?? '');
 
       launchUrlString(url, mode: LaunchMode.externalApplication);

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
+import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
@@ -9,31 +11,36 @@ import 'package:image/image.dart' as img;
 
 class AddImageController extends GetxController {
   final ApiService _apiService;
-  final listImage = <String>[].obs;
-  late final ImagePicker _picker;
-  late String? idWorkingItem;
   AddImageController(this._apiService);
+  final listImageUrl = <String>[].obs;
+  late final ImagePicker _picker;
+
   bool isUpdated = false;
   RxBool isLoading = false.obs;
+  late WorkingItem workingItem;
+  List<WorkingItemImageResponse> _listWorkingItemImage = [];
 
   @override
   void onInit() {
     super.onInit();
-    idWorkingItem = Get.arguments as String?;
+    workingItem = Get.arguments as WorkingItem;
     _picker = ImagePicker();
     fetchImages();
   }
 
   Future<void> fetchImages() async {
-    listImage.clear();
-    if (idWorkingItem != null) {
-      final response =
-          await _apiService.loadWorkingItemImages(idWorkingItem ?? '');
+    listImageUrl.clear();
+    _listWorkingItemImage.clear();
 
-      if (response.isNotEmpty == true) {
-        final imagesPath = response.map((e) => e.picture ?? '').toList();
+    if (workingItem.idWorkingItem != null) {
+      _listWorkingItemImage = await _apiService
+          .loadWorkingItemImages(workingItem.idWorkingItem ?? '');
+
+      if (_listWorkingItemImage.isNotEmpty == true) {
+        final imagesPath =
+            _listWorkingItemImage.map((e) => e.picture ?? '').toList();
         imagesPath.forEach((path) {
-          listImage.add(_apiService.getImageFullUrl(path));
+          listImageUrl.add(_apiService.getImageFullUrl(path));
         });
       }
     }
@@ -55,7 +62,7 @@ class AddImageController extends GetxController {
           interpolation: img.Interpolation.average,
         );
         final response = await _apiService.uploadDocheckImage(
-          idWorkingItem ?? '',
+          workingItem.idWorkingItem ?? '',
           dio.FormData.fromMap(
             {
               'File': dio.MultipartFile.fromBytes(
@@ -84,5 +91,31 @@ class AddImageController extends GetxController {
     }
 
     isLoading.value = false;
+  }
+
+  void onRemoveImage(int index) async {
+    isLoading.value = true;
+    try {
+      final item = _listWorkingItemImage[index];
+      final response = await _apiService.deleteDoCheckImage(
+          idWorkingItem: item.idWorkingItem,
+          picture: item.picture,
+          description: item.description,
+          idWorkingItemHistoryPicture: item.idWorkingItemHistoryPicture,
+          isDeleted: "1",
+          fullName: item.fullName,
+          idWorkingItemStatus: item.idWorkingItemStatus,
+          isReported: item.isReported,
+          reason: item.reason,
+          statusName: item.statusName);
+
+      print(response.message);
+      await fetchImages();
+    } catch (error) {
+      showSnackbar(
+          message: error.toString(), backgroundColor: AppColors.errorColor);
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

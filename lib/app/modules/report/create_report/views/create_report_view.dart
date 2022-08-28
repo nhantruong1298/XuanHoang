@@ -29,6 +29,7 @@ class CreateReportView extends GetView<CreateReportController> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
+        bottomNavigationBar: const SizedBox.shrink(),
         appBar: ChooseProjectAppBar(
           leadingIcon: Assets.images.arrowBackIcon.path,
           title: 'Thêm báo cáo',
@@ -44,17 +45,11 @@ class CreateReportView extends GetView<CreateReportController> {
             )
           ],
         ),
-        bottomNavigationBar: AppButton(
-          onTap: () {
-            controller.onCreateReportPressed();
-          },
-          text: 'Gửi báo cáo',
-        ),
         body: Stack(
           children: [
             const BlurBackGround(),
             SafeArea(
-              child: Container(
+              child: SizedBox(
                   width: double.infinity,
                   height: double.infinity,
                   child: FormBuilder(
@@ -86,7 +81,8 @@ class CreateReportView extends GetView<CreateReportController> {
                                 borderRadius: AppDimensions.defaultXLRadius,
                                 hintText: S.current
                                     .EDIT_REPORT__DESCRIPTION_OF_THE_PROBLEM,
-                                maxLines: 10,
+                                maxLines: 30,
+                                minLines: 30,
                                 name: controller.CONTENT_KEY,
                                 validator: FormBuilderValidators.compose([
                                   FormBuilderValidators.required(
@@ -104,6 +100,12 @@ class CreateReportView extends GetView<CreateReportController> {
                                 imagesData: images.value,
                               );
                             },
+                          ),
+                          AppButton(
+                            onTap: () {
+                              controller.onCreateReportPressed();
+                            },
+                            text: 'Gửi báo cáo',
                           )
                         ]),
                   )),

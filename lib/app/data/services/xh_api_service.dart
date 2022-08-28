@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
 import 'package:example_nav2/app/data/models/request/change_password_request.dart';
-import 'package:example_nav2/app/data/models/request/create_project_incident_request.dart';
+import 'package:example_nav2/app/data/models/request/delete_do_check_image_request.dart';
 import 'package:example_nav2/app/data/models/request/do_check_request.dart';
 import 'package:example_nav2/app/data/models/request/edit_working_item_request.dart';
-import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/request/login_request.dart';
 import 'package:example_nav2/app/data/models/response/do_check_image_response.dart';
 import 'package:example_nav2/app/data/models/response/do_check_response.dart';
@@ -14,7 +13,6 @@ import 'package:example_nav2/app/data/models/response/document_project_response.
 import 'package:example_nav2/app/data/models/response/edit_working_item_response.dart';
 import 'package:example_nav2/app/data/models/response/image_history_response.dart';
 import 'package:example_nav2/app/data/models/response/login_response.dart';
-import 'package:example_nav2/app/data/models/response/project_incident_response.dart';
 import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
@@ -84,12 +82,13 @@ abstract class XHApiService {
 
   @POST("/api/Projects/incident-discussion")
   @MultiPart()
-  Future<UpdateReportResponse> updateReportDetail({
-    @Part(name: 'IdIncident') required int idIncident,
-    @Part(name: 'ReplyContent') required String replyContent,
-    @Part(name: 'IdIncidentStatus') required String idIncidentStatus,
-    @Part(name: 'Files') required List<File> files,
-  });
+  Future<UpdateReportResponse> updateReportDetail(
+      {
+      // @Part(name: 'IdIncident') required int idIncident,
+      // @Part(name: 'ReplyContent') required String replyContent,
+      // @Part(name: 'IdIncidentStatus') required String idIncidentStatus,
+      // @Part(name: 'Files') required List<File> files,
+      @Body() required FormData formData});
 
   @GET("/api/working-items/images/history")
   Future<List<ImageHistoryResponse>?> loadWorkingItemImagesHistory(
@@ -123,24 +122,29 @@ abstract class XHApiService {
 
   @POST("/api/Projects/incident")
   @MultiPart()
-  Future<UpdateReportResponse> createProjectIncident({
-    @Part(name: 'IdProject') required int idProject,
-    @Part(name: 'IncidentName') required String incidentName,
-    @Part(name: 'IncidentDescription') required String incidentDescription,
-    @Part(name: 'Files') required List<File> files,
-  });
+  Future<UpdateReportResponse> createProjectIncident(
+      {
+      // @Part(name: 'IdProject') required int idProject,
+      // @Part(name: 'IncidentName') required String incidentName,
+      // @Part(name: 'IncidentDescription') required String incidentDescription,
+      // @Part(name: 'Files') required List<File> files,
+      @Body() required FormData formData});
 
   @POST("/api/working-terms/report")
   @MultiPart()
-  Future<void> workingTermReport(
-    @Query('idWorkingTerm') String idWorkingTerm,
-    @Query('customerName') String customerName,
-    @Part(name: 'File') File file,
-  );
+  Future<void> workingTermReport(@Query('idWorkingTerm') String idWorkingTerm,
+      @Query('customerName') String customerName, @Body() FormData formData
+      // @Part(name: 'File') File file,
+      );
 
   @GET("/api/Projects/statistic-report")
   Future<List<ProjectStatistic>> loadProjectStatisticReport(
     @Query('idProject') String idProject,
     @Query('idPhase') String idPhase,
+  );
+
+  @PATCH('/api/working-items/docheck/images')
+  Future<DoCheckImageResponse> deleteDoCheckImage(
+    @Body() DeleteDoCheckImageRequest request,
   );
 }

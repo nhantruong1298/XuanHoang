@@ -174,7 +174,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
         Get.toNamed(ImagesHistoryView.routeName, arguments: item);
       },
       onCameraTap: () {
-        Get.toNamed(AddImageView.routeName, arguments: item.idWorkingItem);
+        Get.toNamed(AddImageView.routeName, arguments: item);
       },
       name: item.itemName,
       description: item.description,

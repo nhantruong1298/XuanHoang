@@ -9,6 +9,7 @@ import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_p
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
+import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,13 +50,28 @@ class AddImageView extends GetView<AddImageController> {
                     children: [
                       const SizedBox(height: 30),
                       Obx(() {
-                        final listImage = controller.listImage;
+                        final listImage = controller.listImageUrl;
                         return Expanded(
                           child: ImageGridView(
                               images: List.generate(
                                   listImage.length,
                                   (index) => ImageGridViewItem(
-                                      data: listImage[index]))),
+                                        data: listImage[index],
+                                        onRemovePressed: () async {
+                                          final result =
+                                              await showConfirmDialog(
+                                                  title: 'Xác nhận xoá ảnh',
+                                                  onCancel: () {},
+                                                  textConfirm: 'Đống ý',
+                                                  textCancel: 'Huỷ',
+                                                  onConfirm: () {
+                                                    Get.back(result: true);
+                                                  });
+                                          if (result == true) {
+                                            controller.onRemoveImage(index);
+                                          }
+                                        },
+                                      ))),
                         );
                       })
                     ],
@@ -219,38 +235,60 @@ class ImageGridView extends StatelessWidget {
 
 class ImageGridViewItem extends StatelessWidget {
   final String data;
-  const ImageGridViewItem({Key? key, required this.data}) : super(key: key);
+  final VoidCallback? onRemovePressed;
+  const ImageGridViewItem({
+    Key? key,
+    required this.data,
+    this.onRemovePressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 145.h,
-      padding: EdgeInsets.all(1),
-      color: Colors.white,
-      child: GestureDetector(
-        onTap: () {
-          Get.to(ImageView(imageUrl: data));
-        },
-        child: Image.network(
-          data,
-          fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-            return (loadingProgress != null)
-                ? Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    color: AppColors.primaryLightColor,
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.errorColor,
-                      ),
-                    ),
-                  )
-                : child;
-          },
-          filterQuality: FilterQuality.high,
+    return Stack(
+      children: [
+        Container(
+          height: 145.h,
+          width: double.infinity,
+          padding: EdgeInsets.all(1),
+          color: Colors.white,
+          child: GestureDetector(
+            onTap: () {
+              Get.to(ImageView(imageUrl: data));
+            },
+            child: Image.network(
+              data,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                return (loadingProgress != null)
+                    ? Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: AppColors.primaryLightColor,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.errorColor,
+                          ),
+                        ),
+                      )
+                    : child;
+              },
+              filterQuality: FilterQuality.high,
+            ),
+          ),
         ),
-      ),
+        Positioned(
+          child: InkWell(
+            onTap: onRemovePressed,
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Assets.images.removeIcon
+                  .svg(width: 25, height: 25, fit: BoxFit.scaleDown),
+            ),
+          ),
+          right: 0,
+          top: 0,
+        ),
+      ],
     );
   }
 }

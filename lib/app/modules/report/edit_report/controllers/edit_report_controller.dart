@@ -1,15 +1,16 @@
 import 'dart:io';
-
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
-import 'package:example_nav2/app/data/models/request/incident_discussion_request.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:image/image.dart' as img;
 
 class EditReportController extends GetxController {
   final ApiService _apiService;
@@ -39,6 +40,7 @@ class EditReportController extends GetxController {
 
   Future<void> editReport() async {
     if (idIncident == null) return;
+
     isLoading.value = true;
     try {
       if (replyContent.isEmpty) {
@@ -56,15 +58,28 @@ class EditReportController extends GetxController {
         return;
       }
 
-      final response = await _apiService.updateReportDetail(
-        IncidentDiscussionRequest(
-            idIncident: idIncident!,
-            replyContent: replyContent,
-            idIncidentStatus: (isCustomer)
-                ? (reportDetail?.idIncidentStatus ?? '')
-                : idIncidentStatus.value),
-        imagesData,
-      );
+      final mapData = <String, dynamic>{
+        'IdIncident': idIncident!,
+        'ReplyContent': replyContent,
+        'IdIncidentStatus': (isCustomer)
+            ? (reportDetail?.idIncidentStatus ?? '')
+            : (idIncidentStatus.value),
+      };
+
+      final List<dio.MultipartFile> multipartFile = [];
+
+      imagesData.forEach((file) {
+        final resizedImage = AppFormatter.resizeImage(file);
+
+        multipartFile.add(dio.MultipartFile.fromBytes(
+            img.encodePng(resizedImage),
+            filename: file.path.split(Platform.pathSeparator).last));
+      });
+
+      mapData.addAll({'Files': multipartFile});
+
+      final response =
+          await _apiService.updateReportDetail(dio.FormData.fromMap(mapData));
 
       if (response != null) {
         showConfirmDialog(

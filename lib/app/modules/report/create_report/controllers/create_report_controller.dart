@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart' hide Progress;
 import 'package:image_picker/image_picker.dart';
+import 'package:dio/dio.dart' as dio;
+import 'package:image/image.dart' as img;
 
 class CreateReportController extends GetxController {
   final ApiService _apiService;
@@ -51,18 +54,27 @@ class CreateReportController extends GetxController {
 
     try {
       int idProject = int.parse(AuthService.to.profile?.idProject ?? '');
-      final files = <File>[];
-      if (images.length > 3) {
-        files.addAll(images.skip(images.length - 3).toList());
-      } else {
-        files.addAll(images.toList());
-      }
+
+      final mapData = <String, dynamic>{
+        'IdProject': idProject,
+        'IncidentName': title,
+        'IncidentDescription': content,
+      };
+
+      final List<dio.MultipartFile> multipartFile = [];
+
+      images.forEach((file) {
+        final resizedImage = AppFormatter.resizeImage(file);
+
+        multipartFile.add(dio.MultipartFile.fromBytes(
+            img.encodePng(resizedImage),
+            filename: file.path.split(Platform.pathSeparator).last));
+      });
+
+      mapData.addAll({'Files': multipartFile});
 
       final response = await _apiService.createProjectIncident(
-          idProject: idProject,
-          incidentDescription: content,
-          incidentName: title,
-          files: files);
+          formData: dio.FormData.fromMap(mapData));
 
       if (response != null) {
         showConfirmDialog(
@@ -77,9 +89,9 @@ class CreateReportController extends GetxController {
       }
     } catch (error) {
       print(error);
+    } finally {
+      isLoading.value = false;
     }
-
-    isLoading.value = false;
   }
 
   void onChooseImage(ImageSource? imageSource) async {

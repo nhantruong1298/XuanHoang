@@ -244,24 +244,11 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<UpdateReportResponse> updateReportDetail(
-      {required idIncident,
-      required replyContent,
-      required idIncidentStatus,
-      required files}) async {
+  Future<UpdateReportResponse> updateReportDetail({required formData}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry('IdIncident', idIncident.toString()));
-    _data.fields.add(MapEntry('ReplyContent', replyContent));
-    _data.fields.add(MapEntry('IdIncidentStatus', idIncidentStatus));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'Files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
+    final _data = formData;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UpdateReportResponse>(Options(
                 method: 'POST',
@@ -386,23 +373,11 @@ class _XHApiService implements XHApiService {
 
   @override
   Future<UpdateReportResponse> createProjectIncident(
-      {required idProject,
-      required incidentName,
-      required incidentDescription,
-      required files}) async {
+      {required formData}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.fields.add(MapEntry('IdProject', idProject.toString()));
-    _data.fields.add(MapEntry('IncidentName', incidentName));
-    _data.fields.add(MapEntry('IncidentDescription', incidentDescription));
-    _data.files.addAll(files.map((i) => MapEntry(
-        'Files',
-        MultipartFile.fromFileSync(
-          i.path,
-          filename: i.path.split(Platform.pathSeparator).last,
-        ))));
+    final _data = formData;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UpdateReportResponse>(Options(
                 method: 'POST',
@@ -417,18 +392,14 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<void> workingTermReport(idWorkingTerm, customerName, file) async {
+  Future<void> workingTermReport(idWorkingTerm, customerName, formData) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'idWorkingTerm': idWorkingTerm,
       r'customerName': customerName
     };
     final _headers = <String, dynamic>{};
-    final _data = FormData();
-    _data.files.add(MapEntry(
-        'File',
-        MultipartFile.fromFileSync(file.path,
-            filename: file.path.split(Platform.pathSeparator).last)));
+    final _data = formData;
     await _dio.fetch<void>(_setStreamType<void>(Options(
             method: 'POST',
             headers: _headers,
@@ -460,6 +431,23 @@ class _XHApiService implements XHApiService {
         .map(
             (dynamic i) => ProjectStatistic.fromJson(i as Map<String, dynamic>))
         .toList();
+    return value;
+  }
+
+  @override
+  Future<DoCheckImageResponse> deleteDoCheckImage(request) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<DoCheckImageResponse>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/working-items/docheck/images',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = DoCheckImageResponse.fromJson(_result.data!);
     return value;
   }
 
