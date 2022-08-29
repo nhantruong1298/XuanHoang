@@ -6,7 +6,6 @@ import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
-import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
 import 'package:flutter/material.dart';
@@ -126,8 +125,13 @@ class _ProjectItem extends StatelessWidget {
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       borderRadius: BorderRadius.circular(15),
-      title: Text(name ?? '',
-          style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
+      title: Container(
+        height: 20,
+        child: Text(name ?? '',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
+      ),
       subTitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         SizedBox(height: 16.h),
         Row(
@@ -135,33 +139,20 @@ class _ProjectItem extends StatelessWidget {
             SvgPicture.asset('assets/images/location-icon.svg',
                 height: 13, fit: BoxFit.scaleDown),
             SizedBox(width: 8.w),
-            Text(address ?? '',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
+            Flexible(
+              child: Container(
+                height: 20,
+                child: Text(address ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
+              ),
+            ),
             SizedBox(width: 8.w),
           ],
         )
       ]),
     );
-    // return Container(
-    //   width: double.infinity,
-    //   padding: EdgeInsets.all(16),
-    //   decoration: BoxDecoration(
-    //       color: Colors.white, borderRadius: BorderRadius.circular(15)),
-    //   child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-    //     Text('Toà nhà công đoàn cao su',
-    //         style: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w700)),
-    //     SizedBox(height: 16.h),
-    //     Row(
-    //       children: [
-    //         SvgPicture.asset('assets/images/location-icon.svg',
-    //             height: 13, fit: BoxFit.scaleDown),
-    //         SizedBox(width: 8.w),
-    //         Text('229 Hoàng Văn Thụ, F8, PN',
-    //             style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
-    //         SizedBox(width: 8.w),
-    //       ],
-    //     )
-    //   ]),
-    // );
   }
 }

@@ -347,17 +347,24 @@ class _StaffJob extends StatelessWidget {
           onTap: onTap,
           contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           borderRadius: BorderRadius.circular(15),
-          title: Text(name ?? '',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 17.sp,
-                  color: getTextColor(statusColor))),
+          title: Container(
+            height: 20,
+            child: Text(name ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17.sp,
+                    color: getTextColor(statusColor))),
+          ),
           subTitle: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const SizedBox(height: 15),
                 Text(description ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 16.sp,

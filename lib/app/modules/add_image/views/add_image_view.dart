@@ -121,6 +121,7 @@ class _ChooseImageButton extends GetView<AddImageController> {
         color: Color(0xFFD9D9D9),
         child: InkWell(
           onTap: () {
+            if (!controller.enableAddImage.value) return;
             if (!controller.isLoading.value) {
               showBottomSheet();
             }

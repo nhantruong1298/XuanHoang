@@ -8,7 +8,6 @@ import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
-import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -130,18 +129,28 @@ class _ProgressItem extends StatelessWidget {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title ?? '',
-                        style: TextStyle(
-                            fontSize: 17.sp, fontWeight: FontWeight.w700)),
+                    Container(
+                      height: 20,
+                      child: Text(title ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 17.sp, fontWeight: FontWeight.w700)),
+                    ),
                     SizedBox(height: 16.h),
                     Row(
                       children: [
-                        Text(
-                            AppFormatter.formatDate(fromDate) +
-                                ' - ' +
-                                AppFormatter.formatDate(toDate),
-                            style: TextStyle(
-                                fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                        Flexible(
+                          child: Text(
+                              AppFormatter.formatDate(fromDate) +
+                                  ' - ' +
+                                  AppFormatter.formatDate(toDate),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 16.sp)),
+                        ),
                       ],
                     )
                   ]),

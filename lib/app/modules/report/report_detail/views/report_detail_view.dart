@@ -2,6 +2,7 @@ import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/views/edit_report_view.dart';
 import 'package:example_nav2/app/modules/report/report_detail/controllers/report_detail_controller.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
@@ -185,28 +186,35 @@ class _ReportImages extends StatelessWidget {
               crossAxisCount: 3, childAspectRatio: 1),
           itemCount: images.length,
           itemBuilder: (context, index) {
-            return Container(
-                color: Colors.white,
-                height: 145.h,
-                padding: EdgeInsets.all(1.5),
-                child: Image.network(
-                  images[index],
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    return (loadingProgress != null)
-                        ? Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            color: AppColors.primaryLightColor,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                color: AppColors.errorColor,
-                              ),
-                            ),
-                          )
-                        : child;
-                  },
+            return InkWell(
+              onTap: () {
+                Get.to(ImageView(
+                  imageUrl: images[index],
                 ));
+              },
+              child: Container(
+                  color: Colors.white,
+                  height: 145.h,
+                  padding: EdgeInsets.all(1.5),
+                  child: Image.network(
+                    images[index],
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      return (loadingProgress != null)
+                          ? Container(
+                              width: double.infinity,
+                              height: double.infinity,
+                              color: AppColors.primaryLightColor,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  color: AppColors.errorColor,
+                                ),
+                              ),
+                            )
+                          : child;
+                    },
+                  )),
+            );
           }),
     );
   }

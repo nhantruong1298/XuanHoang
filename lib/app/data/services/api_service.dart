@@ -24,10 +24,8 @@ import 'package:example_nav2/app/data/models/token.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/xh_api_service.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide Response, Progress, FormData;
 import 'package:dio/dio.dart' as dio;
-import 'package:retrofit/retrofit.dart';
 
 class ApiService extends GetxService {
   static ApiService get to => Get.find();
@@ -40,14 +38,21 @@ class ApiService extends GetxService {
   }
 
   _init() {
-    _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: _baseUrl)));
+    _xhApiService = XHApiService(Dio(BaseOptions(
+      baseUrl: _baseUrl,
+      sendTimeout: 10000,
+      receiveTimeout: 10000,
+    )));
   }
 
   void setToken(Token token) {
     _token = token;
     _dio = Dio(BaseOptions(
-        baseUrl: _baseUrl,
-        headers: {"authorization": "Bearer ${_token?.accessToken}"}));
+      sendTimeout: 10000,
+      receiveTimeout: 10000,
+      baseUrl: _baseUrl,
+      headers: {"authorization": "Bearer ${_token?.accessToken}"},
+    ));
     _xhApiService = XHApiService(_dio);
   }
 
