@@ -13,6 +13,7 @@ WorkingItem _$WorkingItemFromJson(Map<String, dynamic> json) => WorkingItem(
       idWorkingTerm: json['IdWorkingTerm'] as String?,
       isDeleted: json['IsDeleted'] as bool?,
       itemName: json['ItemName'] as String?,
+      idWorkingItemHistory: json['IdWorkingItemHistory'] as String?,
     );
 
 Map<String, dynamic> _$WorkingItemToJson(WorkingItem instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$WorkingItemToJson(WorkingItem instance) =>
       'Description': instance.description,
       'IdWorkingItemStatus': instance.idWorkingItemStatus,
       'IsDeleted': instance.isDeleted,
+      'IdWorkingItemHistory': instance.idWorkingItemHistory,
     };

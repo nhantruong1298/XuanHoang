@@ -18,7 +18,7 @@ class AddImageController extends GetxController {
   bool isUpdated = false;
   RxBool isLoading = false.obs;
   late WorkingItem workingItem;
-  RxBool enableAddImage = true.obs;
+  // RxBool enableAddImage = true.obs;
   List<WorkingItemImageResponse> _listWorkingItemImage = [];
 
   @override
@@ -37,11 +37,11 @@ class AddImageController extends GetxController {
       _listWorkingItemImage = await _apiService
           .loadWorkingItemImages(workingItem.idWorkingItem ?? '');
 
-      _listWorkingItemImage.forEach((item) {
-        if (item.idWorkingItemHistoryPicture == null) {
-          enableAddImage.value = false;
-        }
-      });
+      // _listWorkingItemImage.forEach((item) {
+      //   if (item.idWorkingItemHistoryPicture == null) {
+      //     enableAddImage.value = false;
+      //   }
+      // });
 
       if (_listWorkingItemImage.isNotEmpty == true) {
         final imagesPath =

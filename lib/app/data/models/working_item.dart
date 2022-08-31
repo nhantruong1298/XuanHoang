@@ -15,6 +15,8 @@ class WorkingItem {
   final String? idWorkingItemStatus;
   @JsonKey(name: 'IsDeleted')
   final bool? isDeleted;
+  @JsonKey(name: 'IdWorkingItemHistory')
+  final String? idWorkingItemHistory;
 
   WorkingItem(
       {this.description,
@@ -22,7 +24,8 @@ class WorkingItem {
       this.idWorkingItemStatus,
       this.idWorkingTerm,
       this.isDeleted,
-      this.itemName});
+      this.itemName,
+      this.idWorkingItemHistory});
 
   factory WorkingItem.fromJson(Map<String, dynamic> json) {
     return _$WorkingItemFromJson(json);
@@ -39,12 +42,11 @@ class WorkingItem {
     bool? isDeleted,
   }) {
     return WorkingItem(
-      description: description ?? this.description,
-      idWorkingItem: idWorkingItem ?? this.idWorkingItem,
-      idWorkingItemStatus: idWorkingItemStatus ?? this.idWorkingItemStatus,
-      idWorkingTerm: idWorkingTerm ?? this.idWorkingTerm,
-      isDeleted: isDeleted ?? this.isDeleted,
-      itemName: itemName ?? this.itemName
-    );
+        description: description ?? this.description,
+        idWorkingItem: idWorkingItem ?? this.idWorkingItem,
+        idWorkingItemStatus: idWorkingItemStatus ?? this.idWorkingItemStatus,
+        idWorkingTerm: idWorkingTerm ?? this.idWorkingTerm,
+        isDeleted: isDeleted ?? this.isDeleted,
+        itemName: itemName ?? this.itemName);
   }
 }

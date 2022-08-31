@@ -36,15 +36,25 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
                     controller.workingItem.idWorkingItemStatus != null)
                 ? IconButton(
                     onPressed: () async {
-                      final isUpdated = await Get.toNamed(
-                          AddImageView.routeName,
-                          arguments: controller.idWorkingItem);
-                      if (isUpdated == true) {
-                        controller.refreshData();
+                      if (controller.workingItem.idWorkingItemStatus != null &&
+                          controller.workingItem.idWorkingItemHistory != null) {
+                        final isUpdated = await Get.toNamed(
+                            AddImageView.routeName,
+                            arguments: controller.workingItem);
+                        if (isUpdated == true) {
+                          controller.refreshData();
+                        }
                       }
                     },
-                    icon: Assets.images.cameraIcon
-                        .svg(height: 30, fit: BoxFit.scaleDown))
+                    icon: Assets.images.cameraIcon.svg(
+                        height: 30,
+                        fit: BoxFit.scaleDown,
+                        color: (controller.workingItem.idWorkingItemStatus !=
+                                    null &&
+                                controller.workingItem.idWorkingItemHistory !=
+                                    null)
+                            ? null
+                            : Colors.grey[600]))
                 : const SizedBox.shrink(),
             IconButton(
                 onPressed: () {

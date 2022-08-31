@@ -180,6 +180,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
       description: item.description,
       idWorkingItem: item.idWorkingItem,
       idWorkingItemStatus: item.idWorkingItemStatus,
+      idWorkingItemHistory: item.idWorkingItemHistory,
     );
   }
 
@@ -296,6 +297,7 @@ class _CustomerJob extends StatelessWidget {
 }
 
 class _StaffJob extends StatelessWidget {
+  final String? idWorkingItemHistory;
   final String? idWorkingItem;
   final String? name;
   final String? idWorkingItemStatus;
@@ -305,18 +307,19 @@ class _StaffJob extends StatelessWidget {
   final VoidCallback? onFailedTap;
   final VoidCallback? onImageTap;
   final VoidCallback? onCameraTap;
-  const _StaffJob({
-    Key? key,
-    this.idWorkingItem,
-    this.name,
-    this.description,
-    this.onTap,
-    this.onSuccessTap,
-    this.onFailedTap,
-    this.idWorkingItemStatus,
-    this.onImageTap,
-    this.onCameraTap,
-  }) : super(key: key);
+  const _StaffJob(
+      {Key? key,
+      this.idWorkingItem,
+      this.name,
+      this.description,
+      this.onTap,
+      this.onSuccessTap,
+      this.onFailedTap,
+      this.idWorkingItemStatus,
+      this.onImageTap,
+      this.onCameraTap,
+      this.idWorkingItemHistory})
+      : super(key: key);
 
   Color get statusColor {
     switch (idWorkingItemStatus) {
@@ -420,10 +423,12 @@ class _StaffJob extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 CustomSlidableAction(
-                  onPressed: idWorkingItemStatus != null
+                  onPressed: (idWorkingItemStatus != null &&
+                          idWorkingItemHistory != null)
                       ? (_) => onCameraTap!()
                       : null,
-                  backgroundColor: idWorkingItemStatus != null
+                  backgroundColor: (idWorkingItemStatus != null &&
+                          idWorkingItemHistory != null)
                       ? AppColors.primaryLightColor
                       : AppColors.greyBorderColor,
                   child: Assets.images.cameraIcon
