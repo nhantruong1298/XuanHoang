@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:example_nav2/app/data/models/progress.dart';
 import 'package:example_nav2/app/data/models/project.dart';
@@ -32,7 +30,7 @@ class ApiService extends GetxService {
   late XHApiService _xhApiService;
   late Dio _dio;
   late Token? _token;
-  final String _baseUrl = 'https://xuanhoang.xoontec.vn/';
+  final String _baseUrl = 'https://checklist.xuanhoangco.com/';
   ApiService() {
     _init();
   }
