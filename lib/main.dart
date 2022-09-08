@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';

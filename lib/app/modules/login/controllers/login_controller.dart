@@ -13,7 +13,7 @@ class LoginController extends GetxController {
   final String USER_NAME_KEY = 'userName';
   final String PASSWORD_KEY = 'password';
   RxBool obscurePassword = true.obs;
-  RxBool showErrorView = false.obs;
+  // RxBool showErrorView = false.obs;
   String errorText = '';
 
   RxBool isLoading = false.obs;
@@ -35,30 +35,33 @@ class LoginController extends GetxController {
     } catch (error) {
       if (error is DioError) {
         switch (error.type) {
-          // case DioErrorType.response:
-          //   {
-          //     String errorMessage = error.response?.data;
-          //     showSnackbar(
-          //       message: errorMessage,
-          //       title: 'Error',
-          //       backgroundColor: AppColors.errorColor,
-          //       duration: Duration(milliseconds: 1500),
-          //     );
-          //   }
+          case DioErrorType.response:
+            {
+              errorText = error.response?.data;
+            }
 
-          //   break;
+            break;
           default:
             {
               errorText =
-                  '${error.type} \n ${error.message} \n ${error.response} \n request option: \n  data :${error.requestOptions.data} \n path:${error.requestOptions.path} \n baseUrl:${error.requestOptions.baseUrl}';
+                  '${error.type} \n ${error.message} \n ${error.response} ';
             }
             break;
         }
       } else {
-        errorText = error.toString();
+        if (error.toString().length > 200) {
+          errorText = error.toString().substring(0, 200);
+        } else {
+          errorText = error.toString();
+        }
       }
 
-      showErrorView.value = true;
+      showSnackbar(
+        message: errorText,
+        title: 'Error',
+        backgroundColor: AppColors.errorColor,
+        duration: Duration(milliseconds: 1500),
+      );
     } finally {
       isLoading.value = false;
     }
