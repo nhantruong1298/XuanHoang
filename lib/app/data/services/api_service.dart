@@ -30,7 +30,7 @@ class ApiService extends GetxService {
   late XHApiService _xhApiService;
   late Dio _dio;
   late Token? _token;
-  final String _baseUrl = 'https://checklist.xuanhoangco.com/';
+  final String _baseUrl = 'http://checklist.xuanhoangco.com/';
   ApiService() {
     _init();
   }

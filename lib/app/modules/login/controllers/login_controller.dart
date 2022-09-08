@@ -13,6 +13,8 @@ class LoginController extends GetxController {
   final String USER_NAME_KEY = 'userName';
   final String PASSWORD_KEY = 'password';
   RxBool obscurePassword = true.obs;
+  RxBool showErrorView = false.obs;
+  String errorText = '';
 
   RxBool isLoading = false.obs;
   final ApiService _apiService;
@@ -32,22 +34,37 @@ class LoginController extends GetxController {
       }
     } catch (error) {
       if (error is DioError) {
-        String errorMessage = error.response?.data ?? '';
-        showSnackbar(
-          message: errorMessage,
-          title: 'Error',
-          backgroundColor: AppColors.errorColor,
-          duration: Duration(milliseconds: 1500),
-        );
-        return;
+        switch (error.type) {
+          // case DioErrorType.response:
+          //   {
+          //     String errorMessage = error.response?.data;
+          //     showSnackbar(
+          //       message: errorMessage,
+          //       title: 'Error',
+          //       backgroundColor: AppColors.errorColor,
+          //       duration: Duration(milliseconds: 1500),
+          //     );
+          //   }
+
+          //   break;
+          default:
+            {
+              errorText =
+                  '${error.type} \n ${error.message} \n ${error.response} \n request option: \n  data :${error.requestOptions.data} \n path:${error.requestOptions.path} \n baseUrl:${error.requestOptions.baseUrl}';
+            }
+            break;
+        }
+      } else {
+        errorText = error.toString();
       }
-      print(error);
+
+      showErrorView.value = true;
     } finally {
       isLoading.value = false;
     }
   }
 
   void onShowPasswordPressed() {
-     obscurePassword.value = !obscurePassword.value;
+    obscurePassword.value = !obscurePassword.value;
   }
 }

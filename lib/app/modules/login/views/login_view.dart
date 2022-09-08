@@ -71,7 +71,24 @@ class LoginView extends GetView<LoginController> {
                           },
                         );
                       }),
-                      const Spacer(),
+                      Obx(() {
+                        return Expanded(
+                          child: (controller.showErrorView.value)
+                              ? Container(
+                                  padding: EdgeInsets.all(16),
+                                  width: double.infinity,
+                                  color: Colors.white,
+                                  margin: EdgeInsets.symmetric(vertical: 16),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [Text(controller.errorText)]),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        );
+                      }),
                       Center(
                         child: Text(S.current.SIGN_IN__LICENSE_DESCRIPTION,
                             style:

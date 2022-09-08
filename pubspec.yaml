@@ -67,6 +67,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - assets/ce/lets-encrypt-r3.pem
 
 flutter_intl:
   enabled: true

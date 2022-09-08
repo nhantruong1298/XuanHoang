@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -8,8 +12,14 @@ import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
+
   runApp(
     ScreenUtilInit(
       designSize: const Size(428, 926),
