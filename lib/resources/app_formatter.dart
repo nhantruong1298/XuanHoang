@@ -21,4 +21,12 @@ class AppFormatter {
 
     return resizedImg;
   }
+
+  static String parseErrorToString(Object error) {
+    if (error.toString().length > 200) {
+      return error.toString().substring(0, 200);
+    } else {
+      return error.toString();
+    }
+  }
 }

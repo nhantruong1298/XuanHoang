@@ -11,6 +11,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
+class $AssetsCeGen {
+  const $AssetsCeGen();
+
+  /// File path: assets/ce/lets-encrypt-r3.pem
+  String get letsEncryptR3 => 'assets/ce/lets-encrypt-r3.pem';
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
@@ -91,6 +98,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsCeGen ce = $AssetsCeGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 

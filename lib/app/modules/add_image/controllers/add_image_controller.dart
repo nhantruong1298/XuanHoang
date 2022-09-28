@@ -1,13 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:example_nav2/app/data/models/isolate/upload_do_check_image_isolate.dart';
 import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
+import 'package:example_nav2/app/data/services/isolate_service.dart';
+import 'package:example_nav2/main.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
+import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:image/image.dart' as img;
+// import 'package:dio/dio.dart' as dio;
+// import 'package:image/image.dart' as img;
 
 class AddImageController extends GetxController {
   final ApiService _apiService;
@@ -56,48 +61,65 @@ class AddImageController extends GetxController {
   Future<void> pickImage(ImageSource source) async {
     try {
       isLoading.value = true;
+
       final XFile? xFile = await _picker.pickImage(
         source: source,
       );
 
       if (xFile != null) {
         final file = File(xFile.path);
-        final imageTemp = img.decodeImage(file.readAsBytesSync());
-        final resizedImg = img.copyResize(
-          imageTemp!,
-          height: 720,
-          interpolation: img.Interpolation.average,
-        );
-        final response = await _apiService.uploadDocheckImage(
-          workingItem.idWorkingItem ?? '',
-          dio.FormData.fromMap(
-            {
-              'File': dio.MultipartFile.fromBytes(
-                img.encodePng(resizedImg),
-                filename: xFile.name,
-              ),
-            },
-          ),
-        );
 
-        if (response.message == 'Success') {
-          isUpdated = true;
-          showSnackbar(
-              message: 'Thêm ảnh thành công',
-              backgroundColor: AppColors.green400);
-          await fetchImages();
-        } else {
-          showSnackbar(
-              message: response.message, backgroundColor: AppColors.errorColor);
-        }
+        Uint8List imageData = file.readAsBytesSync();
+
+        final isolate = await FlutterIsolate.spawn(
+            resizedAndUploadDoCheckImageIsolate,
+            UploadDoCheckImageIsolateModel(
+                    image: imageData,
+                    idWorkingItem: workingItem.idWorkingItem ?? '',
+                    sendPort: mainPort.sendPort,
+                    imageName: xFile.name)
+                .toJson());
+
+        await Future.delayed(Duration(milliseconds: 1500));
+
+        isolate.kill();
+
+        await fetchImages();
+        // final imageTemp = img.decodeImage(file.readAsBytesSync());
+        //   final resizedImg = img.copyResize(
+        //     imageTemp!,
+        //     height: 720,
+        //     interpolation: img.Interpolation.average,
+        //   );
+        //   final response = await _apiService.uploadDocheckImage(
+        //     workingItem.idWorkingItem ?? '',
+        //     dio.FormData.fromMap(
+        //       {
+        //         'File': dio.MultipartFile.fromBytes(
+        //           img.encodePng(resizedImg),
+        //           filename: xFile.name,
+        //         ),
+        //       },
+        //     ),
+        //   );
+
+        //   if (response.message == 'Success') {
+        //     isUpdated = true;
+        //     showSnackbar(
+        //         message: 'Thêm ảnh thành công',
+        //         backgroundColor: AppColors.green400);
+        //     await fetchImages();
+        //   } else {
+        //     showSnackbar(
+        //         message: response.message, backgroundColor: AppColors.errorColor);
+        //   }
       }
     } catch (error) {
-      isLoading.value = false;
       showSnackbar(
           message: 'Thêm ảnh thất bại', backgroundColor: AppColors.errorColor);
+    } finally {
+      isLoading.value = false;
     }
-
-    isLoading.value = false;
   }
 
   void onRemoveImage(int index) async {

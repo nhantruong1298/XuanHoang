@@ -74,10 +74,10 @@ class ChooseJobView extends GetView<ChooseJobController> {
                         isLoading: controller.isLoading.value,
                         text: 'Gửi báo cáo',
                         onTap: () async {
-                          final result = await Get.to(CreateSignatureView());
+                          final result = await Get.to<SignatureData?>(CreateSignatureView());
 
                           if (result != null) {
-                            controller.sendReport(result as SignatureData);
+                            controller.sendReport(result);
                           }
 
                           //

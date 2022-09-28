@@ -3,10 +3,12 @@ import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/resources/app_colors.dart';
+import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
@@ -30,6 +32,12 @@ class LoginController extends GetxController {
       if (response.token != null && response.profile != null) {
         Get.find<ApiService>().setToken(response.token!);
         Get.find<AuthService>().login(response.profile!);
+
+        //save token
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString(AppConstants.TOKEN_KEY, response.token?.accessToken ?? '');
+        //
+
         Get.offNamed(HomeView.routeName);
       }
     } catch (error) {

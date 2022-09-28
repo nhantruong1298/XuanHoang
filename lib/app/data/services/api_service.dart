@@ -30,33 +30,36 @@ class ApiService extends GetxService {
   late XHApiService _xhApiService;
   late Dio _dio;
   late Token? _token;
-  final String _baseUrl = 'http://checklist.xuanhoangco.com/';
+  static const baseUrl = 'http://checklist.xuanhoangco.com/';
+  static const baseTestUrl = 'https://xuanhoang.xoontec.vn/';
   ApiService() {
     _init();
   }
 
   _init() {
-    _xhApiService = XHApiService(Dio(BaseOptions(
-      baseUrl: _baseUrl,
-      sendTimeout: 10000,
-      receiveTimeout: 10000,
-    )));
+    _xhApiService = XHApiService(createDio());
+  }
+
+  static Dio createDio({
+    Map<String, dynamic>? headers,
+  }) {
+    return Dio(BaseOptions(
+        baseUrl: baseUrl,
+        sendTimeout: 10000,
+        receiveTimeout: 10000,
+        headers: headers));
   }
 
   void setToken(Token token) {
     _token = token;
-    _dio = Dio(BaseOptions(
-      sendTimeout: 10000,
-      receiveTimeout: 10000,
-      baseUrl: _baseUrl,
-      headers: {"authorization": "Bearer ${_token?.accessToken}"},
-    ));
+    _dio =
+        createDio(headers: {"authorization": "Bearer ${_token?.accessToken}"});
     _xhApiService = XHApiService(_dio);
   }
 
   void clearToken() {
     _token = null;
-    _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: _baseUrl)));
+    _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: baseUrl)));
   }
 
   String get accessToken => _token?.accessToken ?? '';
@@ -238,7 +241,7 @@ class ApiService extends GetxService {
   String getImageFullUrl(String imagePath) {
     final String query =
         '${Uri.encodeComponent(imagePath)}&token=${_token?.accessToken}';
-    return '${_baseUrl}api/FileManager/files?name=$query';
+    return '${baseUrl}api/FileManager/files?name=$query';
   }
 
   Future<void> changePassword(String newPassword, String retypePassword) async {
