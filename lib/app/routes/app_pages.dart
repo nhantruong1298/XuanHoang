@@ -26,6 +26,8 @@ import 'package:example_nav2/app/modules/report/report_detail/bindings/report_de
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/bindings/report_list_binding.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
+import 'package:example_nav2/app/modules/report/summary_report/bindings/summary_report_binding.dart';
+import 'package:example_nav2/app/modules/report/summary_report/views/summary_report_view.dart';
 import 'package:example_nav2/app/modules/warning/bindings/warning_binding.dart';
 import 'package:example_nav2/app/modules/warning/views/warning_view.dart';
 import 'package:get/get.dart';
@@ -125,6 +127,12 @@ class AppPages {
                                   name: ImagesHistoryView.path,
                                   page: () => ImagesHistoryView(),
                                   bindings: [ImagesHistoryBinding()],
+                                ),
+                                GetPage(
+                                  preventDuplicates: true,
+                                  name: SummaryReportView.path,
+                                  page: () => SummaryReportView(),
+                                  bindings: [SummaryReportBinding()],
                                 ),
                               ]),
                         ]),

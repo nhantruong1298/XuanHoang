@@ -7,6 +7,7 @@ import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -18,10 +19,14 @@ ReceivePort mainPort = ReceivePort();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ByteData data =
-      await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
-  SecurityContext.defaultContext
-      .setTrustedCertificatesBytes(data.buffer.asUint8List());
+  if (Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
+
+  // ByteData data =
+  //     await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
+  // SecurityContext.defaultContext
+  //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
 
   mainPort.listen((message) {
     if (message == 'Success') {

@@ -283,11 +283,15 @@ class ApiService extends GetxService {
     }
   }
 
-  Future<void> workingTermReport(
+  Future<String?> workingTermReport(
       String idWorkingTerm, String customerName, FormData formData) async {
     try {
-      await _xhApiService.workingTermReport(
+      final response = await _xhApiService.workingTermReport(
           idWorkingTerm, customerName, formData);
+
+      final map = response as Map<String, dynamic>;
+
+      return map['url'];
     } catch (error) {
       rethrow;
     }
@@ -337,5 +341,31 @@ class ApiService extends GetxService {
       print(error);
       rethrow;
     }
+  }
+
+  Future<String?> loadFinalReport({required String idWorkingTerm}) async {
+    try {
+      final response = await _xhApiService.loadFinalReport(idWorkingTerm);
+
+      final map = response as Map<String, dynamic>;
+
+      return map['url'];
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<String?> sendFinalReport({required String idWorkingTerm}) async {
+    try {
+      final response = await _xhApiService.sendFinalReport(idWorkingTerm);
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<String?> createWorkingReport({required String idWorkingTerm}) async {
+    final response = await _xhApiService.createWorkingReport(idWorkingTerm);
+
+    return response;
   }
 }

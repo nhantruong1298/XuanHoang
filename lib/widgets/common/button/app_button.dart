@@ -42,18 +42,22 @@ class AppButton extends StatelessWidget {
                     onTap?.call();
                   }
                 },
-                child: Center(
-                    child: (!isLoading)
-                        ? Text(
-                            text ?? '',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          )
-                        : CircularProgressIndicator(
-                            color: AppColors.primaryLightColor,
-                            strokeWidth: 5,
-                          ))),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                      child: (!isLoading)
+                          ? Text(
+                              text ?? '',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700),
+                            )
+                          : CircularProgressIndicator(
+                              color: AppColors.primaryLightColor,
+                              strokeWidth: 5,
+                            )),
+                )),
           ),
         ),
       ),

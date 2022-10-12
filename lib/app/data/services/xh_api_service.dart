@@ -121,19 +121,23 @@ abstract class XHApiService {
   @POST("/api/Projects/incident")
   @MultiPart()
   Future<UpdateReportResponse> createProjectIncident(
-      {
-      // @Part(name: 'IdProject') required int idProject,
-      // @Part(name: 'IncidentName') required String incidentName,
-      // @Part(name: 'IncidentDescription') required String incidentDescription,
-      // @Part(name: 'Files') required List<File> files,
-      @Body() required FormData formData});
+      {@Body() required FormData formData});
 
-  @POST("/api/working-terms/report")
+  // @POST("/api/working-terms/report")
+  // @MultiPart()
+  // Future<void> workingTermReport(
+  //   @Query('idWorkingTerm') String idWorkingTerm,
+  //   @Query('customerName') String customerName,
+  //   @Body() FormData formData,
+  // );
+
+  @POST("/api/working-terms/working-report")
   @MultiPart()
-  Future<void> workingTermReport(@Query('idWorkingTerm') String idWorkingTerm,
-      @Query('customerName') String customerName, @Body() FormData formData
-      // @Part(name: 'File') File file,
-      );
+  Future<dynamic> workingTermReport(
+    @Query('idWorkingTerm') String idWorkingTerm,
+    @Query('customerName') String customerName,
+    @Body() FormData formData,
+  );
 
   @GET("/api/Projects/statistic-report")
   Future<List<ProjectStatistic>> loadProjectStatisticReport(
@@ -144,5 +148,20 @@ abstract class XHApiService {
   @PATCH('/api/working-items/docheck/images')
   Future<DoCheckImageResponse> deleteDoCheckImage(
     @Body() DeleteDoCheckImageRequest request,
+  );
+
+  @POST("/api/working-terms/final-report/generate")
+  Future<String?> loadFinalReport(
+    @Query('idWorkingTerm') String idWorkingTerm,
+  );
+
+  @POST("/api/working-terms/final-report")
+  Future<String?> sendFinalReport(
+    @Query('idWorkingTerm') String idWorkingTerm,
+  );
+
+  @POST("/api/working-terms/working-report/generate")
+  Future<String?> createWorkingReport(
+    @Query('idWorkingTerm') String idWorkingTerm,
   );
 }

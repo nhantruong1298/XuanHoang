@@ -13,6 +13,9 @@ import 'package:example_nav2/app/modules/create_signature/views/create_signature
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
 import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/report/summary_report/views/summary_report_argument.dart';
+import 'package:example_nav2/app/modules/report/summary_report/views/summary_report_view.dart';
+import 'package:example_nav2/app/modules/root/controllers/root_controller.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
@@ -20,11 +23,14 @@ import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/common/button/app_button.dart';
+import 'package:example_nav2/widgets/common/dialogs/loading_dialog.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
+import 'package:example_nav2/widgets/input/text_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class ChooseJobView extends GetView<ChooseJobController> {
   static const String routeName =
@@ -34,114 +40,193 @@ class ChooseJobView extends GetView<ChooseJobController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.initOverlay(context);
+
     return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          extendBodyBehindAppBar: true,
-          appBar: ChooseProjectAppBar(
-            leadingIcon: Assets.images.arrowBackIcon.path,
-            title: S.current.CHOOSE_JOB__TITLE,
-            actions: [
-              (AuthService.to.accountType != AccountType.customer)
-                  ? IconButton(
-                      onPressed: () {
-                        controller.onInstructionFilePressed();
-                      },
-                      icon: Assets.images.infoIcon.svg(
-                          color: AppColors.primaryDarkColor,
-                          height: 27,
-                          fit: BoxFit.scaleDown))
-                  : const SizedBox.shrink(),
-              IconButton(
-                  onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
-                  },
-                  icon: Assets.images.homeIcon
-                      .svg(height: 30, fit: BoxFit.scaleDown)),
-              SizedBox(
-                width: 10,
-              )
-            ],
-          ),
-          bottomNavigationBar:
-              (AuthService.to.accountType == AccountType.staff ||
-                      AuthService.to.accountType == AccountType.admin)
-                  ? Obx(() {
-                      return AppButton(
-                        isLoading: controller.isLoading.value,
-                        text: 'Gửi báo cáo',
-                        onTap: () async {
-                          final result = await Get.to<SignatureData?>(CreateSignatureView());
-
-                          if (result != null) {
-                            controller.sendReport(result);
-                          }
-
-                          //
-                        },
-                      );
-                    })
-                  : null,
-          body: Stack(
-            children: [
-              BlurBackGround(),
-              SafeArea(
-                child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 30.h),
-                          SearchInputField(
-                            borderRadius: AppDimensions.defaultXLRadius,
-                            onChanged: (value) {
-                              controller.onSearchChanged(value);
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                          Obx(() {
-                            final list = controller.listJob;
-                            return Expanded(
-                                child: RefreshIndicator(
-                              onRefresh: controller.onRefreshData,
-                              child: ListView.separated(
-                                  keyboardDismissBehavior:
-                                      ScrollViewKeyboardDismissBehavior.onDrag,
-                                  itemBuilder: (context, index) {
-                                    final item = list[index];
-                                    return (AuthService.to.accountType ==
-                                                AccountType.staff ||
-                                            AuthService.to.accountType ==
-                                                AccountType.admin)
-                                        ? _buildStaffJob(context, item)
-                                        : _buildCustomerJob(item);
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                  itemCount: list.length),
-                            ));
-                          }),
-                          SizedBox(height: 20.h),
-                        ])),
-              ),
-              Obx(() {
-                return Visibility(
-                    visible: controller.isLoading.value,
-                    child: Container(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Scaffold(
+            resizeToAvoidBottomInset: false,
+            extendBodyBehindAppBar: true,
+            appBar: _buildAppBar(),
+            bottomNavigationBar: _buildNavigationBar(context),
+            body: Stack(
+              children: [
+                BlurBackGround(),
+                SafeArea(
+                  child: Container(
                       width: double.infinity,
                       height: double.infinity,
-                      color: Colors.transparent,
-                    ));
-              })
-            ],
-          )),
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 30.h),
+                            SearchInputField(
+                              borderRadius: AppDimensions.defaultXLRadius,
+                              onChanged: (value) {
+                                controller.onSearchChanged(value);
+                              },
+                            ),
+                            SizedBox(height: 20.h),
+                            Obx(() {
+                              final list = controller.listJob;
+                              return Expanded(
+                                  child: RefreshIndicator(
+                                onRefresh: controller.onRefreshData,
+                                child: ListView.separated(
+                                    keyboardDismissBehavior:
+                                        ScrollViewKeyboardDismissBehavior
+                                            .onDrag,
+                                    itemBuilder: (context, index) {
+                                      final item = list[index];
+                                      return (accountType ==
+                                                  AccountType.staff ||
+                                              accountType == AccountType.admin)
+                                          ? _buildStaffJob(context, item)
+                                          : _buildCustomerJob(item);
+                                    },
+                                    separatorBuilder: (_, __) =>
+                                        const SizedBox(height: 10),
+                                    itemCount: list.length),
+                              ));
+                            }),
+                            SizedBox(height: 20.h),
+                          ])),
+                ),
+              ],
+            )));
+  }
+
+  Widget _buildNavigationBar(BuildContext context) {
+    return (isCustomer)
+        ? Row(children: [
+            Flexible(
+              child: Obx(() {
+                return AppButton(
+                    isLoading: controller.isLoading.value,
+                    text: 'Xem báo cáo tổng',
+                    onTap: () {
+                      //controller.showLoadingDialog("Đang tạo báo cáo ...");
+                      Get.dialog(
+                        SendReportSuccessDialog(
+                          onDownloadPressed: () {},
+                        ),
+                        barrierDismissible: false,
+                      );
+                    });
+              }),
+            ),
+            Flexible(
+                child: AppButton(
+                    isLoading: controller.isLoading.value,
+                    color: AppColors.green700,
+                    text: 'Xác nhận khách hàng',
+                    onTap: () async {
+                      final remark = await showRemarkDialog(context: context);
+
+                      controller.onCreateReport(remark ?? '');
+                    }))
+          ])
+        : const SizedBox.shrink();
+  }
+
+  bool get isCustomer => (AuthService.to.accountType == AccountType.staff ||
+      AuthService.to.accountType == AccountType.admin);
+
+  String? get accountType => AuthService.to.accountType;
+  // Widget _buildCreateReportDialog(BuildContext context) {
+  //   return AlertDialog(
+  //     insetPadding: EdgeInsets.symmetric(horizontal: 10),
+  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+  //     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+  //     actionsPadding: EdgeInsets.only(left: 16, right: 16, bottom: 32),
+  //     titlePadding: EdgeInsets.only(top: 20),
+  //     title: Center(
+  //         child: Text(
+  //       'Ghi chú',
+  //       style: TextStyle(
+  //         fontSize: 19.sp,
+  //         fontWeight: FontWeight.w700,
+  //       ),
+  //     )),
+  //     content: SizedBox(
+  //       width: ScreenUtil.defaultSize.width,
+  //       child: TextInputField(
+  //         maxLines: 3,
+  //         borderRadius: 7,
+  //         minLines: 3,
+  //         onChanged: (value) {
+  //           controller.note = value ?? '';
+  //         },
+  //         borderColor: Color(0xFFD8D8D8),
+  //         focusColor: Color(0xFFD8D8D8),
+  //         focusBorderColor: Color(0xFFD8D8D8),
+  //       ),
+  //     ),
+  //     actions: <Widget>[
+  //       AppButton(
+  //         borderRadius: BorderRadius.circular(10),
+  //         text: 'Lưu ghi chú',
+  //         onTap: () async {
+  //           Get.back();
+
+  //           showLoadingDialog(context);
+
+  //           await Future.delayed(Duration(milliseconds: 1500));
+
+  //           final url = await controller.loadCreateReportPDFLink();
+  //         },
+  //       )
+  //     ],
+  //   );
+  // }
+
+  // Future<void> showLoadingDialog(BuildContext context) async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (BuildContext context) {
+  //       return LoadingDialog(title: 'Đang tạo báo cáo..');
+  //     },
+  //   );
+  // }
+
+  // Future<void> _showCreateReportDialog(BuildContext context) async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return _buildCreateReportDialog(context);
+  //     },
+  //   );
+  // }
+
+  ChooseProjectAppBar _buildAppBar() {
+    return ChooseProjectAppBar(
+      leadingIcon: Assets.images.arrowBackIcon.path,
+      title: S.current.CHOOSE_JOB__TITLE,
+      actions: [
+        (AuthService.to.accountType != AccountType.customer)
+            ? IconButton(
+                onPressed: () {
+                  controller.onInstructionFilePressed();
+                },
+                icon: Assets.images.infoIcon.svg(
+                    color: AppColors.primaryDarkColor,
+                    height: 27,
+                    fit: BoxFit.scaleDown))
+            : const SizedBox.shrink(),
+        IconButton(
+            onPressed: () {
+              Get.offNamedUntil(HomeView.routeName, (route) => false);
+            },
+            icon:
+                Assets.images.homeIcon.svg(height: 30, fit: BoxFit.scaleDown)),
+        SizedBox(
+          width: 10,
+        )
+      ],
     );
   }
 
@@ -163,12 +248,13 @@ class ChooseJobView extends GetView<ChooseJobController> {
         final note = await showRemarkDialog(context: context);
         controller.doCheck(
             item.copyWith(idWorkingItemStatus: WorkingItemStatus.success),
-            note);
+            note ?? '');
       },
       onFailedTap: () async {
         final note = await showRemarkDialog(context: context);
         controller.doCheck(
-            item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed), note);
+            item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed),
+            note ?? '');
       },
       onImageTap: () {
         Get.toNamed(ImagesHistoryView.routeName, arguments: item);
@@ -184,13 +270,14 @@ class ChooseJobView extends GetView<ChooseJobController> {
     );
   }
 
-  Future<String> showRemarkDialog(
+  Future<String?> showRemarkDialog(
       {required BuildContext context,
       String? title,
       String? buttonText}) async {
     final note = await showDialog<String>(
       context: context,
       barrierDismissible: false,
+      barrierColor: Colors.white.withOpacity(.4),
       builder: (BuildContext context) {
         return RemarkDialog(
           title: title,
@@ -198,7 +285,7 @@ class ChooseJobView extends GetView<ChooseJobController> {
         );
       },
     );
-    return note ?? '';
+    return note;
   }
 }
 
@@ -452,6 +539,67 @@ class _StaffJob extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class SendReportSuccessDialog extends StatelessWidget {
+  // final VoidCallback? onCancelPressed;
+  final VoidCallback? onDownloadPressed;
+
+  const SendReportSuccessDialog({
+    // this.onCancelPressed,
+    this.onDownloadPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      insetPadding: EdgeInsets.symmetric(horizontal: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        padding: EdgeInsets.all(16),
+        height: 200.h,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+                child: Text("Gửi báo cáo thành công",
+                    style: TextStyle(
+                        fontSize: 19.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.green700))),
+            SizedBox(height: 50.h),
+            Row(
+              children: [
+                Flexible(
+                  child: AppButton(
+                    borderRadius: BorderRadius.circular(10),
+                    text: 'Huỷ',
+                    onTap: () {
+                      Get.back();
+                    },
+                  ),
+                ),
+                (onDownloadPressed != null)
+                    ? const SizedBox(width: 10)
+                    : const SizedBox.shrink(),
+                (onDownloadPressed != null)
+                    ? Flexible(
+                        child: AppButton(
+                          color: AppColors.green400,
+                          borderRadius: BorderRadius.circular(10),
+                          text: 'Download',
+                          onTap: () async {},
+                        ),
+                      )
+                    : const SizedBox.shrink()
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

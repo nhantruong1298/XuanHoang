@@ -21,6 +21,7 @@ class _RemarkDialogState extends State<RemarkDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       insetPadding: EdgeInsets.symmetric(horizontal: 10),
       child: Container(

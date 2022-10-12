@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 import '../../../routes/app_pages.dart';
 import '../controllers/root_controller.dart';
-import 'drawer.dart';
 
 class RootView extends GetView<RootController> {
   @override
