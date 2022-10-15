@@ -1,11 +1,11 @@
-import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/term/views/term_view.dart';
 import 'package:example_nav2/app/modules/add_image/controllers/add_image_controller.dart';
-import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
+import 'package:example_nav2/app/modules/job/views/job_view.dart';
 import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
-import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/phase/choose_phase/views/choose_phase_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
@@ -19,7 +19,7 @@ import 'package:image_picker/image_picker.dart';
 class AddImageView extends GetView<AddImageController> {
   static const String path = '/choose-image';
   static const String routeName =
-      '${HomeView.path}${ChooseProgressView.path}${ChooseTermView.path}${ChooseJobView.path}$path';
+      '${HomeView.path}${ChoosePhaseView.path}${TermView.path}${JobView.path}$path';
   const AddImageView({Key? key}) : super(key: key);
 
   @override

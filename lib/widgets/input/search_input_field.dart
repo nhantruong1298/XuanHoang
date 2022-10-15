@@ -17,7 +17,7 @@ class SearchInputField extends StatelessWidget {
   SearchInputField({
     Key? key,
     this.hintText,
-    this.borderRadius = 10,
+    this.borderRadius = 25,
     this.contentPadding = 20,
     this.suffixIcon,
     this.maxLines,

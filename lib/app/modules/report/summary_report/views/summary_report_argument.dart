@@ -1,10 +1,12 @@
 class SummaryReportArgument {
   final bool isCreating;
-  final String url;
+  final String pdfLocalPath;
   final String termId;
+  final String? pdfUrl;
   SummaryReportArgument({
     required this.isCreating,
-    required this.url,
+    required this.pdfLocalPath,
     required this.termId,
+    this.pdfUrl,
   });
 }

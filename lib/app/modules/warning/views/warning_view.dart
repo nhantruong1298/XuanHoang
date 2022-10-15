@@ -1,5 +1,5 @@
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/warning/controllers/warning_controller.dart';
 import 'package:example_nav2/generated/assets.gen.dart';

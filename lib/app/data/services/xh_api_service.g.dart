@@ -632,68 +632,71 @@ class _XHApiService implements XHApiService {
   }
 
   @override
-  Future<String?> loadFinalReport(idWorkingTerm) async {
+  Future<SendReportResponse> loadFinalReport(idWorkingTerm) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingTerm': idWorkingTerm};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SendReportResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/api/working-terms/final-report/generate',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+            .compose(
+              _dio.options,
+              '/api/working-terms/final-report/generate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SendReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<String?> sendFinalReport(idWorkingTerm) async {
+  Future<SendReportResponse> sendFinalReport(idWorkingTerm) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingTerm': idWorkingTerm};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SendReportResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/api/working-terms/final-report',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+            .compose(
+              _dio.options,
+              '/api/working-terms/final-report',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SendReportResponse.fromJson(_result.data!);
     return value;
   }
 
   @override
-  Future<String?> createWorkingReport(idWorkingTerm) async {
+  Future<SendReportResponse> createWorkingReport(idWorkingTerm) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'idWorkingTerm': idWorkingTerm};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<String>(_setStreamType<String>(Options(
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<SendReportResponse>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-        .compose(
-          _dio.options,
-          '/api/working-terms/working-report/generate',
-          queryParameters: queryParameters,
-          data: _data,
-        )
-        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+            .compose(
+              _dio.options,
+              '/api/working-terms/working-report/generate',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = SendReportResponse.fromJson(_result.data!);
     return value;
   }
 

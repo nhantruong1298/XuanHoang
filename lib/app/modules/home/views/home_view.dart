@@ -3,11 +3,12 @@ import 'package:example_nav2/app/data/models/enum/project_type.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/authenticate/change_password/views/change_password_view.dart';
-import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/choose_project_view.dart';
+import 'package:example_nav2/app/modules/project/views/project_view.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/document/views/document_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
-import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/phase/choose_phase/views/choose_phase_view.dart';
 import 'package:example_nav2/app/modules/report/report_list/views/report_list_view.dart';
 import 'package:example_nav2/app/modules/warning/views/warning_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
@@ -116,7 +117,7 @@ class HomeView extends StatelessWidget {
           icon: Assets.images.progressIcon.path,
           title: S.current.CHOOSE_FEATURE__CHECK_THE_TERM,
           onTap: () {
-            Get.toNamed(ChooseProgressView.routeName,
+            Get.toNamed(ChoosePhaseView.routeName,
                 arguments: AuthService.to.profile?.idProject);
           },
         ),
@@ -156,7 +157,7 @@ class HomeView extends StatelessWidget {
       children: [
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ChooseProjectView.routeName,
+            Get.toNamed(ProjectView.routeName,
                 arguments: ProjectType.manual);
           },
           icon: Assets.images.checkIcon.path,
@@ -165,7 +166,7 @@ class HomeView extends StatelessWidget {
         SizedBox(height: 30.h),
         _FeatureItem(
           onTap: () {
-            Get.toNamed(ChooseProjectView.routeName,
+            Get.toNamed(ProjectView.routeName,
                 arguments: ProjectType.incident);
           },
           icon: Assets.images.customerIcon.path,

@@ -1,23 +1,24 @@
 import 'package:example_nav2/app/modules/authenticate/change_password/bindings/change_password_binding.dart';
 import 'package:example_nav2/app/modules/authenticate/change_password/views/change_password_view.dart';
-import 'package:example_nav2/app/modules/choose_category/bindings/choose_category_binding.dart';
-import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/project/views/project_view.dart';
+import 'package:example_nav2/app/modules/term/bindings/term_binding.dart';
+import 'package:example_nav2/app/modules/term/views/term_view.dart';
 import 'package:example_nav2/app/modules/add_image/bindings/add_image_binding.dart';
 import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
-import 'package:example_nav2/app/modules/choose_job/bindings/choose_job_binding.dart';
-import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
-import 'package:example_nav2/app/modules/choose_project/bindings/choose_project_binding.dart';
-import 'package:example_nav2/app/modules/choose_project/views/choose_project_view.dart';
+import 'package:example_nav2/app/modules/project/bindings/project_binding.dart';
+import 'package:example_nav2/app/modules/project/views/choose_project_view.dart';
 import 'package:example_nav2/app/modules/document/bindings/document_binding.dart';
 import 'package:example_nav2/app/modules/document/views/document_view.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/bindings/images_history_binding.dart';
 import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
+import 'package:example_nav2/app/modules/job/bindings/job_binding.dart';
+import 'package:example_nav2/app/modules/job/views/job_view.dart';
 import 'package:example_nav2/app/modules/login/views/login_view.dart';
-import 'package:example_nav2/app/modules/progress/check_progress/bindings/check_progress_binding.dart';
-import 'package:example_nav2/app/modules/progress/check_progress/views/check_progress_view.dart';
-import 'package:example_nav2/app/modules/progress/choose_progress/bindings/choose_progress_binding.dart';
-import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/phase/check_phase/bindings/check_phase_binding.dart';
+import 'package:example_nav2/app/modules/phase/check_phase/views/check_phase_view.dart';
+import 'package:example_nav2/app/modules/phase/choose_phase/bindings/choose_phase_binding.dart';
+import 'package:example_nav2/app/modules/phase/choose_phase/views/choose_phase_view.dart';
 import 'package:example_nav2/app/modules/report/create_report/bindings/create_report_binding.dart';
 import 'package:example_nav2/app/modules/report/create_report/views/create_report_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/bindings/edit_report_binding.dart';
@@ -82,38 +83,38 @@ class AppPages {
               ),
               GetPage(
                   preventDuplicates: true,
-                  name: ChooseProjectView.path,
-                  page: () => ChooseProjectView(),
-                  bindings: [ChooseProjectBinding()],
+                  name: ProjectView.path,
+                  page: () => ProjectView(),
+                  bindings: [ProjectBinding()],
                   children: []),
               GetPage(
                   preventDuplicates: true,
-                  name: ChooseProgressView.path,
-                  page: () => ChooseProgressView(),
+                  name: ChoosePhaseView.path,
+                  page: () => ChoosePhaseView(),
                   bindings: [
-                    ChooseProgressBinding()
+                    ChoosePhaseBinding()
                   ],
                   children: [
                     GetPage(
                       preventDuplicates: true,
-                      name: CheckProgressView.path,
-                      page: () => CheckProgressView(),
-                      bindings: [CheckProgressBinding()],
+                      name: CheckPhaseView.path,
+                      page: () => CheckPhaseView(),
+                      bindings: [CheckPhaseBinding()],
                     ),
                     GetPage(
                         preventDuplicates: true,
-                        name: ChooseTermView.path,
-                        page: () => ChooseTermView(),
+                        name: TermView.path,
+                        page: () => TermView(),
                         bindings: [
-                          ChooseCategoryBinding()
+                          TermBinding()
                         ],
                         children: [
                           GetPage(
                               preventDuplicates: true,
-                              name: ChooseJobView.path,
-                              page: () => ChooseJobView(),
+                              name: JobView.path,
+                              page: () => JobView(),
                               bindings: [
-                                ChooseJobBinding()
+                                JobBinding()
                               ],
                               children: [
                                 GetPage(

@@ -1,6 +1,6 @@
 import 'package:example_nav2/app/data/models/enum/incident_status.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
 import 'package:example_nav2/app/modules/report/edit_report/views/edit_report_view.dart';

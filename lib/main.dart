@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:example_nav2/app/injector/setup_injector.dart';
 import 'package:example_nav2/generated/l10n.dart';
@@ -7,7 +8,7 @@ import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -16,17 +17,39 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'app/routes/app_pages.dart';
 
 ReceivePort mainPort = ReceivePort();
+
+
+@pragma('vm:entry-point')
+void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+  final SendPort? send =
+      IsolateNameServer.lookupPortByName(DOWNLOADER_SEND_PORT_KEY);
+
+  final SendPort? send1 =
+      IsolateNameServer.lookupPortByName(DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
+
+  
+
+  send?.send([id, status, progress]);
+  send1?.send([id, status, progress]);
+}
+
+const String DOWNLOADER_SEND_PORT_KEY = 'downloader_send_port';
+const String DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY = 'download_final_report_send_port';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
-  }
+  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
-  // ByteData data =
-  //     await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
-  // SecurityContext.defaultContext
-  //     .setTrustedCertificatesBytes(data.buffer.asUint8List());
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
+  
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
 
   mainPort.listen((message) {
     if (message == 'Success') {

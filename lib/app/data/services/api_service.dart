@@ -15,6 +15,7 @@ import 'package:example_nav2/app/data/models/response/login_response.dart';
 import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
+import 'package:example_nav2/app/data/models/response/send_report_response.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
 import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
@@ -44,7 +45,7 @@ class ApiService extends GetxService {
     Map<String, dynamic>? headers,
   }) {
     return Dio(BaseOptions(
-        baseUrl: baseUrl,
+        baseUrl: baseTestUrl,
         sendTimeout: 10000,
         receiveTimeout: 10000,
         headers: headers));
@@ -343,29 +344,35 @@ class ApiService extends GetxService {
     }
   }
 
-  Future<String?> loadFinalReport({required String idWorkingTerm}) async {
+  Future<SendReportResponse> loadFinalReport(
+      {required String idWorkingTerm}) async {
     try {
       final response = await _xhApiService.loadFinalReport(idWorkingTerm);
-
-      final map = response as Map<String, dynamic>;
-
-      return map['url'];
+      return response;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<String?> sendFinalReport({required String idWorkingTerm}) async {
+  Future<SendReportResponse> sendFinalReport(
+      {required String idWorkingTerm}) async {
     try {
       final response = await _xhApiService.sendFinalReport(idWorkingTerm);
+
+      return response;
     } catch (error) {
       rethrow;
     }
   }
 
-  Future<String?> createWorkingReport({required String idWorkingTerm}) async {
-    final response = await _xhApiService.createWorkingReport(idWorkingTerm);
+  Future<SendReportResponse> createWorkingReport(
+      {required String idWorkingTerm}) async {
+    try {
+      final response = await _xhApiService.createWorkingReport(idWorkingTerm);
 
-    return response;
+      return response;
+    } catch (error) {
+      rethrow;
+    }
   }
 }

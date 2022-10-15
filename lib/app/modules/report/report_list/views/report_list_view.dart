@@ -1,8 +1,8 @@
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/models/enum/incident_status.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/report/create_report/views/create_report_view.dart';
 import 'package:example_nav2/app/modules/report/report_detail/views/report_detail_view.dart';

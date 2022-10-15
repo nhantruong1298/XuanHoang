@@ -1,4 +1,4 @@
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class LoginView extends GetView<LoginController> {
                       TextInputField(
                         hintText: S.current.SIGN_IN__USERNAME,
                         name: controller.USER_NAME_KEY,
-                        initValue: 'admin',
+                        initValue: 'nv02',
                       ),
                       SizedBox(height: 23.h),
                       Obx(() {
@@ -56,7 +56,7 @@ class LoginView extends GetView<LoginController> {
                           hintText: S.current.SIGN_IN__PASSWORD,
                           name: controller.PASSWORD_KEY,
                           obscureText: obscureText,
-                          initValue: 'admin@123',
+                          initValue: '123456',
                         );
                       }),
                       SizedBox(height: 80.h),

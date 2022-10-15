@@ -1,15 +1,15 @@
 import 'package:example_nav2/app/data/models/constant/working_item_status_type.dart';
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
-import 'package:example_nav2/app/modules/choose_category/views/choose_category_view.dart';
+import 'package:example_nav2/app/modules/term/views/term_view.dart';
 import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
-import 'package:example_nav2/app/modules/choose_job/views/choose_job_view.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/choose_project/views/widgets/choose_project_app_bar.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
+import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/controllers/images_history_controller.dart';
+import 'package:example_nav2/app/modules/job/views/job_view.dart';
 import 'package:example_nav2/app/modules/photo_view/photo_view.dart';
-import 'package:example_nav2/app/modules/progress/choose_progress/views/choose_progress_view.dart';
+import 'package:example_nav2/app/modules/phase/choose_phase/views/choose_phase_view.dart';
 import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ import 'package:get/get.dart';
 class ImagesHistoryView extends GetView<ImageHistoryController> {
   static const String path = '/images-history';
   static const String routeName =
-      '${HomeView.path}${ChooseProgressView.path}${ChooseTermView.path}${ChooseJobView.path}$path';
+      '${HomeView.path}${ChoosePhaseView.path}${TermView.path}${JobView.path}$path';
   const ImagesHistoryView({Key? key}) : super(key: key);
 
   @override

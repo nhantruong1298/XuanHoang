@@ -14,6 +14,7 @@ import 'package:example_nav2/app/data/models/response/login_response.dart';
 import 'package:example_nav2/app/data/models/response/project_statistic_report_response.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
 import 'package:example_nav2/app/data/models/response/report_list_item_reponse.dart';
+import 'package:example_nav2/app/data/models/response/send_report_response.dart';
 import 'package:example_nav2/app/data/models/response/update_report_response.dart';
 import 'package:example_nav2/app/data/models/response/warning_project_response.dart';
 import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
@@ -151,17 +152,17 @@ abstract class XHApiService {
   );
 
   @POST("/api/working-terms/final-report/generate")
-  Future<String?> loadFinalReport(
+  Future<SendReportResponse> loadFinalReport(
     @Query('idWorkingTerm') String idWorkingTerm,
   );
 
   @POST("/api/working-terms/final-report")
-  Future<String?> sendFinalReport(
+  Future<SendReportResponse> sendFinalReport(
     @Query('idWorkingTerm') String idWorkingTerm,
   );
 
   @POST("/api/working-terms/working-report/generate")
-  Future<String?> createWorkingReport(
+  Future<SendReportResponse> createWorkingReport(
     @Query('idWorkingTerm') String idWorkingTerm,
   );
 }
