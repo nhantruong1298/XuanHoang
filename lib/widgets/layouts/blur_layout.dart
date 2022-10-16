@@ -11,14 +11,16 @@ class BlurLayout extends StatelessWidget {
   final PreferredSizeWidget? appBar;
   final String? title;
   final List<Widget> actions;
+  final Widget? bottomNavigationBar;
   const BlurLayout({
     super.key,
     required this.child,
-    this.resizeToAvoidBottomInset,
+    this.resizeToAvoidBottomInset = false,
     this.extendBodyBehindAppBar = false,
     this.appBar,
     this.title,
     this.actions = const <Widget>[],
+    this.bottomNavigationBar,
   });
 
   @override
@@ -29,6 +31,7 @@ class BlurLayout extends StatelessWidget {
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
         appBar: appBar ?? _buildAppBar(),
+        bottomNavigationBar: bottomNavigationBar,
         body: Stack(
           children: [
             BlurBackGround(),

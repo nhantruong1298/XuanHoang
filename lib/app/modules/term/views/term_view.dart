@@ -4,8 +4,6 @@ import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/term/controllers/term_controller.dart';
 import 'package:example_nav2/app/modules/job/views/job_argument.dart';
-import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
-import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/job/views/job_view.dart';
 import 'package:example_nav2/app/modules/phase/choose_phase/views/choose_phase_view.dart';
@@ -14,7 +12,9 @@ import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_constants.dart';
 import 'package:example_nav2/resources/app_dimensions.dart';
+import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
+import 'package:example_nav2/widgets/layouts/blur_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,108 +27,77 @@ class TermView extends GetView<TermController> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
-      child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          extendBodyBehindAppBar: true,
-          appBar: ChooseProjectAppBar(
-            leadingIcon: Assets.images.arrowBackIcon.path,
-            title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Get.offNamedUntil(HomeView.routeName, (route) => false);
+    return BlurLayout(
+      extendBodyBehindAppBar: true,
+      title: S.current.CHOOSE_CATEGORY__CHOOSE_CATEGORY_TEXT,
+      actions: [
+        IconButton(
+            onPressed: () {
+              Get.offNamedUntil(HomeView.routeName, (route) => false);
+            },
+            icon:
+                Assets.images.homeIcon.svg(height: 30, fit: BoxFit.scaleDown)),
+        SizedBox(
+          width: 10,
+        )
+      ],
+      child: Column(
+        children: [
+          SizedBox(height: 30.h),
+          SearchInputField(onChanged: controller.onSearchChanged),
+          SizedBox(height: 20.h),
+          Expanded(
+              child: RefreshIndicator(
+            onRefresh: controller.onRefreshData,
+            child: Obx(() {
+              final listWorkingTerm = controller.listWorkingTerm.toList();
+              final listTermStatistic = controller.listTermStatistic.toList();
+
+              final isStaff = accountType == AccountType.staff ||
+                  accountType == AccountType.admin;
+
+              return ListView.separated(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  itemBuilder: (_, index) {
+                    return (isStaff)
+                        ? _buildStaffTerm(listWorkingTerm[index])
+                        : _buildCustomerTerm(listTermStatistic[index]);
                   },
-                  icon: Assets.images.homeIcon
-                      .svg(height: 30, fit: BoxFit.scaleDown)),
-              SizedBox(
-                width: 10,
-              )
-            ],
-          ),
-          body: Stack(
-            children: [
-              Positioned.fill(child: BlurBackGround()),
-              SafeArea(
-                child: Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 30.h),
-                          SearchInputField(
-                            borderRadius: 25,
-                            contentPadding: 20,
-                            onChanged: (value) {
-                              controller.onSearchChanged(value);
-                            },
-                          ),
-                          SizedBox(height: 20.h),
-                          Obx(() {
-                            final listWorkingTerm =
-                                controller.listWorkingTerm.toList();
-                            final listTermStatistic =
-                                controller.listTermStatistic.toList();
-
-                            bool isStaff = AuthService.to.accountType ==
-                                    AccountType.staff ||
-                                AuthService.to.accountType == AccountType.admin;
-
-                            return Expanded(
-                                child: RefreshIndicator(
-                              onRefresh: controller.onRefreshData,
-                              child: ListView.separated(
-                                  padding: EdgeInsets.only(bottom: 16),
-                                  keyboardDismissBehavior:
-                                      ScrollViewKeyboardDismissBehavior.onDrag,
-                                  itemBuilder: (context, index) {
-                                    return (isStaff)
-                                        ? _buildStaffTerm(
-                                            listWorkingTerm, index)
-                                        : _buildCustomerTerm(
-                                            listTermStatistic, index);
-                                  },
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 10),
-                                  itemCount: (isStaff)
-                                      ? listWorkingTerm.length
-                                      : listTermStatistic.length),
-                            ));
-                          })
-                        ])),
-              ),
-            ],
-          )),
+                  separatorBuilder: (_, index) => const SizedBox(height: 10),
+                  itemCount: (isStaff)
+                      ? listWorkingTerm.length
+                      : listTermStatistic.length);
+            }),
+          ))
+        ],
+      ),
     );
   }
 
-  Widget _buildStaffTerm(List<WorkingTerm> list, int index) {
+  String? get accountType => AuthService.to.accountType;
+
+  Widget _buildStaffTerm(WorkingTerm item) {
     return _StaffTerm(
       onTap: () async {
         final isUpdated = await Get.toNamed(JobView.routeName,
             arguments: JobArgument(
-                idWorkingTerm: list[index].idWorkingTerm ?? '',
-                instructionFile: list[index].instructionFile));
+                idWorkingTerm: item.idWorkingTerm ?? '',
+                instructionFile: item.instructionFile));
 
         if (isUpdated == true) {
           controller.onRefreshData();
         }
       },
-      termName: list[index].termName,
+      termName: item.termName,
       onInfoPressed: () {
-        controller.onInfoPressed(list[index].instructionFile);
+        controller.onInfoPressed(item.instructionFile);
       },
-      instructionFile: list[index].instructionFile,
+      instructionFile: item.instructionFile,
     );
   }
 
-  Widget _buildCustomerTerm(List<TermStatistic> list, int index) {
-    final item = list[index];
+  Widget _buildCustomerTerm(TermStatistic item) {
     return _CustomerTerm(
       termName: item.termName,
       percentComplete: item.percentComplete,
@@ -137,7 +106,7 @@ class TermView extends GetView<TermController> {
       onTap: () async {
         final isUpdated = await Get.toNamed(JobView.routeName,
             arguments: JobArgument(
-              idWorkingTerm: list[index].idWorkingTerm ?? '',
+              idWorkingTerm: item.idWorkingTerm ?? '',
             ));
 
         if (isUpdated == true) {
@@ -163,47 +132,24 @@ class _StaffTerm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [AppConstants.defaultBoxShadow],
-        borderRadius: BorderRadius.circular(AppDimensions.defaultPadding),
+    return AppListTile(
+      borderRadius: BorderRadius.circular(AppDimensions.defaultPadding),
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      onTap: onTap,
+      title: Container(
+        height: 50,
+        alignment: Alignment.centerLeft,
+        child: Text(termName ?? '',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 17.sp)),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimensions.defaultPadding),
-        child: Material(
-          color: Colors.white,
-          child: InkWell(
-            onTap: onTap,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment.centerLeft,
-                      child: Text(termName ?? '',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w700, fontSize: 17.sp)),
-                    ),
-                  ),
-                  (instructionFile?.isNotEmpty == true)
-                      ? IconButton(
-                          onPressed: onInfoPressed,
-                          icon: Assets.images.infoIcon.svg(
-                              color: Color(0xFF0081C9),
-                              height: 27,
-                              fit: BoxFit.scaleDown))
-                      : const SizedBox.shrink()
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      trailing: (instructionFile?.isNotEmpty == true)
+          ? IconButton(
+              onPressed: onInfoPressed,
+              icon: Assets.images.infoIcon.svg(
+                  color: Color(0xFF0081C9), height: 27, fit: BoxFit.scaleDown))
+          : const SizedBox.shrink(),
     );
   }
 }

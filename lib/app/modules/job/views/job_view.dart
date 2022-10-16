@@ -19,6 +19,7 @@ import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/common/button/app_button.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
+import 'package:example_nav2/widgets/layouts/blur_layout.dart';
 import 'package:example_nav2/widgets/layouts/loading_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,72 +36,113 @@ class JobView extends GetView<JobController> {
   Widget build(BuildContext context) {
     controller.initOverlay(context);
 
-    return GestureDetector(
-        onTap: FocusManager.instance.primaryFocus?.unfocus,
-        child: Stack(
-          children: [
-            Scaffold(
-                resizeToAvoidBottomInset: false,
-                extendBodyBehindAppBar: true,
-                appBar: _buildAppBar(),
-                bottomNavigationBar: _buildNavigationBar(context),
-                body: Stack(
-                  children: [
-                    BlurBackGround(),
-                    SafeArea(
-                      child: Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 30.h),
-                                SearchInputField(
-                                  borderRadius: AppDimensions.defaultXLRadius,
-                                  onChanged: (value) {
-                                    controller.onSearchChanged(value);
-                                  },
-                                ),
-                                SizedBox(height: 20.h),
-                                Obx(() {
-                                  final list = controller.listJob;
-                                  return Expanded(
-                                      child: RefreshIndicator(
-                                    onRefresh: controller.onRefreshData,
-                                    child: ListView.separated(
-                                        keyboardDismissBehavior:
-                                            ScrollViewKeyboardDismissBehavior
-                                                .onDrag,
-                                        itemBuilder: (context, index) {
-                                          final item = list[index];
-                                          return (accountType ==
-                                                      AccountType.staff ||
-                                                  accountType ==
-                                                      AccountType.admin)
-                                              ? _buildStaffJob(context, item)
-                                              : _buildCustomerJob(item);
-                                        },
-                                        separatorBuilder: (_, __) =>
-                                            const SizedBox(height: 10),
-                                        itemCount: list.length),
-                                  ));
-                                }),
-                                SizedBox(height: 20.h),
-                              ])),
-                    ),
-                  ],
+    return Stack(
+      children: [
+        BlurLayout(
+            extendBodyBehindAppBar: true,
+            appBar: _buildAppBar(),
+            bottomNavigationBar: _buildNavigationBar(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 30.h),
+                SearchInputField(onChanged: controller.onSearchChanged),
+                SizedBox(height: 20.h),
+                Expanded(
+                    child: RefreshIndicator(
+                  onRefresh: controller.onRefreshData,
+                  child: Obx(() {
+                    final list = controller.listJob;
+                    return ListView.separated(
+                        keyboardDismissBehavior:
+                            ScrollViewKeyboardDismissBehavior.onDrag,
+                        itemBuilder: (context, index) {
+                          final item = list[index];
+                          return (accountType == AccountType.staff ||
+                                  accountType == AccountType.admin)
+                              ? _buildStaffJob(context, item)
+                              : _buildCustomerJob(item);
+                        },
+                        separatorBuilder: (_, __) => const SizedBox(height: 10),
+                        itemCount: list.length);
+                  }),
                 )),
-            Obx(() => Visibility(
-                  visible: controller.isLoading.value,
-                  child: LoadingView(),
-                ))
-          ],
-        ));
+                SizedBox(height: 20.h),
+              ],
+            )),
+        Obx(() => Visibility(
+              visible: controller.isLoading.value,
+              child: LoadingView(),
+            ))
+      ],
+    );
+
+    // return GestureDetector(
+    //     onTap: FocusManager.instance.primaryFocus?.unfocus,
+    //     child: Stack(
+    //       children: [
+    //         Scaffold(
+    //             resizeToAvoidBottomInset: false,
+    //             extendBodyBehindAppBar: true,
+    //             appBar: _buildAppBar(),
+    //             bottomNavigationBar: _buildNavigationBar(context),
+    //             body: Stack(
+    //               children: [
+    //                 BlurBackGround(),
+    //                 SafeArea(
+    //                   child: Container(
+    //                       width: double.infinity,
+    //                       height: double.infinity,
+    //                       padding: const EdgeInsets.symmetric(horizontal: 10),
+    //                       child: Column(
+    //                           crossAxisAlignment: CrossAxisAlignment.start,
+    //                           children: [
+    //                             SizedBox(height: 30.h),
+    //                             SearchInputField(
+    //                               borderRadius: AppDimensions.defaultXLRadius,
+    //                               onChanged: (value) {
+    //                                 controller.onSearchChanged(value);
+    //                               },
+    //                             ),
+    //                             SizedBox(height: 20.h),
+    //                             Obx(() {
+    //                               final list = controller.listJob;
+    //                               return Expanded(
+    //                                   child: RefreshIndicator(
+    //                                 onRefresh: controller.onRefreshData,
+    //                                 child: ListView.separated(
+    //                                     keyboardDismissBehavior:
+    //                                         ScrollViewKeyboardDismissBehavior
+    //                                             .onDrag,
+    //                                     itemBuilder: (context, index) {
+    //                                       final item = list[index];
+    //                                       return (accountType ==
+    //                                                   AccountType.staff ||
+    //                                               accountType ==
+    //                                                   AccountType.admin)
+    //                                           ? _buildStaffJob(context, item)
+    //                                           : _buildCustomerJob(item);
+    //                                     },
+    //                                     separatorBuilder: (_, __) =>
+    //                                         const SizedBox(height: 10),
+    //                                     itemCount: list.length),
+    //                               ));
+    //                             }),
+    //                             SizedBox(height: 20.h),
+    //                           ])),
+    //                 ),
+    //               ],
+    //             )),
+    //         Obx(() => Visibility(
+    //               visible: controller.isLoading.value,
+    //               child: LoadingView(),
+    //             ))
+    //       ],
+    //     ));
   }
 
   Widget _buildNavigationBar(BuildContext context) {
-    return (isCustomer)
+    return (isStaff)
         ? Row(children: [
             Flexible(
                 child: AppButton(
@@ -123,8 +165,8 @@ class JobView extends GetView<JobController> {
         : const SizedBox.shrink();
   }
 
-  bool get isCustomer => (AuthService.to.accountType == AccountType.staff ||
-      AuthService.to.accountType == AccountType.admin);
+  bool get isStaff =>
+      (accountType == AccountType.staff || accountType == AccountType.admin);
 
   String? get accountType => AuthService.to.accountType;
 
@@ -133,7 +175,7 @@ class JobView extends GetView<JobController> {
       leadingIcon: Assets.images.arrowBackIcon.path,
       title: S.current.CHOOSE_JOB__TITLE,
       actions: [
-        (AuthService.to.accountType != AccountType.customer)
+        (accountType != AccountType.customer)
             ? IconButton(
                 onPressed: () {
                   controller.onInstructionFilePressed();
@@ -181,9 +223,11 @@ class JobView extends GetView<JobController> {
       },
       onFailedTap: () async {
         final note = await showRemarkDialog(context: context);
+
+        if (note == null) return;
+
         controller.doCheck(
-            item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed),
-            note ?? '');
+            item.copyWith(idWorkingItemStatus: WorkingItemStatus.failed), note);
       },
       onImageTap: () {
         Get.toNamed(ImagesHistoryView.routeName, arguments: item);

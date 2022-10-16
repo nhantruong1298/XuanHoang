@@ -76,6 +76,7 @@ class JobController extends GetxController {
       if (status == DownloadTaskStatus.failed ||
           status == DownloadTaskStatus.undefined) {
         hideLoadingDialog();
+        toggleLoading(false);
         return;
       }
 
@@ -167,6 +168,7 @@ class JobController extends GetxController {
     hideLoadingDialog();
 
     _showSendReportSuccessDialog(onDownloadPressed: () {
+      Get.back();
       _downloadFinalReport(url);
     });
   }

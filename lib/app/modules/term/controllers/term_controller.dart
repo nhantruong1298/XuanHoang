@@ -3,11 +3,12 @@ import 'package:example_nav2/app/data/models/response/project_statistic_report_r
 import 'package:example_nav2/app/data/models/working_term.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
-import 'package:get/get.dart' hide Progress;
+import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class TermController extends GetxController {
   final ApiService _apiService;
+  TermController(this._apiService);
 
   //Data for staff
   final listWorkingTerm = <WorkingTerm>[].obs;
@@ -17,9 +18,13 @@ class TermController extends GetxController {
   List<TermStatistic> _listTermStatisticResult = [];
 
   String _searchText = '';
-  TermController(this._apiService);
-  late String? idPhase;
+
+  String? idPhase;
   String? idProject;
+
+  bool get isStaff =>
+      AuthService.to.accountType == AccountType.staff ||
+      AuthService.to.accountType == AccountType.admin;
 
   @override
   void onInit() {
@@ -31,8 +36,7 @@ class TermController extends GetxController {
 
   Future<void> _fetchTerms() async {
     if (idPhase != null) {
-      if (AuthService.to.accountType == AccountType.staff ||
-          AuthService.to.accountType == AccountType.admin) {
+      if (isStaff) {
         _listWorkingTermResult =
             await _apiService.getWorkingTermsByPhaseId(idPhase ?? '');
       } else {
@@ -65,46 +69,40 @@ class TermController extends GetxController {
   void onSearchChanged(String value) {
     _searchText = value;
 
-    switch (AuthService.to.accountType) {
-      case AccountType.staff:
-      case AccountType.admin:
-        {
-          if (_searchText.isEmpty) {
-            listWorkingTerm.value = _listWorkingTermResult;
-          } else {
-            listWorkingTerm.value = _listWorkingTermResult
-                .where((element) =>
-                    element.termName
-                        ?.toLowerCase()
-                        .contains(_searchText.toLowerCase()) ==
-                    true)
-                .toList();
-          }
-        }
-        break;
-      default:
-        {
-          if (_searchText.isEmpty) {
-            listTermStatistic.value = _listTermStatisticResult;
-          } else {
-            listTermStatistic.value = _listTermStatisticResult
-                .where((element) =>
-                    element.termName
-                        ?.toLowerCase()
-                        .contains(_searchText.toLowerCase()) ==
-                    true)
-                .toList();
-          }
-        }
-        break;
+    if (isStaff) {
+      if (_searchText.isEmpty) {
+        listWorkingTerm.value = _listWorkingTermResult;
+      } else {
+        listWorkingTerm.value = _listWorkingTermResult
+            .where((element) =>
+                element.termName
+                    ?.toLowerCase()
+                    .contains(_searchText.toLowerCase()) ==
+                true)
+            .toList();
+      }
+      return;
+    }
+
+    if (_searchText.isEmpty) {
+      listTermStatistic.value = _listTermStatisticResult;
+    } else {
+      listTermStatistic.value = _listTermStatisticResult
+          .where((element) =>
+              element.termName
+                  ?.toLowerCase()
+                  .contains(_searchText.toLowerCase()) ==
+              true)
+          .toList();
     }
   }
 
-  void onInfoPressed(String? instructionFile) {
+
+  void onInfoPressed(String? instructionFile) async {
     try {
       final url = _apiService.getImageFullUrl(instructionFile ?? '');
 
-      launchUrlString(url, mode: LaunchMode.externalApplication);
+      await launchUrlString(url, mode: LaunchMode.externalApplication);
     } catch (error) {
       print(error);
     }
