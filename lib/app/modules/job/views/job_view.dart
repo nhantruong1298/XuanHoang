@@ -483,14 +483,18 @@ class _StaffJob extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )),
                 CustomSlidableAction(
-                  onPressed: (idWorkingItemStatus != null &&
-                          idWorkingItemHistory != null)
-                      ? (_) => onCameraTap!()
-                      : null,
-                  backgroundColor: (idWorkingItemStatus != null &&
-                          idWorkingItemHistory != null)
-                      ? AppColors.primaryLightColor
-                      : AppColors.greyBorderColor,
+                  onPressed: (_) => onCameraTap!()
+                  // (idWorkingItemStatus != null &&
+                  //         idWorkingItemHistory != null)
+                  //     ? (_) => onCameraTap!()
+                  //     : null
+                  ,
+                  backgroundColor: AppColors.primaryLightColor
+                  // (idWorkingItemStatus != null &&
+                  //         idWorkingItemHistory != null)
+                  //     ? AppColors.primaryLightColor
+                  //     : AppColors.greyBorderColor
+                  ,
                   child: Assets.images.cameraIcon
                       .svg(height: 37, width: 37, fit: BoxFit.scaleDown),
                 ),

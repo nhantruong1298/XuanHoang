@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FileRepository {
-  
   Future<void> downLoadPdf({
     required String fileName,
     required String savedDir,
@@ -27,6 +27,16 @@ class FileRepository {
         showNotification: showNotification,
         openFileFromNotification: openFileFromNotification,
         saveInPublicStorage: saveInPublicStorage);
+  }
+
+  Future<void> requestStoragePermission() async {
+    try {
+      final status = await Permission.storage.status;
+
+      if (status != PermissionStatus.granted) {
+        await Permission.storage.request();
+      }
+    } catch (error) {}
   }
 
   Future<void> _removeDuplicateFile({

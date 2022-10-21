@@ -26,6 +26,8 @@ import 'package:uuid/uuid.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:image/image.dart' as img;
 
+
+
 class JobController extends GetxController {
   // Init Overlay
   OverlayState? overlayState;
@@ -181,6 +183,8 @@ class JobController extends GetxController {
       final appDir = await getExternalStorageDirectory();
 
       final fileName = url.split('/').last;
+
+      await _fileRepository.requestStoragePermission();
 
       await _fileRepository.downLoadPdf(
         fileName: fileName,

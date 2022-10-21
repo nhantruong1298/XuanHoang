@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:example_nav2/app/data/data_source/data_storage.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   final formKey = GlobalKey<FormBuilderState>();
+  final DataStorage _dataStorage;
   final String USER_NAME_KEY = 'userName';
   final String PASSWORD_KEY = 'password';
   RxBool obscurePassword = true.obs;
@@ -20,23 +22,22 @@ class LoginController extends GetxController {
 
   RxBool isLoading = false.obs;
   final ApiService _apiService;
-  LoginController(this._apiService);
+  LoginController(this._apiService,this._dataStorage);
 
   void onLoginPressed() async {
     isLoading.value = true;
     try {
-      final response = await _apiService.login(
-          formKey.currentState!.fields[USER_NAME_KEY]!.value,
-          formKey.currentState!.fields[PASSWORD_KEY]!.value);
+      final userName = formKey.currentState!.fields[USER_NAME_KEY]!.value;
+      final password = formKey.currentState!.fields[PASSWORD_KEY]!.value;
+      final response = await _apiService.login(userName, password);
 
       if (response.token != null && response.profile != null) {
         Get.find<ApiService>().setToken(response.token!);
         Get.find<AuthService>().login(response.profile!);
 
-        //save token
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(AppConstants.TOKEN_KEY, response.token?.accessToken ?? '');
-        //
+        //save token   
+        await _dataStorage.setString(
+            DataStorage.TOKEN_KEY, response.token?.accessToken ?? '');
 
         Get.offNamed(HomeView.routeName);
       }

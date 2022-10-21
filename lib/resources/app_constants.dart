@@ -6,5 +6,5 @@ class AppConstants {
       blurRadius: 4,
       color: Color.fromRGBO(0, 0, 0, 0.25));
 
-  static const TOKEN_KEY = 'b4654e62-3449-11ed-a261-0242ac120002';
+  
 }

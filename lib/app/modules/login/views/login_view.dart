@@ -38,7 +38,8 @@ class LoginView extends GetView<LoginController> {
                       TextInputField(
                         hintText: S.current.SIGN_IN__USERNAME,
                         name: controller.USER_NAME_KEY,
-                      //  initValue: 'nv02',
+                        initValue: '',
+                        //   initValue: 'nv02',
                       ),
                       SizedBox(height: 23.h),
                       Obx(() {
@@ -56,7 +57,8 @@ class LoginView extends GetView<LoginController> {
                           hintText: S.current.SIGN_IN__PASSWORD,
                           name: controller.PASSWORD_KEY,
                           obscureText: obscureText,
-                        //  initValue: '123456',
+                          initValue: '',
+                          //      initValue: '123456',
                         );
                       }),
                       SizedBox(height: 80.h),
@@ -72,24 +74,6 @@ class LoginView extends GetView<LoginController> {
                         );
                       }),
                       const Spacer(),
-                      // Obx(() {
-                      //   return Expanded(
-                      //     child: (controller.showErrorView.value)
-                      //         ? Container(
-                      //             padding: EdgeInsets.all(16),
-                      //             width: double.infinity,
-                      //             color: Colors.white,
-                      //             margin: EdgeInsets.symmetric(vertical: 16),
-                      //             child: SingleChildScrollView(
-                      //               child: Column(
-                      //                   crossAxisAlignment:
-                      //                       CrossAxisAlignment.start,
-                      //                   children: [Text(controller.errorText)]),
-                      //             ),
-                      //           )
-                      //         : const SizedBox.shrink(),
-                      //   );
-                      // }),
                       Center(
                         child: Text(S.current.SIGN_IN__LICENSE_DESCRIPTION,
                             style:

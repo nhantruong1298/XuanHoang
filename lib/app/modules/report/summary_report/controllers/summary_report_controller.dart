@@ -14,6 +14,7 @@ import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SummaryReportController extends GetxController {
   final ApiService _apiService;
@@ -28,7 +29,8 @@ class SummaryReportController extends GetxController {
 
   @override
   void dispose() {
-     IsolateNameServer.removePortNameMapping(DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
+    IsolateNameServer.removePortNameMapping(
+        DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
     super.dispose();
   }
 
@@ -40,9 +42,9 @@ class SummaryReportController extends GetxController {
   }
 
   void _initDownloader() {
-    
-     IsolateNameServer.removePortNameMapping(DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
-    
+    IsolateNameServer.removePortNameMapping(
+        DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
+
     IsolateNameServer.registerPortWithName(
         _downLoaderPort.sendPort, DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
 
@@ -67,6 +69,8 @@ class SummaryReportController extends GetxController {
       final appDir = await getExternalStorageDirectory();
 
       final fileName = argument.pdfUrl!.split('/').last;
+
+      await _fileRepository.requestStoragePermission();
 
       await _fileRepository.downLoadPdf(
         fileName: fileName,

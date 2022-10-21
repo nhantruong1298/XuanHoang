@@ -60,7 +60,8 @@ class ApiService extends GetxService {
 
   void clearToken() {
     _token = null;
-    _xhApiService = XHApiService(Dio(BaseOptions(baseUrl: baseUrl)));
+    _init();
+    //_xhApiService = XHApiService(Dio(BaseOptions(baseUrl: baseUrl)));
   }
 
   String get accessToken => _token?.accessToken ?? '';

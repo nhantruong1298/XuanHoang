@@ -32,29 +32,31 @@ class ImagesHistoryView extends GetView<ImageHistoryController> {
           title: 'Lịch sử',
           actions: [
             ((AuthService.to.accountType == AccountType.staff ||
-                        AuthService.to.accountType == AccountType.admin) &&
-                    controller.workingItem.idWorkingItemStatus != null)
+                    AuthService.to.accountType == AccountType.admin)
+                // && controller.workingItem.idWorkingItemStatus != null
+                )
                 ? IconButton(
                     onPressed: () async {
-                      if (controller.workingItem.idWorkingItemStatus != null &&
-                          controller.workingItem.idWorkingItemHistory != null) {
-                        final isUpdated = await Get.toNamed(
-                            AddImageView.routeName,
-                            arguments: controller.workingItem);
-                        if (isUpdated == true) {
-                          controller.refreshData();
-                        }
+                      // if (controller.workingItem.idWorkingItemStatus != null &&
+                      //     controller.workingItem.idWorkingItemHistory != null) {
+                      final isUpdated = await Get.toNamed(
+                          AddImageView.routeName,
+                          arguments: controller.workingItem);
+                      if (isUpdated == true) {
+                        controller.refreshData();
                       }
+                      // }
                     },
                     icon: Assets.images.cameraIcon.svg(
-                        height: 30,
-                        fit: BoxFit.scaleDown,
-                        color: (controller.workingItem.idWorkingItemStatus !=
-                                    null &&
-                                controller.workingItem.idWorkingItemHistory !=
-                                    null)
-                            ? null
-                            : Colors.grey[600]))
+                      height: 30,
+                      fit: BoxFit.scaleDown,
+                      // color: (controller.workingItem.idWorkingItemStatus !=
+                      //             null &&
+                      //         controller.workingItem.idWorkingItemHistory !=
+                      //             null)
+                      //     ? null
+                      //     : Colors.grey[600]
+                    ))
                 : const SizedBox.shrink(),
             IconButton(
                 onPressed: () {
