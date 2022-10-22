@@ -3,20 +3,18 @@ import 'dart:isolate';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:example_nav2/app/data/models/isolate/upload_do_check_image_isolate.dart';
-import 'package:example_nav2/app/data/models/response/do_check_image_response.dart';
 import 'package:example_nav2/app/data/models/response/working_item_image_response.dart';
 import 'package:example_nav2/app/data/models/working_item.dart';
+import 'package:example_nav2/app/data/repository/file_repository.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/isolate_service.dart';
 import 'package:example_nav2/main.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_isolate/flutter_isolate.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:dio/dio.dart' as dio;
-import 'package:image/image.dart' as img;
 
 const String ADD_IMAGE_SEND_PORT_KEY = 'add_image_send_port';
 
@@ -24,7 +22,8 @@ class AddImageController extends GetxController {
   final ReceivePort _addImagePort = ReceivePort();
   FlutterIsolate? _addImageIsolate;
   final ApiService _apiService;
-  AddImageController(this._apiService);
+  final FileRepository _fileRepository;
+  AddImageController(this._apiService, this._fileRepository);
   final listImageUrl = <String>[].obs;
   late final ImagePicker _picker;
 
@@ -98,6 +97,8 @@ class AddImageController extends GetxController {
 
   Future<void> pickImage(ImageSource source) async {
     try {
+      await _fileRepository.requestStoragePermission();
+
       isLoading.value = true;
 
       final XFile? xFile = await _picker.pickImage(
@@ -109,6 +110,12 @@ class AddImageController extends GetxController {
 
         Uint8List imageData = file.readAsBytesSync();
 
+        //save image
+        if (source == ImageSource.camera) {
+          await ImageGallerySaver.saveImage(imageData);
+        }
+
+        //upload image isolate
         _addImageIsolate = await FlutterIsolate.spawn(
             resizedAndUploadDoCheckImageIsolate,
             UploadDoCheckImageIsolateModel(
@@ -146,6 +153,8 @@ class AddImageController extends GetxController {
         //     showSnackbar(
         //         message: response.message, backgroundColor: AppColors.errorColor);
         //   }
+      } else {
+        isLoading.value = false;
       }
     } catch (error) {
       isLoading.value = false;

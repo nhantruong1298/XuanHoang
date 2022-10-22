@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:example_nav2/app/data/models/enum/account_type.dart';
 import 'package:example_nav2/app/data/models/response/report_detail_response.dart';
+import 'package:example_nav2/app/data/repository/file_repository.dart';
 import 'package:example_nav2/app/data/services/api_service.dart';
 import 'package:example_nav2/app/data/services/auth_service.dart';
 import 'package:example_nav2/resources/app_colors.dart';
@@ -8,12 +9,14 @@ import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:example_nav2/widgets/common/dialogs/confirm_dialog.dart';
 import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:image/image.dart' as img;
 
 class EditReportController extends GetxController {
   final ApiService _apiService;
+  final FileRepository _fileRepository;
   // Rx<ReportDetailResponse?>? reportDetail = ReportDetailResponse().obs;
   RxBool isLoading = false.obs;
   String replyContent = '';
@@ -23,7 +26,7 @@ class EditReportController extends GetxController {
   final _imagePicker = ImagePicker();
 
   RxString idIncidentStatus = ''.obs;
-  EditReportController(this._apiService);
+  EditReportController(this._apiService,this._fileRepository);
 
   bool isCustomer = AuthService.to.accountType == AccountType.customer;
 
@@ -112,12 +115,18 @@ class EditReportController extends GetxController {
 
   void onChooseImage(ImageSource? imageSource) async {
     if (imageSource != null) {
+      await _fileRepository.requestStoragePermission();
+
       isLoading.value = true;
       try {
         final image = await _imagePicker.pickImage(source: imageSource);
 
         if (image != null) {
           imagesData.add(File(image.path));
+
+          if (imageSource == ImageSource.camera) {
+            await _saveImage(image);
+          }
         }
       } catch (error) {
         print(error);
@@ -125,6 +134,11 @@ class EditReportController extends GetxController {
         isLoading.value = false;
       }
     }
+  }
+
+  Future<void> _saveImage(XFile image) async {
+    final byteData = await image.readAsBytes();
+    await ImageGallerySaver.saveImage(byteData);
   }
 
   void onRemoveImage(int index) async {

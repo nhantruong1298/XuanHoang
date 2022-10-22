@@ -76,7 +76,8 @@ class JobController extends GetxController {
       DownloadTaskStatus status = data[1];
 
       if (status == DownloadTaskStatus.failed ||
-          status == DownloadTaskStatus.undefined) {
+          status == DownloadTaskStatus.undefined || 
+          status == DownloadTaskStatus.canceled) {
         hideLoadingDialog();
         toggleLoading(false);
         return;
@@ -212,7 +213,7 @@ class JobController extends GetxController {
     );
   }
 
-  Future<void> onCreateReport(String remark) async {
+  Future<void> onCreateReport() async {
     _isCreateReport = true;
 
     showLoadingDialog("Đang tạo báo cáo ...");

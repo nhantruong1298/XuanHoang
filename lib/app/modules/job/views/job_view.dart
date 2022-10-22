@@ -6,7 +6,6 @@ import 'package:example_nav2/app/modules/term/views/term_view.dart';
 import 'package:example_nav2/app/modules/add_image/views/add_image_view.dart';
 import 'package:example_nav2/app/modules/job/controllers/job_controller.dart';
 import 'package:example_nav2/app/modules/job/widgets/remark_dialog.dart';
-import 'package:example_nav2/app/modules/project/views/widgets/blur_background.dart';
 import 'package:example_nav2/app/modules/project/views/widgets/choose_project_app_bar.dart';
 import 'package:example_nav2/app/modules/home/views/home_view.dart';
 import 'package:example_nav2/app/modules/images_history.dart/views/images_history_view.dart';
@@ -15,7 +14,6 @@ import 'package:example_nav2/generated/assets.gen.dart';
 import 'package:example_nav2/generated/l10n.dart';
 import 'package:example_nav2/resources/app_colors.dart';
 import 'package:example_nav2/resources/app_constants.dart';
-import 'package:example_nav2/resources/app_dimensions.dart';
 import 'package:example_nav2/widgets/common/app_list_tile.dart';
 import 'package:example_nav2/widgets/common/button/app_button.dart';
 import 'package:example_nav2/widgets/input/search_input_field.dart';
@@ -76,69 +74,6 @@ class JobView extends GetView<JobController> {
             ))
       ],
     );
-
-    // return GestureDetector(
-    //     onTap: FocusManager.instance.primaryFocus?.unfocus,
-    //     child: Stack(
-    //       children: [
-    //         Scaffold(
-    //             resizeToAvoidBottomInset: false,
-    //             extendBodyBehindAppBar: true,
-    //             appBar: _buildAppBar(),
-    //             bottomNavigationBar: _buildNavigationBar(context),
-    //             body: Stack(
-    //               children: [
-    //                 BlurBackGround(),
-    //                 SafeArea(
-    //                   child: Container(
-    //                       width: double.infinity,
-    //                       height: double.infinity,
-    //                       padding: const EdgeInsets.symmetric(horizontal: 10),
-    //                       child: Column(
-    //                           crossAxisAlignment: CrossAxisAlignment.start,
-    //                           children: [
-    //                             SizedBox(height: 30.h),
-    //                             SearchInputField(
-    //                               borderRadius: AppDimensions.defaultXLRadius,
-    //                               onChanged: (value) {
-    //                                 controller.onSearchChanged(value);
-    //                               },
-    //                             ),
-    //                             SizedBox(height: 20.h),
-    //                             Obx(() {
-    //                               final list = controller.listJob;
-    //                               return Expanded(
-    //                                   child: RefreshIndicator(
-    //                                 onRefresh: controller.onRefreshData,
-    //                                 child: ListView.separated(
-    //                                     keyboardDismissBehavior:
-    //                                         ScrollViewKeyboardDismissBehavior
-    //                                             .onDrag,
-    //                                     itemBuilder: (context, index) {
-    //                                       final item = list[index];
-    //                                       return (accountType ==
-    //                                                   AccountType.staff ||
-    //                                               accountType ==
-    //                                                   AccountType.admin)
-    //                                           ? _buildStaffJob(context, item)
-    //                                           : _buildCustomerJob(item);
-    //                                     },
-    //                                     separatorBuilder: (_, __) =>
-    //                                         const SizedBox(height: 10),
-    //                                     itemCount: list.length),
-    //                               ));
-    //                             }),
-    //                             SizedBox(height: 20.h),
-    //                           ])),
-    //                 ),
-    //               ],
-    //             )),
-    //         Obx(() => Visibility(
-    //               visible: controller.isLoading.value,
-    //               child: LoadingView(),
-    //             ))
-    //       ],
-    //     ));
   }
 
   Widget _buildNavigationBar(BuildContext context) {
@@ -146,21 +81,15 @@ class JobView extends GetView<JobController> {
         ? Row(children: [
             Flexible(
                 child: AppButton(
-                    text: 'Xem báo cáo tổng',
-                    onTap: () {
-                      controller.onShowFinalReportPressed();
-                    })),
+              text: 'Xem báo cáo tổng',
+              onTap: controller.onShowFinalReportPressed,
+            )),
             Flexible(
                 child: AppButton(
-                    color: AppColors.green700,
-                    text: 'Xác nhận khách hàng',
-                    onTap: () async {
-                      final remark = await showRemarkDialog(context: context);
-
-                      if (remark == null) return;
-
-                      controller.onCreateReport(remark);
-                    }))
+              color: AppColors.green700,
+              text: 'Xác nhận khách hàng',
+              onTap: controller.onCreateReport,
+            ))
           ])
         : const SizedBox.shrink();
   }

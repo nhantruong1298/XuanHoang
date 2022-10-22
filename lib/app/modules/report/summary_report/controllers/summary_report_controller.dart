@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'dart:isolate';
-import 'dart:ui';
 import 'dart:ui';
 
 import 'package:example_nav2/app/data/repository/file_repository.dart';
@@ -14,7 +12,6 @@ import 'package:example_nav2/widgets/common/snackbar/snackbar.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SummaryReportController extends GetxController {
   final ApiService _apiService;
@@ -52,7 +49,8 @@ class SummaryReportController extends GetxController {
       DownloadTaskStatus status = data[1];
 
       if (status == DownloadTaskStatus.failed ||
-          status == DownloadTaskStatus.undefined) {
+          status == DownloadTaskStatus.undefined ||
+          status == DownloadTaskStatus.canceled) {
         toggleLoading(false);
         return;
       }
