@@ -39,7 +39,7 @@ class LoginView extends GetView<LoginController> {
                         hintText: S.current.SIGN_IN__USERNAME,
                         name: controller.USER_NAME_KEY,
                         initValue: '',
-                        //   initValue: 'nv02',
+                       // initValue: 'nv01',
                       ),
                       SizedBox(height: 23.h),
                       Obx(() {
@@ -57,8 +57,8 @@ class LoginView extends GetView<LoginController> {
                           hintText: S.current.SIGN_IN__PASSWORD,
                           name: controller.PASSWORD_KEY,
                           obscureText: obscureText,
-                          initValue: '',
-                          //      initValue: '123456',
+                           initValue: '',
+                         // initValue: '123456',
                         );
                       }),
                       SizedBox(height: 80.h),

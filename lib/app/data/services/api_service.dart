@@ -31,10 +31,14 @@ class ApiService extends GetxService {
   late XHApiService _xhApiService;
   late Dio _dio;
   late Token? _token;
-  static const baseUrl = 'http://checklist.xuanhoangco.com/';
-  static const baseTestUrl = 'https://xuanhoang.xoontec.vn/';
+  // static const baseUrl = 'http://checklist.xuanhoangco.com/';
+  // static const baseTestUrl = 'https://xuanhoang.xoontec.vn/';
+
+  static const baseUrl =
+      const String.fromEnvironment("APP_XH_END_POINT", defaultValue: "");
   ApiService() {
     _init();
+    print(baseUrl);
   }
 
   _init() {
@@ -45,7 +49,7 @@ class ApiService extends GetxService {
     Map<String, dynamic>? headers,
   }) {
     return Dio(BaseOptions(
-        baseUrl: baseTestUrl,
+        baseUrl: baseUrl,
         sendTimeout: 10000,
         receiveTimeout: 10000,
         headers: headers));

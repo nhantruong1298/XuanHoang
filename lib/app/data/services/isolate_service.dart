@@ -11,6 +11,7 @@ import 'package:example_nav2/resources/app_formatter.dart';
 import 'package:image/image.dart' as img;
 import 'package:dio/dio.dart';
 
+@pragma('vm:entry-point')
 void sendReportIsolate(Map<String, dynamic> json) async {
   final data = SendReportIsolateModel.fromJson(json);
   try {
@@ -53,6 +54,7 @@ void sendReportIsolate(Map<String, dynamic> json) async {
   } catch (error) {}
 }
 
+@pragma('vm:entry-point')
 void resizedAndUploadDoCheckImageIsolate(Map<String, dynamic> json) async {
   final data = UploadDoCheckImageIsolateModel.fromJson(json);
   final SendPort? send =

@@ -18,7 +18,6 @@ import 'app/routes/app_pages.dart';
 
 ReceivePort mainPort = ReceivePort();
 
-
 @pragma('vm:entry-point')
 void downloadCallback(String id, DownloadTaskStatus status, int progress) {
   final SendPort? send =
@@ -27,25 +26,23 @@ void downloadCallback(String id, DownloadTaskStatus status, int progress) {
   final SendPort? send1 =
       IsolateNameServer.lookupPortByName(DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY);
 
-  
-
   send?.send([id, status, progress]);
   send1?.send([id, status, progress]);
 }
 
 const String DOWNLOADER_SEND_PORT_KEY = 'downloader_send_port';
-const String DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY = 'download_final_report_send_port';
+const String DOWNLOAD_FINAL_REPORT_SEND_PORT_KEY =
+    'download_final_report_send_port';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
 
-  
   ByteData data =
       await PlatformAssetBundle().load('assets/ce/lets-encrypt-r3.pem');
   SecurityContext.defaultContext

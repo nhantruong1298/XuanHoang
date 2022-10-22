@@ -2,10 +2,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "example_nav2",
+            "name": "dev",
             "request": "launch",
             "type": "dart",
             "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "dev",
+                "--dart-define",
+                "APP_XH_END_POINT=https://xuanhoang.xoontec.vn/",
+            ]
+        },
+        {
+            "name": "prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor",
+                "prod",
+                "--dart-define",
+                "APP_XH_END_POINT=http://checklist.xuanhoangco.com/",
+            ]
         },
       
     ]
